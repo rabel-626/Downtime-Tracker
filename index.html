@@ -937,6 +937,76 @@
     }
 
 
+    .autosave-panel {
+      border: 1px solid rgba(34,197,94,0.28);
+      background: rgba(34,197,94,0.075);
+      border-radius: 14px;
+      padding: 11px 12px;
+      margin-top: 12px;
+      text-align: center;
+      color: #d4d4d8 !important;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .autosave-panel strong {
+      color: #ffffff !important;
+      font-weight: 900;
+    }
+
+    .autosave-status {
+      margin-top: 6px;
+      color: #bbf7d0 !important;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .autosave-recovery-list {
+      display: none;
+      margin-top: 10px;
+      text-align: left;
+      border-top: 1px solid rgba(255,255,255,0.14);
+      padding-top: 10px;
+    }
+
+    .autosave-recovery-list.open {
+      display: grid;
+      gap: 8px;
+    }
+
+    .autosave-recovery-card {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.18);
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .autosave-recovery-title {
+      color: #ffffff !important;
+      font-size: 13px;
+      font-weight: 950;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .autosave-recovery-meta {
+      color: #d4d4d8 !important;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .autosave-recovery-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .autosave-recovery-actions button {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
 
     .manual-only {
       display: none;
@@ -1601,6 +1671,12 @@
             <strong>Recommended workflow:</strong> use <strong>Select Study Folder</strong> and <strong>Save to Selected Folder</strong> on desktop Chrome/Edge when working from a local or OneDrive-synced folder. Use <strong>Share JSON</strong> on phones when the device share sheet is available. <strong>Export JSON</strong> remains the reliable fallback download method.
           </div>
 
+          <div class="autosave-panel">
+            <strong>Autosave enabled:</strong> each open tab now gets its own recovery slot. The tracker autosaves about every 5 seconds, whenever fields change, and again when the page is closed.
+            <div id="autosaveStatus" class="autosave-status">Autosave is starting…</div>
+            <div id="autosaveRecoveryList" class="autosave-recovery-list" aria-live="polite"></div>
+          </div>
+
           <div class="form-grid" style="margin-top: 12px;">
             <div>
               <label for="studyFileName">Study file name preview / override</label>
@@ -1696,6 +1772,8 @@
             <button onclick="printFullPagePDF()">Print Full Page PDF</button>
             <button onclick="saveLocal()">Save Browser Copy</button>
             <button onclick="loadLocal()">Load Browser Copy</button>
+            <button onclick="loadAutosave()">Show Autosave Recoveries</button>
+            <button onclick="deleteAllAutosaves()">Delete Autosave Recoveries</button>
           </div>
         </div>
       </div>
@@ -5639,6 +5717,409 @@ Code #,Code Abbr,Code Desc,Include in Summary
       }
     }
 
+    const AUTOSAVE_INDEX_KEY = 'downtimeTrackerAutosaveIndexMPG_v2';
+    const AUTOSAVE_SESSION_PREFIX = 'downtimeTrackerAutosaveSessionMPG_v2_';
+    const AUTOSAVE_SESSION_STORAGE_KEY = 'downtimeTrackerAutosaveActiveSessionMPG_v2';
+    const AUTOSAVE_LEGACY_KEY = 'downtimeTrackerAutosaveMPG';
+    const AUTOSAVE_LEGACY_BACKUP_KEY = 'downtimeTrackerAutosaveMPGBackup';
+    const AUTOSAVE_INTERVAL_MS = 5000;
+    let autosaveTimer = null;
+    let autosaveSessionId = '';
+    let autosaveSessionStartedAt = new Date().toISOString();
+    let isApplyingAutosave = false;
+
+    function setAutosaveStatus(message) {
+      const statusEl = document.getElementById('autosaveStatus');
+      if (statusEl) statusEl.textContent = message;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function generateAutosaveUuid() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      return 'session-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 11);
+    }
+
+    function ensureAutosaveSessionId() {
+      if (autosaveSessionId) return autosaveSessionId;
+      try {
+        autosaveSessionId = sessionStorage.getItem(AUTOSAVE_SESSION_STORAGE_KEY) || '';
+        if (!autosaveSessionId) {
+          autosaveSessionId = generateAutosaveUuid();
+          sessionStorage.setItem(AUTOSAVE_SESSION_STORAGE_KEY, autosaveSessionId);
+        }
+      } catch (error) {
+        autosaveSessionId = generateAutosaveUuid();
+      }
+      return autosaveSessionId;
+    }
+
+    function setActiveAutosaveSessionId(sessionId) {
+      autosaveSessionId = sessionId || generateAutosaveUuid();
+      try {
+        sessionStorage.setItem(AUTOSAVE_SESSION_STORAGE_KEY, autosaveSessionId);
+      } catch (error) {
+        // Session storage may be blocked in private or locked-down browser modes.
+      }
+      return autosaveSessionId;
+    }
+
+    function getAutosaveStorageKey(sessionId) {
+      return AUTOSAVE_SESSION_PREFIX + sessionId;
+    }
+
+    function getAutosaveTimestampText(payloadOrMeta) {
+      const raw = payloadOrMeta?.autosavedAt || payloadOrMeta?.lastSaved || payloadOrMeta?.browserSavedAt || payloadOrMeta?.savedAt || '';
+      if (!raw) return 'unknown time';
+      const parsed = new Date(raw);
+      if (Number.isNaN(parsed.getTime())) return String(raw);
+      return parsed.toLocaleString();
+    }
+
+    function hasMeaningfulStudyData(payload) {
+      if (!payload || typeof payload !== 'object') return false;
+      if ((payload.events || []).length > 0) return true;
+      if ((payload.actionItems || []).some(item => Object.values(item || {}).some(value => String(value ?? '').trim()))) return true;
+      if ((payload.downtimeCodes || []).some(code => String(code?.abbreviation || '').trim() || String(code?.description || '').trim())) return true;
+      const studyInfo = payload.studyInfo || {};
+      if (Object.values(studyInfo).some(value => String(value ?? '').trim())) return true;
+      const fields = payload.formFields || {};
+      const ignoredIds = new Set(['studyDate', 'collectionMode', 'collectionModeControl']);
+      return Object.entries(fields).some(([id, value]) => !ignoredIds.has(id) && String(value ?? '').trim());
+    }
+
+    function readAutosaveIndex() {
+      try {
+        const raw = localStorage.getItem(AUTOSAVE_INDEX_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed.filter(item => item && item.sessionId) : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function writeAutosaveIndex(index) {
+      localStorage.setItem(AUTOSAVE_INDEX_KEY, JSON.stringify(index));
+    }
+
+    function getAutosaveMetaFromPayload(payload, sessionId) {
+      const studyInfo = payload.studyInfo || {};
+      const formFields = payload.formFields || {};
+      const titleParts = [
+        studyInfo.studyLocation || formFields.studyLocation,
+        studyInfo.studyLine || formFields.studyLine,
+        studyInfo.studyShift || formFields.studyShift
+      ].filter(value => String(value ?? '').trim());
+      const title = titleParts.length ? titleParts.join(' / ') : (payload.generatedFileName || payload.studyFileNameOverride || 'Untitled downtime study');
+      const eventCount = Array.isArray(payload.events) ? payload.events.length : 0;
+      const totalDowntimeSeconds = Array.isArray(payload.events)
+        ? payload.events.reduce((sum, eventItem) => sum + (Number(eventItem?.durationSeconds) || 0), 0)
+        : 0;
+      return {
+        sessionId,
+        storageKey: getAutosaveStorageKey(sessionId),
+        title,
+        location: studyInfo.studyLocation || formFields.studyLocation || '',
+        line: studyInfo.studyLine || formFields.studyLine || '',
+        shift: studyInfo.studyShift || formFields.studyShift || '',
+        studyDate: studyInfo.studyDate || formFields.studyDate || '',
+        startedAt: payload.autosaveSessionStartedAt || autosaveSessionStartedAt,
+        lastSaved: payload.autosavedAt || new Date().toISOString(),
+        eventCount,
+        totalDowntimeSeconds,
+        active: Boolean(payload.studyIsRunning || payload.activeEventIndex !== null && payload.activeEventIndex !== undefined),
+        version: payload.autosaveVersion || 2
+      };
+    }
+
+    function upsertAutosaveIndex(payload, sessionId) {
+      const meta = getAutosaveMetaFromPayload(payload, sessionId);
+      const index = readAutosaveIndex().filter(item => item.sessionId !== sessionId && item.storageKey !== meta.storageKey);
+      index.unshift(meta);
+      index.sort((a, b) => new Date(b.lastSaved || 0) - new Date(a.lastSaved || 0));
+      writeAutosaveIndex(index.slice(0, 60));
+      return meta;
+    }
+
+    function getPayloadForAutosaveSession(sessionId) {
+      try {
+        const raw = localStorage.getItem(getAutosaveStorageKey(sessionId));
+        return raw ? JSON.parse(raw) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function getLegacyAutosavePayload() {
+      const raw = localStorage.getItem(AUTOSAVE_LEGACY_KEY) || localStorage.getItem(AUTOSAVE_LEGACY_BACKUP_KEY);
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function getStoredAutosaveRecords() {
+      const byId = new Map();
+
+      readAutosaveIndex().forEach(meta => {
+        const payload = getPayloadForAutosaveSession(meta.sessionId);
+        if (payload && hasMeaningfulStudyData(payload)) {
+          byId.set(meta.sessionId, { meta: { ...getAutosaveMetaFromPayload(payload, meta.sessionId), ...meta }, payload });
+        }
+      });
+
+      try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+          const key = localStorage.key(i);
+          if (!key || !key.startsWith(AUTOSAVE_SESSION_PREFIX)) continue;
+          const sessionId = key.slice(AUTOSAVE_SESSION_PREFIX.length);
+          if (byId.has(sessionId)) continue;
+          const payload = JSON.parse(localStorage.getItem(key));
+          if (payload && hasMeaningfulStudyData(payload)) {
+            byId.set(sessionId, { meta: getAutosaveMetaFromPayload(payload, sessionId), payload });
+          }
+        }
+      } catch (error) {
+        // Ignore individual malformed recovery copies.
+      }
+
+      const legacyPayload = getLegacyAutosavePayload();
+      if (legacyPayload && hasMeaningfulStudyData(legacyPayload)) {
+        byId.set('legacy-single-slot', {
+          meta: {
+            ...getAutosaveMetaFromPayload(legacyPayload, 'legacy-single-slot'),
+            title: 'Legacy single-slot autosave',
+            storageKey: AUTOSAVE_LEGACY_KEY,
+            version: 1
+          },
+          payload: legacyPayload
+        });
+      }
+
+      return Array.from(byId.values()).sort((a, b) => new Date(b.meta.lastSaved || 0) - new Date(a.meta.lastSaved || 0));
+    }
+
+    function formatDurationFromSeconds(seconds) {
+      seconds = Math.max(0, Math.round(Number(seconds) || 0));
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      if (h > 0) return `${h}h ${m}m ${s}s`;
+      if (m > 0) return `${m}m ${s}s`;
+      return `${s}s`;
+    }
+
+    function renderAutosaveRecoveryList(records = getStoredAutosaveRecords()) {
+      const listEl = document.getElementById('autosaveRecoveryList');
+      if (!listEl) return;
+      if (!records.length) {
+        listEl.classList.remove('open');
+        listEl.innerHTML = '';
+        return;
+      }
+
+      listEl.classList.add('open');
+      listEl.innerHTML = records.map(({ meta }) => `
+        <div class="autosave-recovery-card">
+          <div class="autosave-recovery-title">${escapeHtml(meta.title)}</div>
+          <div class="autosave-recovery-meta">
+            Last saved: ${escapeHtml(getAutosaveTimestampText(meta))}<br />
+            Date: ${escapeHtml(meta.studyDate || 'Not set')} | Events: ${escapeHtml(meta.eventCount)} | Downtime: ${escapeHtml(formatDurationFromSeconds(meta.totalDowntimeSeconds))}${meta.active ? ' | Active when saved' : ''}<br />
+            Recovery ID: ${escapeHtml(String(meta.sessionId).slice(0, 8))}
+          </div>
+          <div class="autosave-recovery-actions">
+            <button type="button" onclick="loadAutosaveSession('${escapeHtml(meta.sessionId)}')">Load This Recovery</button>
+            <button type="button" onclick="exportAutosaveSession('${escapeHtml(meta.sessionId)}')">Export JSON</button>
+            <button type="button" onclick="deleteAutosaveSession('${escapeHtml(meta.sessionId)}')">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function saveAutosave(options = {}) {
+      if (isApplyingAutosave) return;
+      try {
+        const sessionId = ensureAutosaveSessionId();
+        const payload = buildStudyStatePayload();
+        if (!hasMeaningfulStudyData(payload) && !options.allowEmpty) {
+          if (options.updateStatus) setAutosaveStatus('Autosave ready. No study data has been entered yet.');
+          return;
+        }
+        payload.autosavedAt = new Date().toISOString();
+        payload.autosaveVersion = 2;
+        payload.autosaveSessionId = sessionId;
+        payload.autosaveSessionStartedAt = autosaveSessionStartedAt;
+        const serialized = JSON.stringify(payload);
+        localStorage.setItem(getAutosaveStorageKey(sessionId), serialized);
+        const meta = upsertAutosaveIndex(payload, sessionId);
+        if (!options.silent) {
+          setAutosaveStatus('Autosaved this tab at ' + getAutosaveTimestampText(meta) + '. Recovery ID: ' + sessionId.slice(0, 8) + '.');
+        } else if (options.updateStatus) {
+          setAutosaveStatus('Last autosave for this tab: ' + getAutosaveTimestampText(meta) + '. Recovery ID: ' + sessionId.slice(0, 8) + '.');
+        }
+      } catch (error) {
+        setAutosaveStatus('Autosave failed. Use Export JSON or Save Browser Copy as a backup.');
+      }
+    }
+
+    function scheduleAutosave() {
+      clearTimeout(autosaveTimer);
+      autosaveTimer = setTimeout(() => saveAutosave({ updateStatus: true }), 600);
+    }
+
+    function restoreAutosavePayload(payload, sessionId = '') {
+      if (!payload) return false;
+      isApplyingAutosave = true;
+      try {
+        applyStudyStatePayload(payload);
+        if (sessionId && sessionId !== 'legacy-single-slot') {
+          setActiveAutosaveSessionId(sessionId);
+          autosaveSessionStartedAt = payload.autosaveSessionStartedAt || autosaveSessionStartedAt;
+        } else {
+          setActiveAutosaveSessionId(generateAutosaveUuid());
+          autosaveSessionStartedAt = new Date().toISOString();
+        }
+        setStatus('Loaded autosaved browser recovery copy from ' + getAutosaveTimestampText(payload) + '.', activeEventIndex !== null);
+        setAutosaveStatus('Recovered autosave from ' + getAutosaveTimestampText(payload) + '. Future autosaves will update Recovery ID: ' + autosaveSessionId.slice(0, 8) + '.');
+        saveAutosave({ silent: true });
+        renderAutosaveRecoveryList();
+        return true;
+      } finally {
+        isApplyingAutosave = false;
+      }
+    }
+
+    function loadAutosaveSession(sessionId) {
+      const record = getStoredAutosaveRecords().find(item => item.meta.sessionId === sessionId);
+      if (!record) {
+        alert('That autosave recovery copy was not found. It may have been deleted or browser storage may have changed.');
+        renderAutosaveRecoveryList();
+        return;
+      }
+      const currentPayload = buildStudyStatePayload();
+      const replace = !hasMeaningfulStudyData(currentPayload) || confirm('Load "' + record.meta.title + '" from ' + getAutosaveTimestampText(record.meta) + '? This will replace the current view.');
+      if (replace) restoreAutosavePayload(record.payload, sessionId);
+    }
+
+    function loadAutosave() {
+      const records = getStoredAutosaveRecords();
+      if (!records.length) {
+        renderAutosaveRecoveryList([]);
+        alert('No autosaved recovery copies were found on this computer/browser.');
+        setAutosaveStatus('Autosave ready. Recovery copies are stored in this browser on this computer.');
+        return;
+      }
+      renderAutosaveRecoveryList(records);
+      setAutosaveStatus(records.length + ' autosave recover' + (records.length === 1 ? 'y is' : 'ies are') + ' available. Choose one from the list below.');
+    }
+
+    function exportAutosaveSession(sessionId) {
+      const record = getStoredAutosaveRecords().find(item => item.meta.sessionId === sessionId);
+      if (!record) {
+        alert('That autosave recovery copy was not found.');
+        return;
+      }
+      const blob = new Blob([JSON.stringify(record.payload, null, 2)], { type: 'application/json;charset=utf-8;' });
+      const a = document.createElement('a');
+      const safeTitle = String(record.meta.title || 'autosave_recovery').replace(/[^a-z0-9_\- ]/gi, '').replace(/\s+/g, '_').slice(0, 80) || 'autosave_recovery';
+      a.href = URL.createObjectURL(blob);
+      a.download = safeTitle + '_RECOVERY_' + String(sessionId).slice(0, 8) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }
+
+    function deleteAutosaveSession(sessionId, options = {}) {
+      const records = getStoredAutosaveRecords();
+      const record = records.find(item => item.meta.sessionId === sessionId);
+      if (!record && !options.silent) {
+        alert('That autosave recovery copy was not found.');
+        renderAutosaveRecoveryList();
+        return;
+      }
+      if (!options.silent && !confirm('Delete this autosave recovery copy? Export it first if you may need it later.')) return;
+      try {
+        if (sessionId === 'legacy-single-slot') {
+          localStorage.removeItem(AUTOSAVE_LEGACY_KEY);
+          localStorage.removeItem(AUTOSAVE_LEGACY_BACKUP_KEY);
+        } else {
+          localStorage.removeItem(getAutosaveStorageKey(sessionId));
+          writeAutosaveIndex(readAutosaveIndex().filter(item => item.sessionId !== sessionId));
+        }
+        renderAutosaveRecoveryList();
+        if (!options.silent) setAutosaveStatus('Deleted autosave recovery copy.');
+      } catch (error) {
+        if (!options.silent) alert('Could not delete that autosave recovery copy.');
+      }
+    }
+
+    function deleteAllAutosaves() {
+      const records = getStoredAutosaveRecords();
+      if (!records.length) {
+        alert('No autosave recovery copies were found.');
+        return;
+      }
+      if (!confirm('Delete all autosave recovery copies in this browser? Export any needed recoveries first.')) return;
+      records.forEach(({ meta }) => deleteAutosaveSession(meta.sessionId, { silent: true }));
+      try {
+        localStorage.removeItem(AUTOSAVE_INDEX_KEY);
+      } catch (error) {
+        // Ignore cleanup errors.
+      }
+      renderAutosaveRecoveryList([]);
+      setAutosaveStatus('Deleted all autosave recovery copies in this browser.');
+    }
+
+    function offerAutosaveRestoreOnStartup() {
+      ensureAutosaveSessionId();
+      const records = getStoredAutosaveRecords();
+      if (!records.length) {
+        setAutosaveStatus('Autosave ready. This tab is Recovery ID: ' + autosaveSessionId.slice(0, 8) + '.');
+        return;
+      }
+
+      renderAutosaveRecoveryList(records);
+      if (records.length === 1) {
+        setAutosaveStatus('One autosave recovery is available from ' + getAutosaveTimestampText(records[0].meta) + '.');
+        setTimeout(() => {
+          const currentPayload = buildStudyStatePayload();
+          const currentHasData = hasMeaningfulStudyData(currentPayload);
+          const message = currentHasData
+            ? 'Autosaved study found from ' + getAutosaveTimestampText(records[0].meta) + '. Replace the current view with this autosave?'
+            : 'Autosaved study found from ' + getAutosaveTimestampText(records[0].meta) + '. Load it now?';
+          if (confirm(message)) {
+            restoreAutosavePayload(records[0].payload, records[0].meta.sessionId);
+          }
+        }, 350);
+      } else {
+        setAutosaveStatus(records.length + ' autosave recoveries are available. Choose one from the list below, or continue with this new tab. Current Recovery ID: ' + autosaveSessionId.slice(0, 8) + '.');
+      }
+    }
+
+    function initializeAutosave() {
+      ensureAutosaveSessionId();
+      document.addEventListener('input', scheduleAutosave, true);
+      document.addEventListener('change', scheduleAutosave, true);
+      window.addEventListener('pagehide', () => saveAutosave({ silent: true }));
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') saveAutosave({ silent: true });
+      });
+      setInterval(() => saveAutosave({ updateStatus: true }), AUTOSAVE_INTERVAL_MS);
+      offerAutosaveRestoreOnStartup();
+    }
+
     function saveLocal() {
       try {
         const payload = buildStudyStatePayload();
@@ -5697,6 +6178,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const confirmClear = confirm('Reset the tracker and clear all downtime events from the current view? This will not delete already exported CSV files.');
       if (!confirmClear) return;
 
+      if (autosaveSessionId) deleteAutosaveSession(autosaveSessionId, { silent: true });
+      setActiveAutosaveSessionId(generateAutosaveUuid());
+      autosaveSessionStartedAt = new Date().toISOString();
+
       events = [];
       downtimeCodes = [];
       actionItems = [];
@@ -5722,7 +6207,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
     }
 
     window.addEventListener('beforeunload', function(event) {
-      if (events.length > 0) {
+      saveAutosave({ silent: true });
+      if (events.length > 0 || studyIsRunning || activeEventIndex !== null) {
         event.preventDefault();
         event.returnValue = '';
       }
@@ -5749,6 +6235,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
     updateStudyLineOptions();
     populateStudyFileName(true);
     setCollectionMode(collectionMode);
+    initializeAutosave();
 
     ['studyLocation', 'studyDate', 'studyShift', 'studyLine', 'collectionMode'].forEach(id => {
       const el = document.getElementById(id);
