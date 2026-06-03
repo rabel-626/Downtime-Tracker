@@ -1394,6 +1394,429 @@
       }
     }
 
+
+    /* ============================================================
+       Mobile portrait overflow patch - added for iPhone/Safari
+       Keeps graphics, tables, headers, and controls inside viewport.
+       ============================================================ */
+    html {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .page-wrap,
+    .hero,
+    .box,
+    .executive-report,
+    .report-panel,
+    .table-shell,
+    .table-scroll,
+    .executive-chart-wrap,
+    .paste-panel,
+    .save-load-panel,
+    .autosave-panel,
+    .copy-menu,
+    .file-preview {
+      max-width: 100%;
+    }
+
+    img,
+    svg,
+    canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .box,
+    .hero,
+    .metric,
+    .report-panel,
+    .report-metric,
+    .quality-item,
+    .instruction-box,
+    .status,
+    .file-preview,
+    .autosave-panel,
+    .save-load-panel {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    .table-scroll,
+    .executive-chart-wrap {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      overflow-y: visible;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-inline: contain;
+    }
+
+    .copy-menu {
+      max-width: calc(100vw - 24px);
+    }
+
+    .info-popover {
+      max-width: calc(100vw - 24px);
+      left: 50%;
+      right: auto;
+    }
+
+    .executive-chart-svg {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    @media (max-width: 700px) {
+      .page-wrap {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px 10px 28px;
+      }
+
+      .hero {
+        padding: 14px;
+        border-radius: 18px;
+        margin-bottom: 12px;
+      }
+
+      .hero-inner,
+      .report-grid,
+      .summary-grid,
+      .form-grid,
+      .quality-list,
+      .report-metrics {
+        grid-template-columns: 1fr !important;
+      }
+
+      .hero-inner {
+        gap: 14px;
+      }
+
+      .logo-card {
+        width: min(100%, 220px);
+        max-width: 220px;
+        min-height: 0;
+        padding: 10px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: clamp(34px, 15vw, 54px);
+        line-height: 0.95;
+        letter-spacing: -0.045em;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.22em;
+      }
+
+      .subtitle {
+        font-size: 14px;
+      }
+
+      .mpg-rule {
+        margin: 12px 0;
+      }
+
+      .box {
+        padding: 14px;
+        border-radius: 16px;
+      }
+
+      .table-header {
+        padding: 14px 14px 0;
+      }
+
+      .table-actions,
+      .capture-bar,
+      .report-actions,
+      .paste-panel {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .box-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        justify-items: center;
+        gap: 8px;
+        padding: 0;
+        min-height: 0;
+      }
+
+      .box-header h2,
+      .box-tag {
+        grid-column: 1 / -1;
+      }
+
+      .section-info-btn {
+        position: static;
+        transform: none;
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+      }
+
+      .collapse-toggle {
+        position: static;
+        transform: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+        margin-top: 6px;
+      }
+
+      .info-popover {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        transform: none;
+        width: auto;
+        max-width: none;
+        max-height: calc(100vh - 24px);
+        overflow: auto;
+        z-index: 10000;
+        pointer-events: auto;
+      }
+
+      .button-row,
+      .save-load-actions,
+      .autosave-recovery-actions,
+      .table-actions,
+      .report-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .button-row button,
+      .table-actions button,
+      .report-actions button,
+      .save-load-actions button,
+      .autosave-recovery-actions button,
+      .copy-menu-wrap {
+        width: 100%;
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font-size: 16px;
+      }
+
+      .primary-button {
+        min-height: 78px;
+        font-size: clamp(22px, 9vw, 34px);
+      }
+
+      .study-button {
+        min-height: 58px;
+      }
+
+      .metric,
+      .report-metric {
+        min-height: 0;
+      }
+
+      .metric-value {
+        font-size: 21px;
+      }
+
+      .report-title {
+        font-size: 22px;
+      }
+
+      .report-line-name {
+        font-size: 17px;
+      }
+
+      .executive-report {
+        padding: 16px 12px;
+      }
+
+      .executive-chart-wrap {
+        border-radius: 12px;
+      }
+
+      .executive-chart-svg {
+        min-width: 640px;
+        min-height: 300px;
+      }
+
+      .table-scroll table,
+      .code-table,
+      .pareto-table,
+      .action-table,
+      #eventTable,
+      body.manual-mode #eventTable {
+        width: max-content;
+        min-width: 680px;
+      }
+
+      #eventTable .event-notes-wide {
+        min-width: 260px;
+        width: auto;
+      }
+
+      .copy-menu {
+        position: fixed;
+        left: 12px !important;
+        right: 12px !important;
+        top: 12px !important;
+        width: auto;
+        max-width: none;
+        max-height: calc(100vh - 24px);
+      }
+
+      .copy-menu-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .paste-panel textarea {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .page-wrap {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      .hero,
+      .box {
+        border-radius: 14px;
+      }
+
+      .executive-chart-svg {
+        min-width: 560px;
+      }
+
+      .table-scroll table,
+      .code-table,
+      .pareto-table,
+      .action-table,
+      #eventTable,
+      body.manual-mode #eventTable {
+        min-width: 620px;
+      }
+    }
+
+
+
+    /* ============================================================
+       Drag-scroll patch for small-screen Pareto tables
+       Allows click/touch-drag horizontal scrolling when scrollbars
+       are not visible on iPhone/Safari.
+       ============================================================ */
+    .table-scroll.pareto-drag-scroll,
+    .executive-chart-wrap.pareto-drag-scroll {
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-x pan-y;
+      scrollbar-gutter: stable both-edges;
+      padding-bottom: 8px;
+    }
+
+    .table-scroll.pareto-drag-scroll.dragging,
+    .executive-chart-wrap.pareto-drag-scroll.dragging {
+      cursor: grabbing;
+      scroll-behavior: auto;
+    }
+
+    .table-scroll.pareto-drag-scroll::after,
+    .executive-chart-wrap.pareto-drag-scroll::after {
+      content: "Drag sideways to view full Pareto";
+      display: block;
+      margin: 8px 2px 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    @media (min-width: 701px) {
+      .table-scroll.pareto-drag-scroll::after,
+      .executive-chart-wrap.pareto-drag-scroll::after {
+        content: "Scroll or drag sideways to view full Pareto";
+      }
+    }
+
+
+
+    /* Global mobile drag-scroll support for all wide dashboard tables and chart areas. */
+    .table-scroll,
+    .executive-chart-wrap,
+    .drag-scroll-area {
+      overflow-x: auto !important;
+      overflow-y: visible;
+      max-width: 100%;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+      cursor: grab;
+      touch-action: pan-y;
+      position: relative;
+    }
+
+    .table-scroll.dragging,
+    .executive-chart-wrap.dragging,
+    .drag-scroll-area.dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .table-scroll table,
+    .drag-scroll-area > table {
+      max-width: none;
+    }
+
+    .executive-chart-wrap .executive-chart-svg,
+    .drag-scroll-area > svg,
+    .drag-scroll-area > canvas {
+      max-width: none;
+    }
+
+    .drag-scroll-hint {
+      display: none;
+      color: #a1a1aa !important;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      margin: 7px 0 0;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 760px) {
+      .table-scroll,
+      .executive-chart-wrap,
+      .drag-scroll-area {
+        width: 100%;
+      }
+
+      .table-scroll.needs-horizontal-scroll + .drag-scroll-hint,
+      .executive-chart-wrap.needs-horizontal-scroll + .drag-scroll-hint,
+      .drag-scroll-area.needs-horizontal-scroll + .drag-scroll-hint {
+        display: block;
+      }
+    }
+
     @page {
       size: landscape;
       margin: 0.25in;
@@ -5647,7 +6070,108 @@ Code #,Code Abbr,Code Desc,Include in Summary
                   linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
                 border-radius: 12px;
               }
-              @page {
+          
+
+    /* ============================================================
+       Drag-scroll patch for small-screen Pareto tables
+       Allows click/touch-drag horizontal scrolling when scrollbars
+       are not visible on iPhone/Safari.
+       ============================================================ */
+    .table-scroll.pareto-drag-scroll,
+    .executive-chart-wrap.pareto-drag-scroll {
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-x pan-y;
+      scrollbar-gutter: stable both-edges;
+      padding-bottom: 8px;
+    }
+
+    .table-scroll.pareto-drag-scroll.dragging,
+    .executive-chart-wrap.pareto-drag-scroll.dragging {
+      cursor: grabbing;
+      scroll-behavior: auto;
+    }
+
+    .table-scroll.pareto-drag-scroll::after,
+    .executive-chart-wrap.pareto-drag-scroll::after {
+      content: "Drag sideways to view full Pareto";
+      display: block;
+      margin: 8px 2px 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    @media (min-width: 701px) {
+      .table-scroll.pareto-drag-scroll::after,
+      .executive-chart-wrap.pareto-drag-scroll::after {
+        content: "Scroll or drag sideways to view full Pareto";
+      }
+    }
+
+
+
+    /* Global mobile drag-scroll support for all wide dashboard tables and chart areas. */
+    .table-scroll,
+    .executive-chart-wrap,
+    .drag-scroll-area {
+      overflow-x: auto !important;
+      overflow-y: visible;
+      max-width: 100%;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: contain;
+      scrollbar-width: thin;
+      cursor: grab;
+      touch-action: pan-y;
+      position: relative;
+    }
+
+    .table-scroll.dragging,
+    .executive-chart-wrap.dragging,
+    .drag-scroll-area.dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .table-scroll table,
+    .drag-scroll-area > table {
+      max-width: none;
+    }
+
+    .executive-chart-wrap .executive-chart-svg,
+    .drag-scroll-area > svg,
+    .drag-scroll-area > canvas {
+      max-width: none;
+    }
+
+    .drag-scroll-hint {
+      display: none;
+      color: #a1a1aa !important;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      margin: 7px 0 0;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 760px) {
+      .table-scroll,
+      .executive-chart-wrap,
+      .drag-scroll-area {
+        width: 100%;
+      }
+
+      .table-scroll.needs-horizontal-scroll + .drag-scroll-hint,
+      .executive-chart-wrap.needs-horizontal-scroll + .drag-scroll-hint,
+      .drag-scroll-area.needs-horizontal-scroll + .drag-scroll-hint {
+        display: block;
+      }
+    }
+
+    @page {
                 size: landscape;
                 margin: 0.35in;
               }
@@ -6256,6 +6780,114 @@ Code #,Code Abbr,Code Desc,Include in Summary
       studyFileNameInput.addEventListener('input', updateStudyFilePreview);
       studyFileNameInput.addEventListener('change', updateStudyFilePreview);
     }
+
+
+
+    function initializeParetoDragScroll() {
+      const selector = [
+        '.table-scroll',
+        '.executive-chart-wrap',
+        '.table-wrap',
+        '.chart-card',
+        '.prod-chart-card',
+        '.report-panel-body',
+        '.report-panel',
+        '.copy-menu',
+        '.copy-menu-grid'
+      ].join(', ');
+
+      const candidates = Array.from(document.querySelectorAll(selector));
+      const scrollAreas = candidates.filter(area => {
+        if (!area) return false;
+        const hasWideContent = area.querySelector('table, svg, canvas, .pareto-bar-wrap, .report-grid, .quality-list, .summary-grid, .form-grid');
+        return hasWideContent || area.scrollWidth > area.clientWidth + 2;
+      });
+
+      scrollAreas.forEach(area => {
+        if (area.dataset.dragScrollReady === 'true') {
+          updateDragScrollHint(area);
+          return;
+        }
+        area.dataset.dragScrollReady = 'true';
+        area.classList.add('drag-scroll-area');
+
+        let isDown = false;
+        let hasMoved = false;
+        let startX = 0;
+        let startY = 0;
+        let startScrollLeft = 0;
+        let pointerId = null;
+
+        area.addEventListener('pointerdown', event => {
+          if (event.button !== undefined && event.button !== 0) return;
+          if (event.target.closest('button, input, select, textarea, a, label')) return;
+          if (area.scrollWidth <= area.clientWidth + 2) return;
+
+          isDown = true;
+          hasMoved = false;
+          pointerId = event.pointerId;
+          startX = event.clientX;
+          startY = event.clientY;
+          startScrollLeft = area.scrollLeft;
+          area.classList.add('dragging');
+          area.setPointerCapture?.(pointerId);
+        });
+
+        area.addEventListener('pointermove', event => {
+          if (!isDown) return;
+          const dx = event.clientX - startX;
+          const dy = event.clientY - startY;
+
+          if (!hasMoved && Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+          hasMoved = true;
+
+          if (Math.abs(dx) >= Math.abs(dy)) {
+            event.preventDefault();
+            area.scrollLeft = startScrollLeft - dx;
+          }
+        }, { passive: false });
+
+        function endDrag() {
+          if (!isDown) return;
+          isDown = false;
+          area.classList.remove('dragging');
+          if (pointerId !== null) area.releasePointerCapture?.(pointerId);
+          pointerId = null;
+        }
+
+        area.addEventListener('pointerup', endDrag);
+        area.addEventListener('pointercancel', endDrag);
+        area.addEventListener('pointerleave', endDrag);
+        area.addEventListener('scroll', () => updateDragScrollHint(area), { passive: true });
+        updateDragScrollHint(area);
+      });
+    }
+
+    function updateDragScrollHint(area) {
+      const needsScroll = area.scrollWidth > area.clientWidth + 2;
+      area.classList.toggle('needs-horizontal-scroll', needsScroll);
+
+      const isHintEligible = area.matches('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card, .report-panel-body, .report-panel');
+      if (!isHintEligible) return;
+
+      let hint = area.nextElementSibling;
+      if (!hint || !hint.classList || !hint.classList.contains('drag-scroll-hint')) {
+        hint = document.createElement('div');
+        hint.className = 'drag-scroll-hint';
+        hint.textContent = 'Drag sideways to view the full table or chart.';
+        area.insertAdjacentElement('afterend', hint);
+      }
+    }
+
+    if (window.ResizeObserver) {
+      const dragScrollResizeObserver = new ResizeObserver(() => initializeParetoDragScroll());
+      document.querySelectorAll('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card, .report-panel-body, .report-panel').forEach(el => {
+        dragScrollResizeObserver.observe(el);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', initializeParetoDragScroll);
+    initializeParetoDragScroll();
 
   </script>
 </body>
