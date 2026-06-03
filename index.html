@@ -1060,7 +1060,11 @@
     .pareto-bar {
       height: 100%;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--mpg-pink), var(--mpg-orange), var(--mpg-yellow), var(--mpg-green), var(--mpg-teal), var(--mpg-blue));
+      background: var(--pareto-color, linear-gradient(90deg, var(--mpg-pink), var(--mpg-orange), var(--mpg-yellow), var(--mpg-green), var(--mpg-teal), var(--mpg-blue))) !important;
+    }
+
+    .executive-chart-svg .pareto-column {
+      fill: var(--pareto-color) !important;
     }
 
     .quality-list {
@@ -1284,7 +1288,46 @@
       letter-spacing: 0.07em;
       text-transform: uppercase;
       text-align: center;
+      white-space: normal;
+      overflow-wrap: normal;
+      word-break: keep-all;
+      hyphens: none;
+      line-height: 1.18;
     }
+
+    /* Header width protection: allow phrase wrapping, but prevent short words
+       like Rank and Remove from splitting mid-word on narrow screens/prints. */
+    #eventTable th:nth-child(1) { min-width: 78px; }
+    #eventTable th:nth-child(2),
+    #eventTable th:nth-child(3) { min-width: 92px; }
+    #eventTable th:nth-child(4) { min-width: 70px; }
+    #eventTable th:nth-child(5) { min-width: 118px; }
+    #eventTable th:nth-child(7) { min-width: 92px; }
+
+    .code-table th:nth-child(1) { min-width: 76px; }
+    .code-table th:nth-child(2) { min-width: 150px; }
+    .code-table th:nth-child(3) { min-width: 230px; }
+    .code-table th:nth-child(4) { min-width: 140px; }
+    .code-table th:nth-child(5) { min-width: 92px; }
+
+    .action-table th:nth-child(1) { min-width: 86px; }
+    .action-table th:nth-child(2) { min-width: 230px; }
+    .action-table th:nth-child(3),
+    .action-table th:nth-child(4),
+    .action-table th:nth-child(5) { min-width: 105px; }
+    .action-table th:nth-child(7) { min-width: 92px; }
+
+    .pareto-table th:nth-child(1),
+    .report-pareto-table th:nth-child(1) { min-width: 70px; }
+    .pareto-table th:nth-child(2) { min-width: 124px; }
+    .pareto-table th:nth-child(4) { min-width: 104px; }
+    .pareto-table th:nth-child(5) { min-width: 126px; }
+    .pareto-table th:nth-child(6) { min-width: 150px; }
+    .pareto-table th:nth-child(7) { min-width: 146px; }
+    .report-pareto-table th:nth-child(2) { min-width: 70px; }
+    .report-pareto-table th:nth-child(4) { min-width: 90px; }
+    .report-pareto-table th:nth-child(5) { min-width: 138px; }
+    .report-pareto-table th:nth-child(6) { min-width: 110px; }
 
     td {
       color: #e5e7eb;
@@ -1663,7 +1706,7 @@
       #eventTable,
       body.manual-mode #eventTable {
         width: max-content;
-        min-width: 680px;
+        min-width: 760px;
       }
 
       #eventTable .event-notes-wide {
@@ -1712,7 +1755,7 @@
       .action-table,
       #eventTable,
       body.manual-mode #eventTable {
-        min-width: 620px;
+        min-width: 700px;
       }
     }
 
@@ -1889,7 +1932,17 @@
         font-size: 9px !important;
         padding: 4px !important;
         white-space: normal !important;
-        word-break: break-word !important;
+      }
+
+      th {
+        overflow-wrap: normal !important;
+        word-break: keep-all !important;
+        hyphens: none !important;
+      }
+
+      td {
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
       }
 
       input,
@@ -2552,7 +2605,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         </div>
 
         <div class="instruction-box">
-          The Pareto summarizes completed events assigned to included tags. Hidden/excluded tags stay in the raw event log and exports, but are removed from this Pareto so the analysis matches the selected study scope.
+          The Pareto summarizes completed events assigned to included tags. Hidden/excluded tags stay in the raw event log and exports, but are removed from this Pareto so the analysis matches the selected study scope. All selected downtime causes/tags are included; the chart expands horizontally when many causes are selected.
         </div>
       </div>
 
@@ -4063,6 +4116,54 @@ Code #,Code Abbr,Code Desc,Include in Summary
         });
     }
 
+
+    function hexToRgb(hex) {
+      const clean = String(hex || '').replace('#', '');
+      const value = parseInt(clean.length === 3
+        ? clean.split('').map(ch => ch + ch).join('')
+        : clean, 16);
+      return {
+        r: (value >> 16) & 255,
+        g: (value >> 8) & 255,
+        b: value & 255
+      };
+    }
+
+    function blendHexColors(startHex, endHex, ratio) {
+      const start = hexToRgb(startHex);
+      const end = hexToRgb(endHex);
+      const t = Math.max(0, Math.min(1, ratio));
+      const r = Math.round(start.r + (end.r - start.r) * t);
+      const g = Math.round(start.g + (end.g - start.g) * t);
+      const b = Math.round(start.b + (end.b - start.b) * t);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    function getParetoContributorColor(index, total) {
+      // Rank-based contributor shading for Pareto columns and table bars:
+      // largest downtime contributor = red, then red/yellow, yellow, green, and blue for the smallest.
+      if (total <= 1) return '#df1f2d';
+
+      const t = Math.max(0, Math.min(1, index / (total - 1)));
+      const stops = [
+        { at: 0.00, color: '#df1f2d' },  // red: highest downtime
+        { at: 0.35, color: '#f8c51c' },  // yellow
+        { at: 0.68, color: '#65b32e' },  // green
+        { at: 1.00, color: '#0076b6' }   // blue: lowest downtime
+      ];
+
+      for (let i = 0; i < stops.length - 1; i++) {
+        const left = stops[i];
+        const right = stops[i + 1];
+        if (t >= left.at && t <= right.at) {
+          const localRatio = (t - left.at) / (right.at - left.at);
+          return blendHexColors(left.color, right.color, localRatio);
+        }
+      }
+
+      return stops[stops.length - 1].color;
+    }
+
     function updatePareto() {
       const body = document.getElementById('paretoBody');
       if (!body) return;
@@ -4080,9 +4181,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
         return;
       }
 
-      rows.forEach(rowData => {
+      rows.forEach((rowData, index) => {
         const row = document.createElement('tr');
         const percentWidth = Math.round(rowData.percent * 100);
+        const contributorColor = getParetoContributorColor(index, rows.length);
         row.innerHTML = `
           <td class="number">${rowData.rank}</td>
           <td>${escapeHTML(rowData.code)}</td>
@@ -4091,7 +4193,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
           <td>${formatDuration(rowData.totalSeconds)}</td>
           <td>${formatPercent(rowData.percent)}</td>
           <td>${formatPercent(rowData.cumulative)}</td>
-          <td><div class="pareto-bar-wrap"><div class="pareto-bar" style="width: ${percentWidth}%;"></div></div></td>
+          <td><div class="pareto-bar-wrap"><div class="pareto-bar" style="width: ${percentWidth}%; --pareto-color: ${contributorColor}; background: ${contributorColor} !important;"></div></div></td>
         `;
         body.appendChild(row);
       });
@@ -5684,14 +5786,23 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const svg = document.getElementById('executiveParetoChart');
       if (!svg) return;
 
-      const rows = getParetoRows().slice(0, 8);
-      const width = 760;
-      const height = 360;
-      const margin = { top: 28, right: 52, bottom: 95, left: 56 };
+      // Show every currently included downtime cause/tag.
+      // Previous versions limited this executive chart to the largest causes, which made
+      // the Pareto visually behave like a "top losses" chart instead of a complete
+      // selected-scope Pareto. The table already uses all getParetoRows() results; the
+      // chart now does the same and expands horizontally as needed.
+      const rows = getParetoRows();
+      const minWidth = 760;
+      const widthPerCause = 92;
+      const width = Math.max(minWidth, 108 + rows.length * widthPerCause);
+      const height = 380;
+      const margin = { top: 28, right: 52, bottom: 112, left: 56 };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
 
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.style.width = width + 'px';
+      svg.style.minWidth = width + 'px';
       svg.innerHTML = '';
 
       const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -5788,13 +5899,17 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const x = xCenter - barWidth / 2;
         const y = margin.top + plotHeight - barHeight;
 
+        const contributorColor = getParetoContributorColor(index, rows.length);
+
         const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        bar.setAttribute('class', 'pareto-column');
         bar.setAttribute('x', String(x));
         bar.setAttribute('y', String(y));
         bar.setAttribute('width', String(barWidth));
         bar.setAttribute('height', String(barHeight));
         bar.setAttribute('rx', '6');
-        bar.setAttribute('fill', 'url(#paretoBarGradient)');
+        bar.setAttribute('fill', contributorColor);
+        bar.setAttribute('style', `--pareto-color: ${contributorColor}; fill: ${contributorColor} !important;`);
         svg.appendChild(bar);
 
         const percentText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -5822,30 +5937,6 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
         points.push([xCenter, margin.top + plotHeight - plotHeight * row.cumulative]);
       });
-
-      // defs gradient
-      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-      const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
-      gradient.setAttribute('id', 'paretoBarGradient');
-      gradient.setAttribute('x1', '0%');
-      gradient.setAttribute('x2', '0%');
-      gradient.setAttribute('y1', '100%');
-      gradient.setAttribute('y2', '0%');
-
-      [
-        ['0%', '#0076b6'],
-        ['35%', '#12a39a'],
-        ['65%', '#65b32e'],
-        ['100%', '#f8c51c']
-      ].forEach(([offset, color]) => {
-        const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-        stop.setAttribute('offset', offset);
-        stop.setAttribute('stop-color', color);
-        gradient.appendChild(stop);
-      });
-
-      defs.appendChild(gradient);
-      svg.insertBefore(defs, svg.firstChild);
 
       // cumulative line
       const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
@@ -5886,7 +5977,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       barLegend.setAttribute('y', String(legendY - 10));
       barLegend.setAttribute('width', '18');
       barLegend.setAttribute('height', '10');
-      barLegend.setAttribute('fill', '#12a39a');
+      barLegend.setAttribute('fill', '#df1f2d');
       svg.appendChild(barLegend);
 
       const barLegendText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -5895,7 +5986,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       barLegendText.setAttribute('fill', '#f4f4f5');
       barLegendText.setAttribute('font-size', '11');
       barLegendText.setAttribute('font-weight', '700');
-      barLegendText.textContent = '% of downtime';
+      barLegendText.textContent = '% of downtime by ranked cause color';
       svg.appendChild(barLegendText);
 
       const lineLegend = document.createElementNS('http://www.w3.org/2000/svg', 'line');
