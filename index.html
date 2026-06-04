@@ -294,6 +294,38 @@
       margin: 4px 0;
     }
 
+
+    .workflow-section-note {
+      color: #d4d4d8 !important;
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: center;
+      margin: 10px 0 0;
+      font-weight: 750;
+    }
+
+    .collapsible-content.collapsed {
+      display: none !important;
+    }
+
+    .collapsed-panel-summary {
+      display: none;
+      text-align: center;
+      color: #d4d4d8 !important;
+      background: rgba(255,255,255,0.045);
+      border: 1px dashed rgba(255,255,255,0.22);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+      margin-top: 12px;
+    }
+
+    .collapsed-panel-summary.open {
+      display: block;
+    }
+
     .collapsed-summary-row td,
     .collapsed-summary-cell {
       text-align: center !important;
@@ -974,6 +1006,45 @@
       gap: 8px;
     }
 
+    .autosave-recovery-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.045);
+      border-radius: 12px;
+      padding: 10px 11px;
+      color: #d4d4d8 !important;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    .autosave-recovery-summary strong {
+      color: #ffffff !important;
+      font-weight: 950;
+    }
+
+    .autosave-recovery-summary-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .autosave-recovery-summary-actions button {
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+
+    .autosave-recovery-summary-actions button.danger-lite {
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.45);
+    }
+
     .autosave-recovery-card {
       border: 1px solid rgba(255,255,255,0.16);
       background: rgba(0,0,0,0.18);
@@ -1306,9 +1377,10 @@
 
     .code-table th:nth-child(1) { min-width: 76px; }
     .code-table th:nth-child(2) { min-width: 150px; }
-    .code-table th:nth-child(3) { min-width: 230px; }
-    .code-table th:nth-child(4) { min-width: 140px; }
-    .code-table th:nth-child(5) { min-width: 92px; }
+    .code-table th:nth-child(3) { min-width: 150px; }
+    .code-table th:nth-child(4) { min-width: 230px; }
+    .code-table th:nth-child(5) { min-width: 140px; }
+    .code-table th:nth-child(6) { min-width: 92px; }
 
     .action-table th:nth-child(1) { min-width: 86px; }
     .action-table th:nth-child(2) { min-width: 230px; }
@@ -1649,6 +1721,7 @@
       .report-actions button,
       .save-load-actions button,
       .autosave-recovery-actions button,
+      .autosave-recovery-summary-actions button,
       .copy-menu-wrap {
         width: 100%;
       }
@@ -1859,6 +1932,261 @@
         display: block;
       }
     }
+
+
+
+    /* ============================================================
+       Executive report overlap fix
+       - Prevents the executive summary table from inheriting the
+         global 980px minimum table width.
+       - Keeps long descriptions/headers wrapped inside their cells.
+       - Prevents nested executive report panels from behaving like
+         drag-scroll containers, which was causing helper text to appear
+         near the scrollbar area.
+       ============================================================ */
+    .executive-report .report-panel,
+    .executive-report .report-panel-body {
+      min-width: 0;
+    }
+
+    .executive-report .report-panel-body {
+      overflow-x: hidden;
+    }
+
+    .executive-report .executive-chart-wrap {
+      overflow-x: auto !important;
+    }
+
+    .executive-report .report-pareto-table {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed;
+    }
+
+    .executive-report .report-pareto-table th,
+    .executive-report .report-pareto-table td {
+      white-space: normal !important;
+      overflow-wrap: anywhere !important;
+      word-break: normal !important;
+      hyphens: auto;
+      line-height: 1.25;
+    }
+
+    .executive-report .report-pareto-table th:nth-child(1),
+    .executive-report .report-pareto-table td:nth-child(1) { width: 8%; }
+    .executive-report .report-pareto-table th:nth-child(2),
+    .executive-report .report-pareto-table td:nth-child(2) { width: 12%; }
+    .executive-report .report-pareto-table th:nth-child(3),
+    .executive-report .report-pareto-table td:nth-child(3) { width: 32%; }
+    .executive-report .report-pareto-table th:nth-child(4),
+    .executive-report .report-pareto-table td:nth-child(4) { width: 14%; }
+    .executive-report .report-pareto-table th:nth-child(5),
+    .executive-report .report-pareto-table td:nth-child(5) { width: 18%; }
+    .executive-report .report-pareto-table th:nth-child(6),
+    .executive-report .report-pareto-table td:nth-child(6) { width: 16%; }
+
+
+
+    /* Executive Pareto legend/scrollbar clearance fix */
+    .executive-report .executive-chart-wrap {
+      padding-bottom: 14px;
+      scrollbar-gutter: stable;
+    }
+
+
+    /* Category / Cause downtime code structure */
+    .template-row {
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+      width: 100%;
+      margin: 0 18px 14px;
+      max-width: calc(100% - 36px);
+    }
+
+    .template-row button {
+      min-height: 42px;
+      white-space: nowrap;
+    }
+
+    .note-toggle-btn {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.065);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .note-toggle-btn.has-note {
+      border-color: rgba(18, 163, 154, 0.55);
+      background: rgba(18, 163, 154, 0.12);
+    }
+
+    .note-preview-text {
+      display: block;
+      margin-top: 5px;
+      color: #a1a1aa !important;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .compact-note-editor {
+      min-width: 260px;
+    }
+
+    .compact-note-editor textarea {
+      min-height: 96px !important;
+    }
+
+    .event-note-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 18px 12px;
+      background: rgba(0, 0, 0, 0.58);
+      backdrop-filter: blur(5px);
+    }
+
+    .event-note-modal-backdrop.open {
+      display: flex;
+    }
+
+    .event-note-modal {
+      width: min(980px, calc(100vw - 24px));
+      margin-top: min(18vh, 150px);
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.055)),
+        #111214;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.68);
+      overflow: hidden;
+    }
+
+    .event-note-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.20);
+    }
+
+    .event-note-modal-title {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .event-note-close {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border-radius: 999px;
+      font-size: 18px;
+      line-height: 1;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .event-note-modal-body {
+      padding: 14px;
+    }
+
+    .event-note-modal textarea {
+      width: 100%;
+      min-height: 112px;
+      max-height: 32vh;
+      resize: vertical;
+      text-align: left;
+      line-height: 1.45;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.075);
+    }
+
+    .event-note-modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 14px 14px;
+    }
+
+    .event-note-save {
+      min-width: 150px;
+      background: linear-gradient(135deg, var(--mpg-green), var(--mpg-teal));
+    }
+
+    .category-input,
+    .category-select,
+    .cause-select {
+      min-width: 150px;
+    }
+
+    @media (max-width: 700px) {
+      .template-row {
+        grid-template-columns: 1fr;
+        margin-left: 14px;
+        margin-right: 14px;
+        max-width: calc(100% - 28px);
+      }
+    }
+
+
+
+    /* Event table utility controls placed directly above the log table. */
+    .event-table-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 18px 10px;
+    }
+
+    .event-table-collapse-toggle {
+      position: static !important;
+      transform: none !important;
+      min-width: 154px;
+    }
+
+    .legacy-event-log-notice {
+      display: none;
+      flex: 1 1 320px;
+      border: 1px solid rgba(248, 197, 28, 0.38);
+      background: rgba(248, 197, 28, 0.085);
+      color: #fde68a !important;
+      border-radius: 12px;
+      padding: 9px 11px;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 750;
+      text-align: center;
+    }
+
+    .legacy-event-log-notice.open {
+      display: block;
+    }
+
+    .legacy-event-log-notice button {
+      margin-left: 8px;
+      padding: 5px 8px;
+      font-size: 11px;
+      border-radius: 9px;
+    }
+
 
     @page {
       size: landscape;
@@ -2092,6 +2420,14 @@
           <input id="studyObserver" type="text" placeholder="Optional" />
         </div>
         <div>
+          <label for="operatorName">Operator / Line / Note</label>
+          <input id="operatorName" type="text" placeholder="Optional" />
+        </div>
+        <div>
+          <label for="productionSpeed">Production Speed, Units Per Hour</label>
+          <input id="productionSpeed" type="number" min="0" step="1" placeholder="Example: 12000" oninput="updateProductionAnalysis()" />
+        </div>
+        <div>
           <label for="collectionMode">Entry Mode</label>
           <select id="collectionMode" onchange="setCollectionMode(this.value)">
             <option value="timer">Timer Capture</option>
@@ -2110,150 +2446,156 @@
       </div>
     </section>
 
-      <div class="box white-border">
-        <div class="box-header">
-          <h2>Event Control</h2>
-          <span class="box-tag">Live Capture</span>
-          <button type="button" class="section-info-btn" onmouseenter="showSectionInfo('eventControlInfo')" onmouseleave="hideSectionInfo('eventControlInfo')" onfocus="showSectionInfo('eventControlInfo')" onblur="hideSectionInfo('eventControlInfo')" aria-label="Show event control help">i</button>
-        </div>
-
-        <div id="eventControlInfo" class="info-popover" role="tooltip">
-          <strong>Output options:</strong>
-          <ul>
-            <li><strong>Export CSV</strong> downloads the full event record as a CSV file that can be opened in Excel, including code definitions and the Pareto summary.</li>
-            <li><strong>Export Excel</strong> downloads an MPG-themed Excel-compatible file with the Pareto summary placed beside the export information, a downtime summary table, reduced blank space, centered data, dark dashboard styling, and color accents.</li>
-            <li>If the study or downtime timer is still running, exports will show a warning and ask whether to continue anyway.</li>
-            <li><strong>Print Full Page PDF</strong> uses a print-specific layout that expands tables and prevents clipped content.</li>
-            <li><strong>Save Browser Copy</strong> stores the current tracker data locally in this browser on this computer only. For a portable named file, use Export JSON or Save to Selected Folder.</li>
-            <li><strong>Load Browser Copy</strong> reloads that local browser-saved version if the page was closed before exporting.</li>
-            <li><strong>Load export CSV</strong> can recover study data from a tracker CSV export, but JSON is preferred for reopening studies later.</li>
-          </ul>
-        </div>
-
-        <div class="form-grid" style="margin-bottom: 14px;">
-          <div>
-            <label for="operatorName">Operator / line / note</label>
-            <input id="operatorName" type="text" placeholder="Optional" />
-          </div>
-          <div>
-            <label for="productionSpeed">Production speed, units per hour</label>
-            <input id="productionSpeed" type="number" min="0" step="1" placeholder="Example: 12000" oninput="updateProductionAnalysis()" />
-          </div>
-        </div>
-
-        <div class="save-load-panel">
-          <div class="save-load-title">Study Save / Load / Share</div>
-          <div class="instruction-box compact">
-            <strong>Recommended workflow:</strong> use <strong>Select Study Folder</strong> and <strong>Save to Selected Folder</strong> on desktop Chrome/Edge when working from a local or OneDrive-synced folder. Use <strong>Share JSON</strong> on phones when the device share sheet is available. <strong>Export JSON</strong> remains the reliable fallback download method.
-          </div>
-
-          <div class="autosave-panel">
-            <strong>Autosave enabled:</strong> each open tab now gets its own recovery slot. The tracker autosaves about every 5 seconds, whenever fields change, and again when the page is closed.
-            <div id="autosaveStatus" class="autosave-status">Autosave is starting…</div>
-            <div id="autosaveRecoveryList" class="autosave-recovery-list" aria-live="polite"></div>
-          </div>
-
-          <div class="form-grid" style="margin-top: 12px;">
-            <div>
-              <label for="studyFileName">Study file name preview / override</label>
-              <input id="studyFileName" type="text" placeholder="Auto generated from location, line, date, and shift" />
-            </div>
-            <div>
-              <label>Load saved JSON study</label>
-              <input id="studyFileInput" type="file" accept=".json,application/json" onchange="loadStudyFile(event)" />
-            </div>
-            <div>
-              <label>Load export CSV</label>
-              <input id="studyCsvInput" type="file" accept=".csv,text/csv" onchange="loadStudyCSV(event)" />
-            </div>
-          </div>
-
-          <div id="jsonDropZone"
-               class="json-drop-zone"
-               role="button"
-               tabindex="0"
-               aria-label="Drag and drop a saved JSON study file here or click to select one"
-               onclick="triggerJsonFilePicker()"
-               onkeydown="handleJsonDropZoneKeydown(event)"
-               ondragenter="handleJsonDragOver(event)"
-               ondragover="handleJsonDragOver(event)"
-               ondragleave="handleJsonDragLeave(event)"
-               ondrop="handleJsonDrop(event)">
-            <div class="json-drop-title">Drag &amp; Drop JSON Study Loader</div>
-            <p class="json-drop-text">Drop a saved tracker <strong>.json</strong> study file here, or click this area to browse from OneDrive/local files.</p>
-            <div id="jsonDropStatus" class="json-drop-status">Ready for JSON study file.</div>
-          </div>
-
-          <div class="file-preview">
-            <strong>Suggested OneDrive folder:</strong>
-            <code id="studyFolderPreview">OneDrive / MPG_Downtime_Studies / Select_Location / Select_Line / YYYY / YYYY-MM</code>
-            <strong>JSON file name:</strong>
-            <code id="studyFilePreview">Enter location, line, date, and shift to generate file name.</code>
-          </div>
-
-          <div class="save-load-actions">
-            <button class="export" onclick="selectStudyFolder()">Select Study Folder</button>
-            <button class="export" onclick="saveStudyJsonToSelectedFolder()">Save to Selected Folder</button>
-            <button class="export" onclick="shareStudyJson()">Share JSON</button>
-            <button class="copy" onclick="copyStudyJsonToClipboard()">Copy JSON</button>
-            <button onclick="saveStudyFile()">Export JSON</button>
-            <button onclick="populateStudyFileName(true)">Refresh Auto Name</button>
-          </div>
-          <div id="selectedFolderStatus" class="small-note" style="margin-top: 10px; text-align: center;">No study folder selected for direct save. Use Export JSON if folder access is not supported.</div>
-        </div>
-
-        <div class="mode-card">
-          <div class="form-grid">
-            <div>
-              <label for="collectionModeControl">Entry Mode</label>
-              <select id="collectionModeControl" onchange="setCollectionMode(this.value)">
-                <option value="timer">Timer Capture</option>
-                <option value="manual">Manual Entry</option>
-              </select>
-            </div>
-            <div class="manual-only">
-              <label for="manualStudyDurationControl">Actual Study Duration</label>
-              <input id="manualStudyDurationControl" type="text" placeholder="Example: 120, 120:00, or 2:00:00" oninput="syncManualStudyDurationFromControl()" />
-            </div>
-          </div>
-          <div id="entryModeStatus" class="mode-status">Timer Capture mode is active. Use Start Study and Start Downtime to capture live timestamps.</div>
-        </div>
-
-        <div class="instruction-box timer-only">
-          <strong>Study timer:</strong> Press <strong>Start Study</strong> when observation begins and <strong>Stop Study</strong> when observation pauses or ends. You can start and stop the study multiple times; each run is added to the total logged study time. Hidden/excluded event time is then removed from the study-scope calculations for included uptime, utilization, projected production, and estimated production loss. Stopping the study also stops any active downtime event. Downtime events are started and stopped from the full-width Event Log bars below, and cannot be started until the study timer is running.
-        </div>
-
-        <div class="instruction-box manual-only">
-          <strong>Manual Entry:</strong> Enter the total study duration manually, then add rows using event duration, flag/reason code, and notes. Timer buttons and timestamp columns are hidden in this view so the sheet works like a clean manual worksheet.
-        </div>
-
-        <div class="controls-stack">
-          <button id="studyToggleBtn" class="study-button timer-only" onclick="toggleStudy()">Start Study</button>
-          <div id="studyStatus" class="status timer-only">Study not started. Press Start Study when the observation period begins.</div>
-
-
-
-          <div id="status" class="status timer-only">Ready. Click Start Downtime to begin Event #1.</div>
-
-          <div class="reset-wrap">
-            <button class="reset" onclick="clearAll()">Reset Tracker</button>
-            <div class="small-note" style="margin-top: 10px;">
-              Reset clears the current browser view only. Previously exported CSV files will not be affected. For the official record, use Export CSV or Copy Selected Columns before resetting.
-            </div>
-          </div>
-
-          <div class="button-row">
-            <button class="export" onclick="exportCSV()">Export CSV</button>
-            <button class="export" onclick="exportExcel()">Export Excel</button>
-            <button onclick="printFullPagePDF()">Print Full Page PDF</button>
-            <button onclick="saveLocal()">Save Browser Copy</button>
-            <button onclick="loadLocal()">Load Browser Copy</button>
-            <button onclick="loadAutosave()">Show Autosave Recoveries</button>
-            <button onclick="deleteAllAutosaves()">Delete Autosave Recoveries</button>
-          </div>
-        </div>
+    <section class="box white-border">
+      <div class="box-header">
+        <h2>Load / Recover</h2>
+        <span class="box-tag">Study Recovery</span>
+        <button type="button" class="section-info-btn" onmouseenter="showSectionInfo('loadRecoverInfo')" onmouseleave="hideSectionInfo('loadRecoverInfo')" onfocus="showSectionInfo('loadRecoverInfo')" onblur="hideSectionInfo('loadRecoverInfo')" aria-label="Show load and recovery help">i</button>
       </div>
 
+      <div id="loadRecoverInfo" class="info-popover" role="tooltip">
+        <strong>Load and recovery options:</strong>
+        <ul>
+          <li><strong>Load saved JSON study</strong> reopens a full tracker study file. Older JSON files are supported and will open in legacy view when category data is not present.</li>
+          <li><strong>Drag &amp; Drop JSON Study Loader</strong> is the preferred visual loader for OneDrive/local JSON files.</li>
+          <li><strong>Autosave recoveries</strong> are local browser recovery points created while the tracker is open.</li>
+          <li><strong>Load export CSV</strong> can recover study data from a tracker CSV export, but JSON is preferred for reopening studies later.</li>
+        </ul>
+      </div>
+
+      <div class="save-load-panel">
+        <div class="save-load-title">Load Study / Recover Work</div>
+        <div class="instruction-box compact">
+          <strong>Recommended recovery workflow:</strong> load an exported <strong>JSON</strong> file when reopening a study. Use autosave only when a browser tab was closed before the study was exported.
+        </div>
+
+        <div class="autosave-panel">
+          <strong>Autosave enabled:</strong> each open tab gets its own recovery slot. The recovery list stays compact by default and shows the most recent autosave first.
+          <div id="autosaveStatus" class="autosave-status">Autosave is starting…</div>
+          <div id="autosaveRecoveryList" class="autosave-recovery-list" aria-live="polite"></div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 12px;">
+          <div>
+            <label>Load saved JSON study</label>
+            <input id="studyFileInput" type="file" accept=".json,application/json" onchange="loadStudyFile(event)" />
+          </div>
+          <div>
+            <label>Load export CSV</label>
+            <input id="studyCsvInput" type="file" accept=".csv,text/csv" onchange="loadStudyCSV(event)" />
+          </div>
+        </div>
+
+        <div id="jsonDropZone"
+             class="json-drop-zone"
+             role="button"
+             tabindex="0"
+             aria-label="Drag and drop a saved JSON study file here or click to select one"
+             onclick="triggerJsonFilePicker()"
+             onkeydown="handleJsonDropZoneKeydown(event)"
+             ondragenter="handleJsonDragOver(event)"
+             ondragover="handleJsonDragOver(event)"
+             ondragleave="handleJsonDragLeave(event)"
+             ondrop="handleJsonDrop(event)">
+          <div class="json-drop-title">Drag &amp; Drop JSON Study Loader</div>
+          <p class="json-drop-text">Drop a saved tracker <strong>.json</strong> study file here, or click this area to browse from OneDrive/local files.</p>
+          <div id="jsonDropStatus" class="json-drop-status">Ready for JSON study file.</div>
+        </div>
+
+        <div class="save-load-actions">
+          <button onclick="loadLocal()">Load Browser Copy</button>
+          <button onclick="loadAutosave()">Show Autosave Recoveries</button>
+          <button onclick="deleteAllAutosaves()">Delete Autosave Recoveries</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="mpg-rule"></div>
+
+    <section class="box" id="dataQualitySection">
+      <div class="box-header">
+        <button type="button" id="qualityCollapseBtn" class="collapse-toggle" data-collapse-section="quality" aria-label="Expand Section"><span class="collapse-icon">⌄</span><span>Expand Section</span></button>
+        <h2>Data Quality Checks</h2>
+        <span class="box-tag">Review Before Save</span>
+      </div>
+
+      <div id="qualityCollapsedSummary" class="collapsed-panel-summary open">Quality checks are collapsed by default. Expand before final save/export to review active warnings.</div>
+
+      <div id="qualityCollapsibleContent" class="collapsible-content collapsed">
+        <div class="instruction-box">
+          These checks flag common data issues before saving or exporting. Warnings do not block export; they are meant to help the observer clean up the study.
+        </div>
+
+        <div id="qualityChecks" class="quality-list"></div>
+      </div>
+    </section>
+
+    <div class="mpg-rule"></div>
+
+    <section class="box white-border">
+      <div class="box-header">
+        <h2>Save / Export</h2>
+        <span class="box-tag">Official Output</span>
+        <button type="button" class="section-info-btn" onmouseenter="showSectionInfo('saveExportInfo')" onmouseleave="hideSectionInfo('saveExportInfo')" onfocus="showSectionInfo('saveExportInfo')" onblur="hideSectionInfo('saveExportInfo')" aria-label="Show save and export help">i</button>
+      </div>
+
+      <div id="saveExportInfo" class="info-popover" role="tooltip">
+        <strong>Save and export options:</strong>
+        <ul>
+          <li><strong>Save to Selected Folder</strong> writes the JSON study file directly to the selected local/OneDrive folder when supported by the browser.</li>
+          <li><strong>Export JSON</strong> downloads a portable study file and is the preferred official backup format.</li>
+          <li><strong>Export CSV</strong> downloads the full event record as a CSV file that can be opened in Excel, including code definitions and the Pareto summary.</li>
+          <li><strong>Export Excel</strong> downloads an MPG-themed Excel-compatible file with dashboard-style tables and Pareto detail.</li>
+          <li>If the study or downtime timer is still running, exports will show a warning and ask whether to continue anyway.</li>
+        </ul>
+      </div>
+
+      <div class="save-load-panel">
+        <div class="save-load-title">Save Study / Export Reports</div>
+        <div class="instruction-box compact">
+          <strong>Recommended save workflow:</strong> use <strong>Select Study Folder</strong> and <strong>Save to Selected Folder</strong> on desktop Chrome/Edge when working from a local or OneDrive-synced folder. Use <strong>Export JSON</strong> as the reliable fallback download method.
+        </div>
+
+        <div class="form-grid" style="margin-top: 12px;">
+          <div>
+            <label for="studyFileName">Study file name preview / override</label>
+            <input id="studyFileName" type="text" placeholder="Auto generated from location, line, date, and shift" />
+          </div>
+        </div>
+
+        <div class="file-preview">
+          <strong>Suggested OneDrive folder:</strong>
+          <code id="studyFolderPreview">OneDrive / MPG_Downtime_Studies / Select_Location / Select_Line / YYYY / YYYY-MM</code>
+          <strong>JSON file name:</strong>
+          <code id="studyFilePreview">Enter location, line, date, and shift to generate file name.</code>
+        </div>
+
+        <div class="save-load-actions">
+          <button class="export" onclick="selectStudyFolder()">Select Study Folder</button>
+          <button class="export" onclick="saveStudyJsonToSelectedFolder()">Save to Selected Folder</button>
+          <button class="export" onclick="shareStudyJson()">Share JSON</button>
+          <button class="copy" onclick="copyStudyJsonToClipboard()">Copy JSON</button>
+          <button onclick="saveStudyFile()">Export JSON</button>
+          <button onclick="populateStudyFileName(true)">Refresh Auto Name</button>
+        </div>
+        <div id="selectedFolderStatus" class="small-note" style="margin-top: 10px; text-align: center;">No study folder selected for direct save. Use Export JSON if folder access is not supported.</div>
+      </div>
+
+      <div class="controls-stack">
+        <div class="reset-wrap">
+          <button class="reset" onclick="clearAll()">Reset Tracker</button>
+          <div class="small-note" style="margin-top: 10px;">
+            Reset clears the current browser view only. Previously exported CSV files will not be affected. For the official record, use Export CSV or Copy Selected Columns before resetting.
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="export" onclick="exportCSV()">Export CSV</button>
+          <button class="export" onclick="exportExcel()">Export Excel</button>
+          <button onclick="printFullPagePDF()">Print Full Page PDF</button>
+          <button onclick="saveLocal()">Save Browser Copy</button>
+        </div>
+      </div>
     </section>
 
     <div class="mpg-rule"></div>
@@ -2261,15 +2603,16 @@
 <section class="box table-shell">
       <div class="table-header">
         <div class="box-header">
-          <button type="button" id="eventCollapseBtn" class="collapse-toggle" data-collapse-section="event" aria-label="Collapse Rows"><span class="collapse-icon">⌃</span><span>Collapse Rows</span></button>
           <h2>Event Log</h2>
           <span class="box-tag">CSV Ready</span>
           <button type="button" class="section-info-btn" onmouseenter="showSectionInfo('eventLogInfo')" onmouseleave="hideSectionInfo('eventLogInfo')" onfocus="showSectionInfo('eventLogInfo')" onblur="hideSectionInfo('eventLogInfo')" aria-label="Show event log help">i</button>
         </div>
 
         <div id="eventLogInfo" class="info-popover" role="tooltip">
-          The Event Log is the main downtime record. Timer mode captures timestamps automatically; Manual Entry mode simplifies the sheet to event duration, flag/reason code, and notes.
+          The Event Log is the main downtime record. Timer mode captures timestamps automatically; Manual Entry mode simplifies the sheet to event duration, reason code, and notes.
           <ul>
+            <li class="timer-only"><strong>Study timer:</strong> Press <strong>Start Study</strong> when observation begins and <strong>Stop Study</strong> when observation pauses or ends. You can start and stop the study multiple times; each run is added to the total logged study time.</li>
+            <li class="timer-only"><strong>Study timer calculations:</strong> Hidden or excluded event time is removed from study-scope calculations for included uptime, utilization, projected production, and estimated production loss. Stopping the study also stops any active downtime event.</li>
             <li><strong>Add Manual Row</strong> lets you enter or correct an event manually.</li>
             <li><strong>Copy Selected Columns</strong> copies only the checked columns below into an Excel-ready paste format.</li>
             <li><strong>Copy Column Selection</strong> controls what gets copied; it does not hide or delete data from the log.</li>
@@ -2280,6 +2623,17 @@
             <li><strong>Collapse</strong> shows the first and most recent event while keeping the full data available in exports.</li>
           </ul>
         </div>
+      </div>
+
+
+      <div class="instruction-box manual-only">
+        <strong>Manual Entry:</strong> Enter the total study duration manually, then add rows using event duration, category, reason code, and notes. Timer buttons and timestamp columns are hidden in this view so the sheet works like a clean manual worksheet.
+      </div>
+
+      <div class="controls-stack" style="padding: 0 18px 14px;">
+        <button id="studyToggleBtn" class="study-button timer-only" onclick="toggleStudy()">Start Study</button>
+        <div id="studyStatus" class="status timer-only">Study not started. Press Start Study when the observation period begins.</div>
+        <div id="status" class="status timer-only">Ready. Click Start Downtime to begin Event #1.</div>
       </div>
 
       <div class="capture-bar sticky-top timer-only">
@@ -2298,7 +2652,8 @@
               <label class="copy-field"><input type="checkbox" class="copy-col" value="eventNumber" checked><span>Event #</span></label>
               <label class="copy-field"><input type="checkbox" class="copy-col" value="startTime" checked><span>Event Start Time</span></label>
               <label class="copy-field"><input type="checkbox" class="copy-col" value="stopTime" checked><span>Stop Time</span></label>
-              <label class="copy-field"><input type="checkbox" class="copy-col" value="downtimeCode" checked><span>Downtime Code</span></label>
+              <label class="copy-field"><input type="checkbox" class="copy-col" value="downtimeCategory" checked><span>Downtime Category</span></label>
+              <label class="copy-field"><input type="checkbox" class="copy-col" value="downtimeCode" checked><span>Downtime Cause</span></label>
               <label class="copy-field"><input type="checkbox" class="copy-col" value="downtimeCodeDescription"><span>Code Description</span></label>
               <label class="copy-field"><input type="checkbox" class="copy-col" value="durationFormatted" checked><span>Downtime Duration</span></label>
               <label class="copy-field"><input type="checkbox" class="copy-col" value="durationSeconds"><span>Duration Seconds</span></label>
@@ -2316,6 +2671,14 @@
         <button onclick="window.print()">Print / Save PDF</button>
       </div>
 
+      <div class="event-table-controls">
+        <button type="button" id="eventCollapseBtn" class="collapse-toggle event-table-collapse-toggle" data-collapse-section="event" aria-label="Collapse Rows"><span class="collapse-icon">⌃</span><span>Collapse Rows</span></button>
+        <div id="legacyEventLogNotice" class="legacy-event-log-notice">
+          Legacy event log view is active because this JSON did not include category data. Events show the original reason-code-only layout to avoid UNCATEGORIZED confusion.
+          <button type="button" onclick="setLegacyEventLogView(false)">Use Category View</button>
+        </div>
+      </div>
+
       <div class="table-scroll">
         <table id="eventTable">
           <thead>
@@ -2323,9 +2686,10 @@
               <th>Event #</th>
               <th>Start<br />(HH:MM)</th>
               <th>Stop<br />(HH:MM)</th>
-              <th>Code</th>
+              <th>Category</th>
+              <th>Cause</th>
               <th>Duration<br />([MM]:SS)</th>
-              <th>Reason / Notes</th>
+              <th>Note</th>
               <th>Remove</th>
             </tr>
           </thead>
@@ -2351,13 +2715,26 @@
         <div id="codeSetupInfo" class="info-popover" role="tooltip">
           Define downtime codes here before or during data collection. Use short abbreviations such as <strong>JAM</strong>, <strong>WAIT</strong>, <strong>QA</strong>, or <strong>MAT</strong>. These codes become selectable in the Event Log and are used to build the Pareto summary.
           <ul>
-            <li><strong>Code abbreviation</strong> is the short reason code assigned to each downtime event. Each abbreviation must be unique.</li>
+            <li><strong>Tag Template</strong> can load a predefined machine-specific structure. The first included template is <strong>SLITTER STUDY</strong>.</li>
+            <li><strong>Category / Group</strong> is the broad downtime area shown first in the Event Log.</li>
+            <li><strong>Cause Code</strong> is the specific reason selected after a category is chosen. Each cause code must be unique.</li>
             <li><strong>Code description</strong> explains what the reason code means for anyone reviewing the data later.</li>
             <li><strong>Include in Summary</strong> controls whether a code/tag is included in downtime calculations, the Pareto summary, and the executive report. Raw events and exports still keep the original code.</li>
             <li><strong>Collapse</strong> shows the first and most recent code while retaining all definitions for exports and event dropdowns.</li>
-            <li><strong>Import Code CSV</strong> accepts columns like <strong>Code #</strong>, <strong>Code Abbr</strong>, <strong>Code Desc</strong>, and optional <strong>Include in Summary</strong>.</li>
+            <li><strong>Import Code CSV</strong> accepts columns like <strong>Code #</strong>, optional <strong>Category</strong> or <strong>Group</strong>, <strong>Code Abbr</strong>, <strong>Code Desc</strong>, and optional <strong>Include in Summary</strong>.</li>
           </ul>
         </div>
+      </div>
+
+      <div class="template-row">
+        <div>
+          <label for="tagTemplateSelect">Tag Template</label>
+          <select id="tagTemplateSelect">
+            <option value="">Select Template ▼</option>
+            <option value="SLITTER_STUDY">SLITTER STUDY</option>
+          </select>
+        </div>
+        <button class="add" onclick="applyTagTemplate()">Load Template</button>
       </div>
 
       <div class="table-actions">
@@ -2371,13 +2748,13 @@
 
       <div id="pastePanel" class="paste-panel">
         <div class="instruction-box">
-          Paste a downtime-code table copied from Excel or a CSV file. Accepted columns include <strong>Code #</strong>, <strong>Code Abbr</strong>, <strong>Code Desc</strong>, and optional <strong>Include in Summary</strong>. Tab-separated Excel paste and comma-separated CSV are both supported.
+          Paste a downtime-code table copied from Excel or a CSV file. Accepted columns include <strong>Code #</strong>, optional <strong>Category</strong> or <strong>Group</strong>, <strong>Code Abbr</strong>, <strong>Code Desc</strong>, and optional <strong>Include in Summary</strong>. Tab-separated Excel paste and comma-separated CSV are both supported.
         </div>
         <textarea id="codeCsvPasteArea" placeholder="Example:
-Code #,Code Abbr,Code Desc,Include in Summary
-1,PALLET,Pallet change,Yes
-2,FEED,Feeder error,Yes
-3,MINOR,Minor adjustment/noise,No"></textarea>
+Code #,Category,Code Abbr,Code Desc,Include in Summary
+1,ROBOT,LOW DECK,Underloaded robot pickpoint,Yes
+2,ROBOT,BOX OPEN,Box failed to open,Yes
+3,MAINTENANCE,PREVENTATIVE MAINTENANCE,Planned maintenance,No"></textarea>
         <div class="button-row">
           <button class="add" onclick="applyPastedCodeCSV()">Apply Pasted Codes</button>
           <button onclick="clearPastedCodeCSV()">Clear Paste Box</button>
@@ -2390,8 +2767,9 @@ Code #,Code Abbr,Code Desc,Include in Summary
           <thead>
             <tr>
               <th>Code #</th>
-              <th>Code Abbreviation</th>
-              <th>Code Description</th>
+              <th>Category / Group</th>
+              <th>Cause Code</th>
+              <th>Cause Description</th>
               <th>Include in Summary</th>
               <th>Remove</th>
             </tr>
@@ -2530,19 +2908,6 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
     <div class="mpg-rule"></div>
 
-    <section class="box">
-      <div class="box-header">
-        <h2>Data Quality Checks</h2>
-        <span class="box-tag">Review Before Export</span>
-      </div>
-
-      <div class="instruction-box">
-        These checks flag common data issues before exporting. Warnings do not block export; they are meant to help the observer clean up the study.
-      </div>
-
-      <div id="qualityChecks" class="quality-list"></div>
-    </section>
-
     <div class="mpg-rule"></div>
 
 <section class="box">
@@ -2552,7 +2917,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       </div>
 
       <div class="instruction-box">
-        Study-scope production impact is calculated from included study time, included downtime, and the entered production speed. Hidden/excluded event time remains logged, but is removed from the included study-time denominator.
+        Study-scope production impact is calculated from included study time, included downtime, and the entered production speed. Hidden/excluded event time remains logged, but is removed from the included study-time denominator. In Manual Entry mode, projected included-scope units use the manually entered observed duration, less any excluded event time, multiplied by the machine speed.
       </div>
 
       <div class="summary-grid">
@@ -2597,19 +2962,24 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
     <div class="mpg-rule"></div>
 
-    <section class="box table-shell">
+    <section class="box table-shell" id="includedCauseParetoSection">
       <div class="table-header">
         <div class="box-header">
+          <button type="button" id="paretoCollapseBtn" class="collapse-toggle" data-collapse-section="pareto" aria-label="Expand Section"><span class="collapse-icon">⌄</span><span>Expand Section</span></button>
           <h2>Included-Cause Pareto</h2>
           <span class="box-tag">By Code</span>
         </div>
 
-        <div class="instruction-box">
-          The Pareto summarizes completed events assigned to included tags. Hidden/excluded tags stay in the raw event log and exports, but are removed from this Pareto so the analysis matches the selected study scope. All selected downtime causes/tags are included; the chart expands horizontally when many causes are selected.
+        <div id="paretoCollapsedSummary" class="collapsed-panel-summary open">Included-cause Pareto detail is collapsed by default because the same summary is already shown in the Executive Report. Expand when detailed table review is needed.</div>
+
+        <div id="paretoCollapsibleContent" class="collapsible-content collapsed">
+          <div class="instruction-box">
+            The Pareto summarizes completed events assigned to included tags. Hidden/excluded tags stay in the raw event log and exports, but are removed from this Pareto so the analysis matches the selected study scope. All selected downtime causes/tags are included; the chart expands horizontally when many causes are selected.
+          </div>
         </div>
       </div>
 
-      <div class="table-scroll">
+      <div id="paretoTableContent" class="table-scroll collapsible-content collapsed">
         <table class="pareto-table">
           <thead>
             <tr>
@@ -2729,19 +3099,83 @@ Code #,Code Abbr,Code Desc,Include in Summary
     </div>
   </main>
 
+  <datalist id="downtimeCategoryOptions">
+  </datalist>
+
+  <div id="eventNoteModalBackdrop" class="event-note-modal-backdrop" onclick="handleEventNoteBackdropClick(event)" aria-hidden="true">
+    <div class="event-note-modal" role="dialog" aria-modal="true" aria-labelledby="eventNoteModalTitle">
+      <div class="event-note-modal-header">
+        <div id="eventNoteModalTitle" class="event-note-modal-title">Event Note</div>
+        <button type="button" class="event-note-close" onclick="closeEventNoteModal()" aria-label="Close note">×</button>
+      </div>
+      <div class="event-note-modal-body">
+        <textarea id="eventNoteModalTextarea" placeholder="Add event notes..." oninput="updateActiveEventNote(this.value)"></textarea>
+      </div>
+      <div class="event-note-modal-footer">
+        <button type="button" class="event-note-save" onclick="closeEventNoteModal()">Save Note</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     let events = [];
     let downtimeCodes = [];
+    let openNoteEventIndexes = new Set();
+    let activeNoteEventIndex = null;
     let actionItems = [];
+
+    const TAG_TEMPLATES = {
+      SLITTER_STUDY: {
+        label: 'SLITTER STUDY',
+        codes: [
+          { codeNumber: 1, category: 'FEED', abbreviation: 'DOUBLE FEED', description: 'Running sheets fail to separate during pickup.', includeInSummary: true },
+          { codeNumber: 2, category: 'FEED', abbreviation: 'FEED JAM', description: 'Running sheet skews on entry or collides with entrance due to warp or feeding condition.', includeInSummary: true },
+          { codeNumber: 3, category: 'FEED', abbreviation: 'SUCTION FAIL', description: 'Suction cups fail to pick up the running sheet.', includeInSummary: true },
+          { codeNumber: 4, category: 'CUTTING AXIS', abbreviation: 'BLADE ADJUST', description: 'Running sheet lead-in adjustments needed due to border quality or cut alignment condition.', includeInSummary: true },
+          { codeNumber: 5, category: 'CUTTING AXIS', abbreviation: 'BLADE JAM', description: 'Running sheets feed into the cutting axis and jam, commonly related to double feeding or sheet transfer.', includeInSummary: true },
+          { codeNumber: 6, category: 'CUTTING AXIS', abbreviation: 'SCRAP REMOVAL', description: 'Downtime caused by scrap pileup or scrap not dropping out from the slitter axis.', includeInSummary: true },
+          { codeNumber: 7, category: 'CUTTING AXIS', abbreviation: 'PARTIAL CUT', description: 'Downtime caused by running sheets not being slit completely.', includeInSummary: true },
+          { codeNumber: 8, category: 'CUTTING AXIS', abbreviation: 'STUCK SHEET', description: 'Running sheet transfer issues in or out of the cutting axis causing sheets to become stuck.', includeInSummary: true },
+          { codeNumber: 9, category: 'COLLATOR', abbreviation: 'COLLATOR JAM', description: 'Scrap material or running sheet jams at the entrance to the collator.', includeInSummary: true },
+          { codeNumber: 10, category: 'COLLATOR', abbreviation: 'CARD FLIP', description: 'Collator card stuck on green belt causing cards to become displaced or flip.', includeInSummary: true },
+          { codeNumber: 11, category: 'COLLATOR', abbreviation: 'STACK ERROR', description: 'Issues where collated stacks are not presented well to the PSU due to stacking condition.', includeInSummary: true },
+          { codeNumber: 12, category: 'PSU', abbreviation: 'CARD FLIP', description: 'Downtime caused by cards flipping or twisting during movement in the PSU.', includeInSummary: true },
+          { codeNumber: 13, category: 'PSU', abbreviation: 'CARD JAM', description: 'Cards have fallen into the chain section and need to be removed.', includeInSummary: true },
+          { codeNumber: 14, category: 'PSU', abbreviation: 'PACK SEPARATION', description: 'Improper deck splitting or pack separation through the PSU.', includeInSummary: true },
+          { codeNumber: 15, category: 'PSU', abbreviation: 'TIMING ERROR', description: 'Timing of the travel lugs does not match belt speed, causing card or deck interference.', includeInSummary: true },
+          { codeNumber: 16, category: 'TRANSFER', abbreviation: 'PSU EXIT', description: 'Cards flip or jam when exiting the PSU due to the exit condition.', includeInSummary: true },
+          { codeNumber: 17, category: 'TRANSFER', abbreviation: 'R&S ENTRANCE', description: 'Issues transitioning from the transfer section to the R&S, likely a turn or handoff issue.', includeInSummary: true },
+          { codeNumber: 18, category: 'TRANSFER', abbreviation: 'GUIDE RAILS', description: 'Cards flipping or jamming at the guide rail section due to collision with rails or transfer hardware.', includeInSummary: true },
+          { codeNumber: 19, category: 'R&S', abbreviation: 'BLADES', description: 'R&S blade replacement downtime due to bad cuts altering blade reliability.', includeInSummary: true },
+          { codeNumber: 20, category: 'R&S', abbreviation: 'ANVIL', description: 'Replacement of the blade anvil, required more often for plastic anvils.', includeInSummary: true },
+          { codeNumber: 21, category: 'R&S', abbreviation: 'PUSHER', description: 'Issues moving a deck stack into the cutting bay due to timing or card stack position.', includeInSummary: true },
+          { codeNumber: 22, category: 'R&S', abbreviation: 'BRUSH', description: 'Issues with brush height or quality causing cards to shift or flip in the exit area.', includeInSummary: true },
+          { codeNumber: 23, category: 'R&S', abbreviation: 'WIPERS', description: 'Replacement of tape on the wipers at the exit of the R&S.', includeInSummary: true },
+          { codeNumber: 24, category: 'ROBOT', abbreviation: 'TRANSFER', description: 'Downtime caused by cards skewing along the transfer, including pileups or poor handoff into the robot area.', includeInSummary: true },
+          { codeNumber: 25, category: 'ROBOT', abbreviation: 'BOTTOM CAMERA', description: 'Stops caused by bad border reads or borders not found for the bottom camera.', includeInSummary: true },
+          { codeNumber: 26, category: 'ROBOT', abbreviation: 'TOP CAMERA', description: 'Stops caused by bad border reads or borders not found for the top camera.', includeInSummary: true },
+          { codeNumber: 27, category: 'ROBOT', abbreviation: 'DECK JAM', description: 'Decks becoming jammed in the accumulator, likely due to shifted stacks.', includeInSummary: true },
+          { codeNumber: 28, category: 'ROBOT', abbreviation: 'BOX MAGAZINE', description: 'New box loading errors, including boxes not releasing from the magazine or loading incorrectly.', includeInSummary: true },
+          { codeNumber: 29, category: 'ROBOT', abbreviation: 'BOX OPEN', description: 'Errors with opening a box, either due to suction loss or a box closing after partial opening.', includeInSummary: true },
+          { codeNumber: 30, category: 'ROBOT', abbreviation: 'BOX CLOSE', description: 'Errors closing the box, mostly due to deck stacking errors.', includeInSummary: true },
+          { codeNumber: 31, category: 'ROBOT', abbreviation: 'TRAY', description: 'Downtime caused by deck collision with trays during placement.', includeInSummary: true },
+          { codeNumber: 32, category: 'ROBOT', abbreviation: 'LOW DECK', description: 'Errors while picking up a deck stack at the pick point when the deck stack is too low.', includeInSummary: true },
+          { codeNumber: 33, category: 'ROBOT', abbreviation: 'HIGH DECK', description: 'Errors while picking up a deck stack at the pick point when the deck stack is too high.', includeInSummary: true }
+        ]
+      }
+    };
     let activeEventIndex = null;
     let studySegments = [];
     let currentStudyStartTimestamp = '';
     let studyIsRunning = false;
     let studyTimerInterval = null;
     let collectionMode = 'timer';
+    let legacyEventLogView = false;
     let eventLogCollapsed = false;
     let codeSetupCollapsed = false;
     let actionItemsCollapsed = false;
+    let qualityChecksCollapsed = true;
+    let includedParetoCollapsed = true;
 
     function pad(num) {
       return String(num).padStart(2, '0');
@@ -2802,6 +3236,43 @@ Code #,Code Abbr,Code Desc,Include in Summary
       button.setAttribute('aria-expanded', String(!isCollapsed));
     }
 
+
+    function setSectionCollapseButtonState(buttonId, isCollapsed) {
+      const button = document.getElementById(buttonId);
+      if (!button) return;
+      const icon = isCollapsed ? '⌄' : '⌃';
+      const label = isCollapsed ? 'Expand Section' : 'Collapse Section';
+      button.innerHTML = `<span class="collapse-icon">${icon}</span><span>${label}</span>`;
+      button.setAttribute('aria-label', label);
+      button.setAttribute('aria-expanded', String(!isCollapsed));
+    }
+
+    function applyUtilitySectionCollapseState() {
+      setSectionCollapseButtonState('qualityCollapseBtn', qualityChecksCollapsed);
+      const qualityContent = document.getElementById('qualityCollapsibleContent');
+      const qualitySummary = document.getElementById('qualityCollapsedSummary');
+      if (qualityContent) qualityContent.classList.toggle('collapsed', qualityChecksCollapsed);
+      if (qualitySummary) qualitySummary.classList.toggle('open', qualityChecksCollapsed);
+
+      setSectionCollapseButtonState('paretoCollapseBtn', includedParetoCollapsed);
+      ['paretoCollapsibleContent', 'paretoTableContent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('collapsed', includedParetoCollapsed);
+      });
+      const paretoSummary = document.getElementById('paretoCollapsedSummary');
+      if (paretoSummary) paretoSummary.classList.toggle('open', includedParetoCollapsed);
+    }
+
+    function toggleQualityChecksCollapse() {
+      qualityChecksCollapsed = !qualityChecksCollapsed;
+      applyUtilitySectionCollapseState();
+    }
+
+    function toggleIncludedParetoCollapse() {
+      includedParetoCollapsed = !includedParetoCollapsed;
+      applyUtilitySectionCollapseState();
+    }
+
     function toggleEventLogCollapse() {
       eventLogCollapsed = !eventLogCollapsed;
       renderTable();
@@ -2829,6 +3300,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
         toggleCodeSetupCollapse();
       } else if (section === 'action') {
         toggleActionItemsCollapse();
+      } else if (section === 'quality') {
+        toggleQualityChecksCollapse();
+      } else if (section === 'pareto') {
+        toggleIncludedParetoCollapse();
       }
     }
 
@@ -3016,6 +3491,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
         eventNumber: events.length + 1,
         startTime: formatTime(now),
         stopTime: '',
+        downtimeCategory: '',
+        downtimeCause: '',
         downtimeCode: '',
         durationSeconds: null,
         startTimestamp: formatTimestamp(now),
@@ -3083,6 +3560,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
         eventNumber: events.length + 1,
         startTime: '',
         stopTime: '',
+        downtimeCategory: '',
+        downtimeCause: '',
         downtimeCode: '',
         durationSeconds: null,
         startTimestamp: '',
@@ -3092,6 +3571,11 @@ Code #,Code Abbr,Code Desc,Include in Summary
       events.push(event);
       renderTable();
       updateSummary();
+      updatePareto();
+      updateProductionAnalysis();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
     }
 
     function deleteRow(index) {
@@ -3108,6 +3592,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
       renumberEvents();
       renderTable();
       updateSummary();
+      updateProductionAnalysis();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
       updateToggleButton();
     }
 
@@ -3115,6 +3603,126 @@ Code #,Code Abbr,Code Desc,Include in Summary
       events.forEach((event, i) => {
         event.eventNumber = i + 1;
       });
+    }
+
+
+    function normalizeCategory(value) {
+      return String(value || '').trim().toUpperCase();
+    }
+
+    function inferCategoryForCode(codeValue) {
+      const codeText = String(codeValue || '').trim().toUpperCase();
+      if (!codeText) return '';
+      const match = downtimeCodes.find(code => code.abbreviation === codeText);
+      if (match && match.category) return match.category;
+      if (['PETTERS ROBOT', 'PETERS ROBOT', 'ROBOTS OR VACUUM', 'ROBOT'].includes(codeText)) return 'ROBOT';
+      return 'UNCATEGORIZED';
+    }
+
+    function detectLegacyEventLogPayload(payload) {
+      if (!payload) return false;
+      if (payload.eventLogViewMode === 'category') return false;
+      if (payload.eventLogViewMode === 'legacy') return true;
+
+      const payloadEvents = Array.isArray(payload.events) ? payload.events : [];
+      const payloadCodes = Array.isArray(payload.downtimeCodes) ? payload.downtimeCodes : [];
+      const hasCategoryFields = payloadEvents.some(event =>
+        String(event.downtimeCategory || '').trim() || String(event.downtimeCause || '').trim()
+      ) || payloadCodes.some(code => String(code.category || '').trim());
+
+      return payloadEvents.length > 0 && !hasCategoryFields;
+    }
+
+    function isLegacyEventLogView() {
+      return Boolean(legacyEventLogView);
+    }
+
+    function updateLegacyEventLogNotice() {
+      const notice = document.getElementById('legacyEventLogNotice');
+      if (!notice) return;
+      notice.classList.toggle('open', isLegacyEventLogView());
+    }
+
+    function setLegacyEventLogView(enabled, silent) {
+      legacyEventLogView = Boolean(enabled);
+      document.body.classList.toggle('legacy-event-log-view', legacyEventLogView);
+      updateLegacyEventLogNotice();
+      renderTable();
+      updateSummary();
+      updateProductionAnalysis();
+      updatePareto();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
+      if (!silent) {
+        setStatus(legacyEventLogView ? 'Legacy event log view enabled. Events show reason code only.' : 'Category event log view enabled. Select category first, then reason code.', activeEventIndex !== null);
+      }
+    }
+
+    function normalizeEventsForCategoryCause() {
+      events = (events || []).map((event, index) => {
+        const cause = String(event.downtimeCause || event.downtimeCode || '').trim().toUpperCase();
+        const category = isLegacyEventLogView() ? '' : normalizeCategory(event.downtimeCategory || inferCategoryForCode(cause));
+        return {
+          ...event,
+          eventNumber: Number(event.eventNumber) > 0 ? Number(event.eventNumber) : index + 1,
+          downtimeCategory: category,
+          downtimeCause: cause,
+          downtimeCode: cause
+        };
+      });
+    }
+
+    function getDowntimeCategories() {
+      const categories = downtimeCodes
+        .map(code => normalizeCategory(code.category || 'UNCATEGORIZED'))
+        .filter(Boolean);
+      return Array.from(new Set(categories)).sort((a, b) => a.localeCompare(b));
+    }
+
+    function refreshDowntimeCategoryOptions() {
+      const list = document.getElementById('downtimeCategoryOptions');
+      if (!list) return;
+      list.innerHTML = renderCategoryOptionsDataList();
+    }
+
+    function getCausesForCategory(category) {
+      const selectedCategory = normalizeCategory(category);
+      return downtimeCodes.filter(code => {
+        if (!code.abbreviation) return false;
+        return normalizeCategory(code.category || 'UNCATEGORIZED') === selectedCategory;
+      });
+    }
+
+    function applyTagTemplate() {
+      const select = document.getElementById('tagTemplateSelect');
+      const templateKey = select ? select.value : '';
+      const template = TAG_TEMPLATES[templateKey];
+      if (!template) {
+        alert('Select a tag template first.');
+        return;
+      }
+
+      const replaceExisting = downtimeCodes.length > 0
+        ? confirm('Load the ' + template.label + ' template and replace the existing tag list? Existing events will keep their selected causes where possible.')
+        : true;
+      if (!replaceExisting) return;
+
+      downtimeCodes = template.codes.map(code => ({ ...code }));
+      legacyEventLogView = false;
+      updateLegacyEventLogNotice();
+      normalizeDowntimeCodes();
+      normalizeEventsForCategoryCause();
+      renumberDowntimeCodes();
+      renderCodeTable();
+      renderTable();
+      updateSummary();
+      updateProductionAnalysis();
+      updatePareto();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
+      setStatus(template.label + ' template loaded. Event Log now uses Category and Cause selections.', activeEventIndex !== null);
     }
 
     function togglePastePanel() {
@@ -3129,6 +3737,27 @@ Code #,Code Abbr,Code Desc,Include in Summary
     function clearPastedCodeCSV() {
       const pasteArea = document.getElementById('codeCsvPasteArea');
       if (pasteArea) pasteArea.value = '';
+    }
+
+
+    function mergeImportedDowntimeCodes(importedCodes, replaceExisting) {
+      if (replaceExisting) {
+        downtimeCodes = importedCodes;
+      } else {
+        importedCodes.forEach(importedCode => {
+          const existing = downtimeCodes.find(code => code.abbreviation === importedCode.abbreviation);
+          if (existing) {
+            existing.category = importedCode.category || existing.category || 'UNCATEGORIZED';
+            existing.description = importedCode.description;
+            existing.includeInSummary = importedCode.includeInSummary;
+          } else {
+            downtimeCodes.push(importedCode);
+          }
+        });
+      }
+      normalizeDowntimeCodes();
+      normalizeEventsForCategoryCause();
+      renumberDowntimeCodes();
     }
 
     function applyPastedCodeCSV() {
@@ -3152,21 +3781,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
           ? confirm('Replace the existing downtime code list with the pasted list? Click OK to replace, or Cancel to append/update.')
           : true;
 
-        if (replaceExisting) {
-          downtimeCodes = importedCodes;
-        } else {
-          importedCodes.forEach(importedCode => {
-            const existing = downtimeCodes.find(code => code.abbreviation === importedCode.abbreviation);
-            if (existing) {
-              existing.description = importedCode.description;
-            } else {
-              downtimeCodes.push(importedCode);
-            }
-          });
-        }
-
-        normalizeDowntimeCodes();
-        renumberDowntimeCodes();
+        mergeImportedDowntimeCodes(importedCodes, replaceExisting);
         renumberActionItems();
         renderCodeTable();
         renderActionItems();
@@ -3199,21 +3814,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
             ? confirm('Replace the existing downtime code list with the imported list? Click OK to replace, or Cancel to append/update.')
             : true;
 
-          if (replaceExisting) {
-            downtimeCodes = importedCodes;
-          } else {
-            importedCodes.forEach(importedCode => {
-              const existing = downtimeCodes.find(code => code.abbreviation === importedCode.abbreviation);
-              if (existing) {
-                existing.description = importedCode.description;
-              } else {
-                downtimeCodes.push(importedCode);
-              }
-            });
-          }
-
-          normalizeDowntimeCodes();
-          renumberDowntimeCodes();
+          mergeImportedDowntimeCodes(importedCodes, replaceExisting);
           renderCodeTable();
           renderTable();
           updatePareto();
@@ -3236,12 +3837,13 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
     function exportCodeCSV() {
       const rows = [
-        ['Code #', 'Code Abbr', 'Code Desc', 'Include in Summary']
+        ['Code #', 'Category', 'Code Abbr', 'Code Desc', 'Include in Summary']
       ];
 
       downtimeCodes.forEach(code => {
         rows.push([
           code.codeNumber || '',
+          code.category || 'UNCATEGORIZED',
           code.abbreviation || '',
           code.description || '',
           code.includeInSummary === false ? 'No' : 'Yes'
@@ -3267,6 +3869,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
       const header = rows[0].map(cell => normalizeHeader(cell));
       const hasHeader = header.some(cell =>
+        cell.includes('category') ||
+        cell.includes('group') ||
         cell.includes('code') ||
         cell.includes('abbr') ||
         cell.includes('desc') ||
@@ -3281,6 +3885,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       let codeIndex = 1;
       let descIndex = 2;
       let numberIndex = 0;
+      let categoryIndex = -1;
       let includeIndex = -1;
 
       if (hasHeader) {
@@ -3289,12 +3894,17 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const foundNumberIndex = header.findIndex(cell =>
           cell === 'code' || cell === 'code#' || cell === 'codenumber' || cell === 'number' || cell === '#'
         );
+        const foundCategoryIndex = header.findIndex(cell =>
+          cell === 'category' || cell === 'codecategory' || cell === 'dtcategory' || cell === 'downtimecategory' || cell === 'group' || cell === 'downtimegroup' || cell === 'causegroup' || cell === 'reasoncategory' || cell === 'reasoncodegroup'
+        );
         const foundCodeIndex = header.findIndex(cell =>
           cell.includes('abbr') ||
           cell === 'downtimecode' ||
+          cell === 'downtimecause' ||
+          cell === 'cause' ||
           cell === 'codeabbreviation' ||
           cell === 'codeabbr' ||
-          cell === 'reasoncode'
+          cell === 'reasoncode' || cell === 'dtreason' || cell === 'dtreasoncode' || cell === 'downtimereason'
         );
         const foundDescIndex = header.findIndex(cell =>
           cell.includes('desc') ||
@@ -3316,6 +3926,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         );
 
         if (foundNumberIndex >= 0) numberIndex = foundNumberIndex;
+        if (foundCategoryIndex >= 0) categoryIndex = foundCategoryIndex;
         if (foundCodeIndex >= 0) codeIndex = foundCodeIndex;
         if (foundDescIndex >= 0) descIndex = foundDescIndex;
         if (foundIncludeIndex >= 0) includeIndex = foundIncludeIndex;
@@ -3333,6 +3944,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const description = String(row[descIndex] ?? '').trim();
         const rawNumber = String(row[numberIndex] ?? '').trim();
         const numberValue = Number(rawNumber);
+        const rawCategory = categoryIndex >= 0 ? String(row[categoryIndex] ?? '').trim() : '';
+        const category = normalizeCategory(rawCategory || inferTemplateCategoryForCause(abbreviation));
         const rawInclude = includeIndex >= 0 ? String(row[includeIndex] ?? '').trim().toLowerCase() : '';
         const includeInSummary = includeIndex < 0 ? true : !['no', 'n', 'false', '0', 'hide', 'hidden', 'exclude', 'excluded'].includes(rawInclude);
 
@@ -3340,6 +3953,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
         imported.push({
           codeNumber: Number.isFinite(numberValue) && numberValue > 0 ? numberValue : i + 1,
+          category: category || 'UNCATEGORIZED',
           abbreviation,
           description,
           includeInSummary
@@ -3350,6 +3964,15 @@ Code #,Code Abbr,Code Desc,Include in Summary
       imported.forEach((code, i) => code.codeNumber = i + 1);
 
       return imported;
+    }
+
+    function inferTemplateCategoryForCause(abbreviation) {
+      const code = String(abbreviation || '').trim().toUpperCase();
+      const slitterTemplate = TAG_TEMPLATES.SLITTER_STUDY?.codes || [];
+      const match = slitterTemplate.find(item => item.abbreviation === code);
+      if (match) return match.category;
+      if (['PETTERS ROBOT', 'PETERS ROBOT', 'ROBOTS OR VACUUM', 'ROBOT'].includes(code)) return 'ROBOT';
+      return 'UNCATEGORIZED';
     }
 
     function normalizeHeader(value) {
@@ -3420,6 +4043,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       downtimeCodes = [];
       renderCodeTable();
       renderActionItems();
+      updateLegacyEventLogNotice();
       renderTable();
       updatePareto();
       setStatus('Reason code definitions cleared. Captured events were not deleted.', activeEventIndex !== null);
@@ -3428,6 +4052,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
     function addDowntimeCode() {
       downtimeCodes.push({
         codeNumber: downtimeCodes.length + 1,
+        category: '',
         abbreviation: '',
         description: '',
         includeInSummary: true
@@ -3497,20 +4122,42 @@ Code #,Code Abbr,Code Desc,Include in Summary
     function normalizeDowntimeCodes() {
       downtimeCodes = (downtimeCodes || []).map((code, index) => ({
         codeNumber: Number(code.codeNumber) > 0 ? Number(code.codeNumber) : index + 1,
+        category: normalizeCategory(code.category || inferTemplateCategoryForCause(code.abbreviation) || 'UNCATEGORIZED'),
         abbreviation: String(code.abbreviation || '').trim().toUpperCase(),
         description: String(code.description || '').trim(),
         includeInSummary: code.includeInSummary !== false
       }));
     }
 
-    function getCodeDescription(codeValue) {
-      const match = downtimeCodes.find(code => code.abbreviation === codeValue);
+    function findDowntimeCodeDefinition(codeValue, categoryValue = '') {
+      const codeText = String(codeValue || '').trim().toUpperCase();
+      const categoryText = normalizeCategory(categoryValue || '');
+      if (!codeText) return null;
+
+      if (categoryText) {
+        const categoryMatch = downtimeCodes.find(code =>
+          String(code.abbreviation || '').trim().toUpperCase() === codeText &&
+          normalizeCategory(code.category || 'UNCATEGORIZED') === categoryText
+        );
+        if (categoryMatch) return categoryMatch;
+      }
+
+      return downtimeCodes.find(code => String(code.abbreviation || '').trim().toUpperCase() === codeText) || null;
+    }
+
+    function getCodeDescription(codeValue, categoryValue = '') {
+      const match = findDowntimeCodeDefinition(codeValue, categoryValue);
       return match ? match.description : '';
     }
 
-    function isDowntimeCodeIncluded(codeValue) {
+    function getCodeCategory(codeValue, categoryValue = '') {
+      const match = findDowntimeCodeDefinition(codeValue, categoryValue);
+      return match ? match.category : inferCategoryForCode(codeValue);
+    }
+
+    function isDowntimeCodeIncluded(codeValue, categoryValue = '') {
       if (!codeValue) return true;
-      const match = downtimeCodes.find(code => code.abbreviation === codeValue);
+      const match = findDowntimeCodeDefinition(codeValue, categoryValue);
       return match ? match.includeInSummary !== false : true;
     }
 
@@ -3520,11 +4167,12 @@ Code #,Code Abbr,Code Desc,Include in Summary
         event.durationSeconds !== undefined &&
         !isNaN(event.durationSeconds) &&
         Number(event.durationSeconds) >= 0 &&
-        isDowntimeCodeIncluded(event.downtimeCode || '')
+        isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '')
       );
     }
 
     function renderCodeTable() {
+      refreshDowntimeCategoryOptions();
       const body = document.getElementById('codeBody');
       if (!body) return;
       body.innerHTML = '';
@@ -3535,8 +4183,9 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const checked = code.includeInSummary === false ? '' : 'checked';
         row.innerHTML = `
           <td class="number">${code.codeNumber}</td>
-          <td><input value="${escapeHTML(code.abbreviation)}" placeholder="Example: JAM" onchange="updateDowntimeCode(${index}, 'abbreviation', this.value)" /></td>
-          <td><textarea placeholder="Example: Material jam at infeed" onchange="updateDowntimeCode(${index}, 'description', this.value)">${escapeHTML(code.description)}</textarea></td>
+          <td><input class="category-input" list="downtimeCategoryOptions" value="${escapeHTML(code.category || '')}" placeholder="Type or select category" onchange="updateDowntimeCode(${index}, 'category', this.value)" onblur="updateDowntimeCode(${index}, 'category', this.value)" /></td>
+          <td><input value="${escapeHTML(code.abbreviation)}" placeholder="Example: LOW DECK" onchange="updateDowntimeCode(${index}, 'abbreviation', this.value)" /></td>
+          <td><textarea placeholder="Example: Robot pickpoint underloaded" onchange="updateDowntimeCode(${index}, 'description', this.value)">${escapeHTML(code.description)}</textarea></td>
           <td class="code-include-cell"><label class="code-include-label"><input type="checkbox" ${checked} onchange="updateDowntimeCode(${index}, 'includeInSummary', this.checked)" />Show</label></td>
           <td><button class="delete-row" onclick="deleteDowntimeCode(${index})">X</button></td>
         `;
@@ -3548,7 +4197,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const hiddenCount = downtimeCodes.length - 2;
         const summaryRow = document.createElement('tr');
         summaryRow.className = 'collapsed-summary-row';
-        summaryRow.innerHTML = `<td colspan="5">${hiddenCount} additional downtime code${hiddenCount === 1 ? '' : 's'} hidden. Expand to review or edit the full tag setup.</td>`;
+        summaryRow.innerHTML = `<td colspan="6">${hiddenCount} additional downtime code${hiddenCount === 1 ? '' : 's'} hidden. Expand to review or edit the full tag setup.</td>`;
         body.appendChild(summaryRow);
         renderCodeRow(downtimeCodes[downtimeCodes.length - 1], downtimeCodes.length - 1);
         return;
@@ -3557,32 +4206,225 @@ Code #,Code Abbr,Code Desc,Include in Summary
       downtimeCodes.forEach((code, index) => renderCodeRow(code, index));
     }
 
-    function renderDowntimeCodeSelect(index, currentValue) {
-      const knownCodes = downtimeCodes
-        .map(code => code.abbreviation)
-        .filter(code => code);
+    function renderCategoryOptionsDataList() {
+      return getDowntimeCategories()
+        .map(category => `<option value="${escapeHTML(category)}"></option>`)
+        .join('');
+    }
 
-      const hasUnknownCurrent = currentValue && !knownCodes.includes(currentValue);
-      let htmlText = `<select onchange="updateCell(${index}, 'downtimeCode', this.value)">`;
-      htmlText += `<option value="">Select ▼</option>`;
+    function renderDowntimeCategoryInput(index, currentValue) {
+      const normalizedCurrent = normalizeCategory(currentValue);
+      const categories = getDowntimeCategories();
+      const hasUnknownCurrent = normalizedCurrent && !categories.includes(normalizedCurrent);
+      let htmlText = `<select class="category-select" onchange="updateEventCategory(${index}, this.value)">`;
+      htmlText += `<option value="">Select category</option>`;
 
-      downtimeCodes.forEach(code => {
-        if (!code.abbreviation) return;
-        const selected = code.abbreviation === currentValue ? 'selected' : '';
-        const label = code.abbreviation;
-        htmlText += `<option value="${escapeHTML(code.abbreviation)}" ${selected}>${escapeHTML(label)}</option>`;
+      categories.forEach(category => {
+        const selected = category === normalizedCurrent ? 'selected' : '';
+        htmlText += `<option value="${escapeHTML(category)}" ${selected}>${escapeHTML(category)}</option>`;
       });
 
       if (hasUnknownCurrent) {
-        htmlText += `<option value="${escapeHTML(currentValue)}" selected>${escapeHTML(currentValue)}</option>`;
+        htmlText += `<option value="${escapeHTML(normalizedCurrent)}" selected>${escapeHTML(normalizedCurrent)} (current saved value)</option>`;
       }
 
       htmlText += `</select>`;
       return htmlText;
     }
 
+    function renderDowntimeCategorySelect(index, currentValue) {
+      return renderDowntimeCategoryInput(index, currentValue);
+    }
+
+    function getCausesForCategory(category) {
+      const selectedCategory = normalizeCategory(category);
+      const validCodes = downtimeCodes.filter(code => code.abbreviation);
+      const filtered = selectedCategory
+        ? validCodes.filter(code => normalizeCategory(code.category || 'UNCATEGORIZED') === selectedCategory)
+        : validCodes;
+      return filtered.sort((a, b) => {
+        const categoryCompare = normalizeCategory(a.category || '').localeCompare(normalizeCategory(b.category || ''));
+        if (categoryCompare !== 0) return categoryCompare;
+        return String(a.abbreviation || '').localeCompare(String(b.abbreviation || ''));
+      });
+    }
+
+    function renderDowntimeCauseSelect(index, categoryValue, currentValue) {
+      const normalizedCategory = normalizeCategory(categoryValue);
+      const causeRows = getCausesForCategory(normalizedCategory);
+      const knownCauses = causeRows.map(code => String(code.abbreviation || '').trim().toUpperCase()).filter(Boolean);
+      const currentCause = String(currentValue || '').trim().toUpperCase();
+      const hasUnknownCurrent = currentCause && !knownCauses.includes(currentCause);
+      const disabled = !normalizedCategory || !causeRows.length ? 'disabled' : '';
+
+      let htmlText = `<select class="cause-select" onchange="updateEventCause(${index}, this.value)" ${disabled}>`;
+      htmlText += normalizedCategory
+        ? `<option value="">Select reason code</option>`
+        : `<option value="">Select category first</option>`;
+
+      causeRows.forEach(code => {
+        const causeValue = String(code.abbreviation || '').trim().toUpperCase();
+        const selected = causeValue === currentCause ? 'selected' : '';
+        htmlText += `<option value="${escapeHTML(causeValue)}" ${selected}>${escapeHTML(causeValue)}</option>`;
+      });
+
+      if (hasUnknownCurrent) {
+        htmlText += `<option value="${escapeHTML(currentCause)}" selected>${escapeHTML(currentCause)} (current saved value)</option>`;
+      }
+
+      htmlText += `</select>`;
+      return htmlText;
+    }
+
+    function renderLegacyDowntimeCauseSelect(index, currentValue) {
+      const validCodes = downtimeCodes
+        .filter(code => code.abbreviation)
+        .slice()
+        .sort((a, b) => String(a.abbreviation || '').localeCompare(String(b.abbreviation || '')));
+      const knownCauses = validCodes.map(code => String(code.abbreviation || '').trim().toUpperCase()).filter(Boolean);
+      const currentCause = String(currentValue || '').trim().toUpperCase();
+      const hasUnknownCurrent = currentCause && !knownCauses.includes(currentCause);
+
+      let htmlText = `<select class="cause-select" onchange="updateEventCause(${index}, this.value)">`;
+      htmlText += `<option value="">Select reason code</option>`;
+
+      validCodes.forEach(code => {
+        const causeValue = String(code.abbreviation || '').trim().toUpperCase();
+        const selected = causeValue === currentCause ? 'selected' : '';
+        htmlText += `<option value="${escapeHTML(causeValue)}" ${selected}>${escapeHTML(causeValue)}</option>`;
+      });
+
+      if (hasUnknownCurrent) {
+        htmlText += `<option value="${escapeHTML(currentCause)}" selected>${escapeHTML(currentCause)} (current saved value)</option>`;
+      }
+
+      htmlText += `</select>`;
+      return htmlText;
+    }
+
+    function updateEventCategory(index, value) {
+      if (!events[index]) return;
+      const category = normalizeCategory(value);
+      events[index].downtimeCategory = category;
+
+      const currentCause = String(events[index].downtimeCause || events[index].downtimeCode || '').trim().toUpperCase();
+      if (currentCause && category) {
+        const causeStillValidForCategory = downtimeCodes.some(code =>
+          String(code.abbreviation || '').trim().toUpperCase() === currentCause &&
+          normalizeCategory(code.category || 'UNCATEGORIZED') === category
+        );
+        if (!causeStillValidForCategory) {
+          events[index].downtimeCause = '';
+          events[index].downtimeCode = '';
+        }
+      }
+
+      renderTable();
+      updateSummary();
+      updateProductionAnalysis();
+      updatePareto();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
+    }
+
+    function updateEventCause(index, value) {
+      if (!events[index]) return;
+      const cause = String(value || '').trim().toUpperCase();
+      const category = normalizeCategory(events[index].downtimeCategory || '');
+      events[index].downtimeCause = cause;
+      events[index].downtimeCode = cause;
+
+      if (isLegacyEventLogView()) {
+        events[index].downtimeCategory = '';
+      } else if (cause && !category) {
+        const inferredCategory = getCodeCategory(cause);
+        if (inferredCategory && inferredCategory !== 'UNCATEGORIZED') events[index].downtimeCategory = inferredCategory;
+      }
+
+      renderTable();
+      updateSummary();
+      updateProductionAnalysis();
+      updatePareto();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
+    }
+
+    function openEventNoteModal(index) {
+      if (!events[index]) return;
+      activeNoteEventIndex = index;
+      const backdrop = document.getElementById('eventNoteModalBackdrop');
+      const textarea = document.getElementById('eventNoteModalTextarea');
+      const title = document.getElementById('eventNoteModalTitle');
+      if (title) title.textContent = 'Event #' + (events[index].eventNumber || index + 1) + ' Note';
+      if (textarea) textarea.value = events[index].notes || '';
+      if (backdrop) {
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+      }
+      setTimeout(() => textarea?.focus(), 0);
+    }
+
+    function updateActiveEventNote(value) {
+      if (activeNoteEventIndex === null || !events[activeNoteEventIndex]) return;
+      events[activeNoteEventIndex].notes = value;
+    }
+
+    function closeEventNoteModal() {
+      const backdrop = document.getElementById('eventNoteModalBackdrop');
+      const textarea = document.getElementById('eventNoteModalTextarea');
+      if (activeNoteEventIndex !== null && events[activeNoteEventIndex] && textarea) {
+        events[activeNoteEventIndex].notes = textarea.value;
+      }
+      activeNoteEventIndex = null;
+      if (backdrop) {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      renderTable();
+      updateDataQualityChecks();
+      updateExecutiveReport();
+    }
+
+    function handleEventNoteBackdropClick(event) {
+      if (event.target && event.target.id === 'eventNoteModalBackdrop') {
+        closeEventNoteModal();
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && activeNoteEventIndex !== null) {
+        closeEventNoteModal();
+      }
+    });
+
+    function toggleEventNote(index) {
+      openEventNoteModal(index);
+    }
+
+    function renderNoteCell(index, noteValue) {
+      const note = String(noteValue || '');
+      const hasNote = note.trim() ? 'has-note' : '';
+      const preview = note.trim() ? 'Note saved' : 'Add note';
+      return `<button type="button" class="note-toggle-btn ${hasNote}" onclick="openEventNoteModal(${index})" title="${escapeHTML(note || 'Open note')}">📝<span class="note-preview-text">${escapeHTML(preview)}</span></button>`;
+    }
+
     function updateCell(index, field, value) {
       events[index][field] = value;
+      if (field === 'downtimeCode' || field === 'downtimeCause') {
+        const cause = String(value || '').trim().toUpperCase();
+        events[index].downtimeCode = cause;
+        events[index].downtimeCause = cause;
+        if (isLegacyEventLogView()) {
+          events[index].downtimeCategory = '';
+        } else if (cause && !events[index].downtimeCategory) {
+          events[index].downtimeCategory = getCodeCategory(cause);
+        }
+      }
+      if (field === 'downtimeCategory') {
+        events[index].downtimeCategory = normalizeCategory(value);
+      }
 
       if (field === 'startTimestamp' || field === 'stopTimestamp') {
         const event = events[index];
@@ -3603,6 +4445,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
       renderTable();
       updateSummary();
+      updateProductionAnalysis();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
     }
 
     function parseDurationToSeconds(value) {
@@ -3688,6 +4534,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       syncManualStudyDurationFields(value);
       updateStudyStatus();
       updateProductionAnalysis();
+      updateDataQualityChecks();
       updateExecutiveReport();
     }
 
@@ -3696,6 +4543,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       syncManualStudyDurationFields(value);
       updateStudyStatus();
       updateProductionAnalysis();
+      updateDataQualityChecks();
       updateExecutiveReport();
     }
 
@@ -3703,12 +4551,36 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const head = document.getElementById('eventHeadRow');
       if (!head) return;
 
+      if (isLegacyEventLogView()) {
+        if (isManualEntryMode()) {
+          head.innerHTML = `
+            <th>Event #</th>
+            <th>Duration<br />([MM]:SS)</th>
+            <th>Reason Code</th>
+            <th>Note</th>
+            <th>Remove</th>
+          `;
+        } else {
+          head.innerHTML = `
+            <th>Event #</th>
+            <th>Start<br />(HH:MM)</th>
+            <th>Stop<br />(HH:MM)</th>
+            <th>Reason Code</th>
+            <th>Duration<br />([MM]:SS)</th>
+            <th>Note</th>
+            <th>Remove</th>
+          `;
+        }
+        return;
+      }
+
       if (isManualEntryMode()) {
         head.innerHTML = `
           <th>Event #</th>
           <th>Duration<br />([MM]:SS)</th>
-          <th>Flag / Reason Code</th>
-          <th>Reason / Notes</th>
+          <th>Category</th>
+          <th>Cause</th>
+          <th>Note</th>
           <th>Remove</th>
         `;
       } else {
@@ -3716,9 +4588,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
           <th>Event #</th>
           <th>Start<br />(HH:MM)</th>
           <th>Stop<br />(HH:MM)</th>
-          <th>Code</th>
+          <th>Category</th>
+          <th>Cause</th>
           <th>Duration<br />([MM]:SS)</th>
-          <th>Reason / Notes</th>
+          <th>Note</th>
           <th>Remove</th>
         `;
       }
@@ -3734,12 +4607,33 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const row = document.createElement('tr');
         if (index === activeEventIndex) row.className = 'active-row';
 
-        if (isManualEntryMode()) {
+        if (isLegacyEventLogView()) {
+          if (isManualEntryMode()) {
+            row.innerHTML = `
+              <td class="number">${event.eventNumber}</td>
+              <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
+              <td>${renderLegacyDowntimeCauseSelect(index, event.downtimeCause || event.downtimeCode || '')}</td>
+              <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
+              <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
+            `;
+          } else {
+            row.innerHTML = `
+              <td class="number">${event.eventNumber}</td>
+              <td><input value="${escapeHTML(event.startTime)}" onchange="updateCell(${index}, 'startTime', this.value)" /></td>
+              <td><input value="${escapeHTML(event.stopTime)}" onchange="updateCell(${index}, 'stopTime', this.value)" /></td>
+              <td>${renderLegacyDowntimeCauseSelect(index, event.downtimeCause || event.downtimeCode || '')}</td>
+              <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
+              <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
+              <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
+            `;
+          }
+        } else if (isManualEntryMode()) {
           row.innerHTML = `
             <td class="number">${event.eventNumber}</td>
             <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
-            <td>${renderDowntimeCodeSelect(index, event.downtimeCode || '')}</td>
-            <td class="notes-cell event-notes-wide"><textarea onchange="updateCell(${index}, 'notes', this.value)">${escapeHTML(event.notes)}</textarea></td>
+            <td>${renderDowntimeCategorySelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''))}</td>
+            <td>${renderDowntimeCauseSelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''), event.downtimeCause || event.downtimeCode || '')}</td>
+            <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
             <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
           `;
         } else {
@@ -3747,9 +4641,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
             <td class="number">${event.eventNumber}</td>
             <td><input value="${escapeHTML(event.startTime)}" onchange="updateCell(${index}, 'startTime', this.value)" /></td>
             <td><input value="${escapeHTML(event.stopTime)}" onchange="updateCell(${index}, 'stopTime', this.value)" /></td>
-            <td>${renderDowntimeCodeSelect(index, event.downtimeCode || '')}</td>
+            <td>${renderDowntimeCategorySelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''))}</td>
+            <td>${renderDowntimeCauseSelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''), event.downtimeCause || event.downtimeCode || '')}</td>
             <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
-            <td class="notes-cell event-notes-wide"><textarea onchange="updateCell(${index}, 'notes', this.value)">${escapeHTML(event.notes)}</textarea></td>
+            <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
             <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
           `;
         }
@@ -3762,7 +4657,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         const hiddenCount = events.length - 2;
         const summaryRow = document.createElement('tr');
         summaryRow.className = 'collapsed-summary-row';
-        const colSpan = isManualEntryMode() ? 5 : 7;
+        const colSpan = isLegacyEventLogView() ? (isManualEntryMode() ? 5 : 7) : (isManualEntryMode() ? 6 : 8);
         summaryRow.innerHTML = `<td colspan="${colSpan}">${hiddenCount} additional event${hiddenCount === 1 ? '' : 's'} hidden. Expand to review or edit the full event log.</td>`;
         body.appendChild(summaryRow);
         renderEventRow(events[events.length - 1], events.length - 1);
@@ -4001,7 +4896,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         event.durationSeconds !== undefined &&
         !isNaN(event.durationSeconds) &&
         Number(event.durationSeconds) >= 0 &&
-        !isDowntimeCodeIncluded(event.downtimeCode || '')
+        !isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '')
       );
     }
 
@@ -4021,7 +4916,13 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const includedDowntimeSeconds = includedDurations.reduce((a, b) => a + b, 0);
       const includedUptimeSeconds = Math.max(0, includedStudySeconds - includedDowntimeSeconds);
       const utilization = includedStudySeconds > 0 ? includedUptimeSeconds / includedStudySeconds : null;
-      const includedEventsPerHour = includedStudySeconds > 0 ? includedEvents.length / (includedStudySeconds / 3600) : null;
+
+      // Events per hour should use the observed study duration as the denominator.
+      // Excluded event time is removed from study-scope production/utilization math,
+      // but event frequency should answer: "How many included events occurred per
+      // observed hour?"
+      const observedStudyHours = totalLoggedStudySeconds > 0 ? totalLoggedStudySeconds / 3600 : 0;
+      const includedEventsPerHour = observedStudyHours > 0 ? includedEvents.length / observedStudyHours : null;
       const averageIncludedDuration = includedEvents.length ? includedDowntimeSeconds / includedEvents.length : 0;
 
       return {
@@ -4030,6 +4931,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         totalLoggedStudySeconds,
         excludedEventSeconds,
         includedStudySeconds,
+        observedStudyHours,
         includedDowntimeSeconds,
         includedUptimeSeconds,
         utilization,
@@ -4042,7 +4944,17 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const metrics = getStudyScopeMetrics();
       const speedPerHour = Number(document.getElementById('productionSpeed')?.value || 0);
 
-      const projectedUnitsProduced = speedPerHour > 0 ? metrics.includedUptimeSeconds / 3600 * speedPerHour : null;
+      // ============================================================
+      // STUDY-SCOPE PRODUCTION MATH
+      // Timer Capture mode keeps the original behavior: projected
+      // included units are based on included uptime. Manual Entry mode
+      // uses the manually entered observed study duration, minus any
+      // excluded event time, multiplied by the machine speed.
+      // ============================================================
+      const projectedUnitSeconds = isManualEntryMode()
+        ? metrics.includedStudySeconds
+        : metrics.includedUptimeSeconds;
+      const projectedUnitsProduced = speedPerHour > 0 ? projectedUnitSeconds / 3600 * speedPerHour : null;
       const unitsLost = speedPerHour > 0 ? metrics.includedDowntimeSeconds / 3600 * speedPerHour : null;
 
       const loggedStudyDurationEl = document.getElementById('loggedStudyDuration');
@@ -4078,7 +4990,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       events.forEach(event => {
         const duration = event.durationSeconds;
         if (duration === null || duration === undefined || isNaN(duration) || duration < 0) return;
-        if (!isDowntimeCodeIncluded(event.downtimeCode || '')) return;
+        if (!isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '')) return;
 
         const code = event.downtimeCode || 'UNCODED';
         if (!grouped.has(code)) {
@@ -4255,7 +5167,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
     function buildStudyStatePayload() {
       return {
         fileType: 'MPG_Downtime_Tracker_Study',
-        version: 1,
+        version: 2,
         savedAt: formatTimestamp(new Date()),
         events,
         downtimeCodes,
@@ -4267,6 +5179,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         currentStudyStartTimestamp,
         studyIsRunning,
         collectionMode,
+        eventLogViewMode: legacyEventLogView ? 'legacy' : 'category',
         manualStudyDuration: document.getElementById('manualStudyDuration')?.value || document.getElementById('manualStudyDurationControl')?.value || '',
         productionSpeed: document.getElementById('productionSpeed')?.value || '',
         operatorName: document.getElementById('operatorName')?.value || '',
@@ -4284,7 +5197,9 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
       events = payload.events || [];
       downtimeCodes = payload.downtimeCodes || [];
+      legacyEventLogView = detectLegacyEventLogPayload(payload);
       normalizeDowntimeCodes();
+      normalizeEventsForCategoryCause();
       actionItems = payload.actionItems || [];
       activeEventIndex = payload.activeEventIndex;
       studySegments = payload.studySegments || [];
@@ -4302,10 +5217,10 @@ Code #,Code Abbr,Code Desc,Include in Summary
       if (observationSummaryEl) observationSummaryEl.value = payload.observationSummary || '';
 
       const productionSpeedEl = document.getElementById('productionSpeed');
-      if (productionSpeedEl) productionSpeedEl.value = payload.productionSpeed || '';
+      if (productionSpeedEl) productionSpeedEl.value = payload.studyInfo?.productionSpeed || payload.productionSpeed || '';
 
       const operatorEl = document.getElementById('operatorName');
-      if (operatorEl) operatorEl.value = payload.operatorName || '';
+      if (operatorEl) operatorEl.value = payload.studyInfo?.operatorName || payload.operatorName || '';
 
       renumberEvents();
       renumberDowntimeCodes();
@@ -4339,13 +5254,14 @@ Code #,Code Abbr,Code Desc,Include in Summary
     };
 
     function sanitizeFilePart(value, fallback) {
-      return String(value || fallback || '')
+      const cleaned = String(value || fallback || '')
         .trim()
         .replace(/&/g, 'and')
         .replace(/[^a-z0-9_\- ]/gi, '')
         .replace(/\s+/g, '_')
         .replace(/_+/g, '_')
-        .replace(/^_+|_+$/g, '') || fallback || 'NA';
+        .replace(/^_+|_+$/g, '');
+      return (cleaned || fallback || 'NA').toUpperCase();
     }
 
     function getGeneratedStudyBaseName() {
@@ -4359,8 +5275,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
     function getSafeStudyFileName(extension) {
       const manualName = document.getElementById('studyFileName')?.value?.trim();
-      const baseName = manualName ? sanitizeFilePart(manualName.replace(/\.json$/i, ''), 'DowntimeStudy') : getGeneratedStudyBaseName();
-      return baseName + extension;
+      const baseName = manualName ? sanitizeFilePart(manualName.replace(/\.json$/i, ''), 'DOWNTIME_STUDY') : getGeneratedStudyBaseName();
+      return String(baseName).toUpperCase() + extension;
     }
 
     function getStudyFolderPath() {
@@ -4739,6 +5655,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       currentStudyStartTimestamp = '';
       studyIsRunning = false;
       activeEventIndex = null;
+      legacyEventLogView = false;
       stopStudyTimerInterval();
 
       applyStudyInfoPayload({
@@ -5016,8 +5933,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
           event.startTime,
           event.stopTime,
           event.downtimeCode || '',
-          getCodeDescription(event.downtimeCode || ''),
-          isDowntimeCodeIncluded(event.downtimeCode || '') ? 'Yes' : 'No',
+          getCodeDescription(event.downtimeCode || '', event.downtimeCategory || ''),
+          isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '') ? 'Yes' : 'No',
           formatDuration(event.durationSeconds),
           event.durationSeconds ?? '',
           event.startTimestamp,
@@ -5139,8 +6056,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
           event.startTime,
           event.stopTime,
           event.downtimeCode || '',
-          getCodeDescription(event.downtimeCode || ''),
-          isDowntimeCodeIncluded(event.downtimeCode || '') ? 'Yes' : 'No',
+          getCodeDescription(event.downtimeCode || '', event.downtimeCategory || ''),
+          isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '') ? 'Yes' : 'No',
           formatDuration(event.durationSeconds),
           event.durationSeconds ?? '',
           event.startTimestamp,
@@ -5597,7 +6514,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         { key: 'startTime', header: 'Event Start Time (HH:MM)', value: event => event.startTime },
         { key: 'stopTime', header: 'Stop Time (HH:MM)', value: event => event.stopTime },
         { key: 'downtimeCode', header: 'Downtime Code', value: event => event.downtimeCode || '' },
-        { key: 'downtimeCodeDescription', header: 'Downtime Code Description', value: event => getCodeDescription(event.downtimeCode || '') },
+        { key: 'downtimeCodeDescription', header: 'Downtime Code Description', value: event => getCodeDescription(event.downtimeCode || '', event.downtimeCategory || '') },
         { key: 'durationFormatted', header: 'Downtime Duration ([MM]:SS)', value: event => formatDuration(event.durationSeconds) },
         { key: 'durationSeconds', header: 'Duration Seconds', value: event => event.durationSeconds ?? '' },
         { key: 'startTimestamp', header: 'Start Timestamp', value: event => event.startTimestamp },
@@ -5679,6 +6596,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
         studyLine: document.getElementById('studyLine')?.value || '',
         studyProduct: document.getElementById('studyProduct')?.value || '',
         studyObserver: document.getElementById('studyObserver')?.value || '',
+        operatorName: document.getElementById('operatorName')?.value || '',
+        productionSpeed: document.getElementById('productionSpeed')?.value || '',
         studyObjective: document.getElementById('studyObjective')?.value || ''
       };
     }
@@ -5687,7 +6606,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const locationEl = document.getElementById('studyLocation');
       if (locationEl) locationEl.value = info.studyLocation || '';
 
-      const fields = ['studyDate', 'studyShift', 'studyLine', 'studyProduct', 'studyObserver', 'studyObjective'];
+      const fields = ['studyDate', 'studyShift', 'studyLine', 'studyProduct', 'studyObserver', 'operatorName', 'productionSpeed', 'studyObjective'];
       fields.forEach(field => {
         const el = document.getElementById(field);
         if (el) el.value = info[field] || '';
@@ -5795,8 +6714,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const minWidth = 760;
       const widthPerCause = 92;
       const width = Math.max(minWidth, 108 + rows.length * widthPerCause);
-      const height = 380;
-      const margin = { top: 28, right: 52, bottom: 112, left: 56 };
+      const height = 400;
+      const margin = { top: 28, right: 52, bottom: 132, left: 56 };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
 
@@ -5971,7 +6890,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       });
 
       // legend
-      const legendY = height - 12;
+      const legendY = height - 38;
       const barLegend = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
       barLegend.setAttribute('x', String(margin.left));
       barLegend.setAttribute('y', String(legendY - 10));
@@ -5986,12 +6905,12 @@ Code #,Code Abbr,Code Desc,Include in Summary
       barLegendText.setAttribute('fill', '#f4f4f5');
       barLegendText.setAttribute('font-size', '11');
       barLegendText.setAttribute('font-weight', '700');
-      barLegendText.textContent = '% of downtime by ranked cause color';
+      barLegendText.textContent = '% of downtime';
       svg.appendChild(barLegendText);
 
       const lineLegend = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      lineLegend.setAttribute('x1', String(margin.left + 130));
-      lineLegend.setAttribute('x2', String(margin.left + 148));
+      lineLegend.setAttribute('x1', String(margin.left + 210));
+      lineLegend.setAttribute('x2', String(margin.left + 236));
       lineLegend.setAttribute('y1', String(legendY - 5));
       lineLegend.setAttribute('y2', String(legendY - 5));
       lineLegend.setAttribute('stroke', '#d82f8b');
@@ -5999,7 +6918,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       svg.appendChild(lineLegend);
 
       const lineLegendText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      lineLegendText.setAttribute('x', String(margin.left + 154));
+      lineLegendText.setAttribute('x', String(margin.left + 244));
       lineLegendText.setAttribute('y', String(legendY));
       lineLegendText.setAttribute('fill', '#f4f4f5');
       lineLegendText.setAttribute('font-size', '11');
@@ -6262,10 +7181,107 @@ Code #,Code Abbr,Code Desc,Include in Summary
       }
     }
 
+
+    /* Category / Cause downtime code structure */
+    .template-row {
+      display: grid;
+      grid-template-columns: minmax(210px, 1fr) auto;
+      gap: 10px;
+      align-items: end;
+      width: 100%;
+      margin: 0 18px 14px;
+      max-width: calc(100% - 36px);
+    }
+
+    .template-row button {
+      min-height: 42px;
+      white-space: nowrap;
+    }
+
+    .note-toggle-btn {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.065);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #ffffff;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .note-toggle-btn.has-note {
+      border-color: rgba(18, 163, 154, 0.55);
+      background: rgba(18, 163, 154, 0.12);
+    }
+
+    .note-preview-text {
+      display: block;
+      margin-top: 5px;
+      color: #a1a1aa !important;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .compact-note-editor {
+      min-width: 260px;
+    }
+
+    .compact-note-editor textarea {
+      min-height: 96px !important;
+    }
+
+    @media (max-width: 700px) {
+      .template-row {
+        grid-template-columns: 1fr;
+        margin-left: 14px;
+        margin-right: 14px;
+        max-width: calc(100% - 28px);
+      }
+    }
+
+
     @page {
                 size: landscape;
                 margin: 0.35in;
               }
+
+
+              .executive-report .report-panel,
+              .executive-report .report-panel-body {
+                min-width: 0;
+              }
+              .executive-report .report-panel-body {
+                overflow-x: hidden;
+              }
+              .executive-report .report-pareto-table {
+                width: 100% !important;
+                min-width: 0 !important;
+                table-layout: fixed;
+              }
+              .executive-report .report-pareto-table th,
+              .executive-report .report-pareto-table td {
+                white-space: normal !important;
+                overflow-wrap: anywhere !important;
+                word-break: normal !important;
+                hyphens: auto;
+                line-height: 1.25;
+              }
+              .executive-report .report-pareto-table th:nth-child(1),
+              .executive-report .report-pareto-table td:nth-child(1) { width: 8%; }
+              .executive-report .report-pareto-table th:nth-child(2),
+              .executive-report .report-pareto-table td:nth-child(2) { width: 12%; }
+              .executive-report .report-pareto-table th:nth-child(3),
+              .executive-report .report-pareto-table td:nth-child(3) { width: 32%; }
+              .executive-report .report-pareto-table th:nth-child(4),
+              .executive-report .report-pareto-table td:nth-child(4) { width: 14%; }
+              .executive-report .report-pareto-table th:nth-child(5),
+              .executive-report .report-pareto-table td:nth-child(5) { width: 18%; }
+              .executive-report .report-pareto-table th:nth-child(6),
+              .executive-report .report-pareto-table td:nth-child(6) { width: 16%; }
 
               @media print {
                 html, body {
@@ -6342,6 +7358,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
     let autosaveSessionId = '';
     let autosaveSessionStartedAt = new Date().toISOString();
     let isApplyingAutosave = false;
+    let autosaveRecoveryExpanded = false;
 
     function setAutosaveStatus(message) {
       const statusEl = document.getElementById('autosaveStatus');
@@ -6535,19 +7552,41 @@ Code #,Code Abbr,Code Desc,Include in Summary
       return `${s}s`;
     }
 
-    function renderAutosaveRecoveryList(records = getStoredAutosaveRecords()) {
+    function renderAutosaveRecoveryList(records = getStoredAutosaveRecords(), options = {}) {
       const listEl = document.getElementById('autosaveRecoveryList');
       if (!listEl) return;
+      if (typeof options.expanded === 'boolean') autosaveRecoveryExpanded = options.expanded;
       if (!records.length) {
+        autosaveRecoveryExpanded = false;
         listEl.classList.remove('open');
         listEl.innerHTML = '';
         return;
       }
 
+      const totalCount = records.length;
+      const olderCount = Math.max(0, totalCount - 1);
+      const visibleRecords = autosaveRecoveryExpanded ? records : records.slice(0, 1);
+      const summaryText = olderCount > 0
+        ? (autosaveRecoveryExpanded
+          ? `Showing all ${totalCount} autosave recoveries.`
+          : `Showing most recent autosave. ${olderCount} older recover${olderCount === 1 ? 'y is' : 'ies are'} hidden.`)
+        : 'Showing the only available autosave recovery.';
+      const toggleButton = olderCount > 0
+        ? `<button type="button" onclick="toggleAutosaveRecoveryList()">${autosaveRecoveryExpanded ? 'Collapse Autosaves' : 'Show All Autosaves'}</button>`
+        : '';
+
       listEl.classList.add('open');
-      listEl.innerHTML = records.map(({ meta }) => `
+      listEl.innerHTML = `
+        <div class="autosave-recovery-summary">
+          <div><strong>Autosave recoveries:</strong> ${escapeHtml(summaryText)}</div>
+          <div class="autosave-recovery-summary-actions">
+            ${toggleButton}
+            <button type="button" class="danger-lite" onclick="deleteAllAutosaves()">Clear All Autosaves</button>
+          </div>
+        </div>
+      ` + visibleRecords.map(({ meta }, index) => `
         <div class="autosave-recovery-card">
-          <div class="autosave-recovery-title">${escapeHtml(meta.title)}</div>
+          <div class="autosave-recovery-title">${index === 0 ? 'Most Recent: ' : ''}${escapeHtml(meta.title)}</div>
           <div class="autosave-recovery-meta">
             Last saved: ${escapeHtml(getAutosaveTimestampText(meta))}<br />
             Date: ${escapeHtml(meta.studyDate || 'Not set')} | Events: ${escapeHtml(meta.eventCount)} | Downtime: ${escapeHtml(formatDurationFromSeconds(meta.totalDowntimeSeconds))}${meta.active ? ' | Active when saved' : ''}<br />
@@ -6560,6 +7599,11 @@ Code #,Code Abbr,Code Desc,Include in Summary
           </div>
         </div>
       `).join('');
+    }
+
+    function toggleAutosaveRecoveryList() {
+      autosaveRecoveryExpanded = !autosaveRecoveryExpanded;
+      renderAutosaveRecoveryList(getStoredAutosaveRecords());
     }
 
     function saveAutosave(options = {}) {
@@ -6635,8 +7679,8 @@ Code #,Code Abbr,Code Desc,Include in Summary
         setAutosaveStatus('Autosave ready. Recovery copies are stored in this browser on this computer.');
         return;
       }
-      renderAutosaveRecoveryList(records);
-      setAutosaveStatus(records.length + ' autosave recover' + (records.length === 1 ? 'y is' : 'ies are') + ' available. Choose one from the list below.');
+      renderAutosaveRecoveryList(records, { expanded: false });
+      setAutosaveStatus(records.length + ' autosave recover' + (records.length === 1 ? 'y is' : 'ies are') + ' available. The newest copy is shown first; expand the list to view older copies.');
     }
 
     function exportAutosaveSession(sessionId) {
@@ -6705,7 +7749,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
         return;
       }
 
-      renderAutosaveRecoveryList(records);
+      renderAutosaveRecoveryList(records, { expanded: false });
       if (records.length === 1) {
         setAutosaveStatus('One autosave recovery is available from ' + getAutosaveTimestampText(records[0].meta) + '.');
         setTimeout(() => {
@@ -6719,7 +7763,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
           }
         }, 350);
       } else {
-        setAutosaveStatus(records.length + ' autosave recoveries are available. Choose one from the list below, or continue with this new tab. Current Recovery ID: ' + autosaveSessionId.slice(0, 8) + '.');
+        setAutosaveStatus(records.length + ' autosave recoveries are available. The newest copy is shown first; expand the list to view older copies. Current Recovery ID: ' + autosaveSessionId.slice(0, 8) + '.');
       }
     }
 
@@ -6841,6 +7885,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
     updateTopLossSummary();
     updateDataQualityChecks();
     updateExecutiveReport();
+    applyUtilitySectionCollapseState();
 
     const studyDateInput = document.getElementById('studyDate');
     if (studyDateInput && !studyDateInput.value) {
@@ -6881,8 +7926,6 @@ Code #,Code Abbr,Code Desc,Include in Summary
         '.table-wrap',
         '.chart-card',
         '.prod-chart-card',
-        '.report-panel-body',
-        '.report-panel',
         '.copy-menu',
         '.copy-menu-grid'
       ].join(', ');
@@ -6958,7 +8001,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
       const needsScroll = area.scrollWidth > area.clientWidth + 2;
       area.classList.toggle('needs-horizontal-scroll', needsScroll);
 
-      const isHintEligible = area.matches('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card, .report-panel-body, .report-panel');
+      const isHintEligible = area.matches('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card');
       if (!isHintEligible) return;
 
       let hint = area.nextElementSibling;
@@ -6972,7 +8015,7 @@ Code #,Code Abbr,Code Desc,Include in Summary
 
     if (window.ResizeObserver) {
       const dragScrollResizeObserver = new ResizeObserver(() => initializeParetoDragScroll());
-      document.querySelectorAll('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card, .report-panel-body, .report-panel').forEach(el => {
+      document.querySelectorAll('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card').forEach(el => {
         dragScrollResizeObserver.observe(el);
       });
     }
