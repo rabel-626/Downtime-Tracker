@@ -798,7 +798,7 @@
 
     .code-table {
       width: 100%;
-      min-width: 720px;
+      min-width: 520px;
       border-collapse: collapse;
     }
 
@@ -1376,11 +1376,8 @@
     #eventTable th:nth-child(7) { min-width: 92px; }
 
     .code-table th:nth-child(1) { min-width: 76px; }
-    .code-table th:nth-child(2) { min-width: 150px; }
-    .code-table th:nth-child(3) { min-width: 150px; }
-    .code-table th:nth-child(4) { min-width: 230px; }
-    .code-table th:nth-child(5) { min-width: 140px; }
-    .code-table th:nth-child(6) { min-width: 92px; }
+    .code-table th:nth-child(2) { min-width: 130px; }
+    .code-table th:nth-child(3) { min-width: 260px; }
 
     .action-table th:nth-child(1) { min-width: 86px; }
     .action-table th:nth-child(2) { min-width: 230px; }
@@ -1773,13 +1770,17 @@
       }
 
       .table-scroll table,
-      .code-table,
       .pareto-table,
       .action-table,
       #eventTable,
       body.manual-mode #eventTable {
         width: max-content;
         min-width: 760px;
+      }
+
+      .code-table {
+        width: max-content;
+        min-width: min(520px, calc(100vw - 20px));
       }
 
       #eventTable .event-notes-wide {
@@ -1823,12 +1824,15 @@
       }
 
       .table-scroll table,
-      .code-table,
       .pareto-table,
       .action-table,
       #eventTable,
       body.manual-mode #eventTable {
         min-width: 700px;
+      }
+
+      .code-table {
+        min-width: min(500px, calc(100vw - 16px));
       }
     }
 
@@ -1889,6 +1893,22 @@
       cursor: grab;
       touch-action: pan-y;
       position: relative;
+    }
+
+    .drag-scroll-area table,
+    .drag-scroll-area th,
+    .drag-scroll-area td {
+      cursor: grab;
+    }
+
+    .drag-scroll-area.dragging table,
+    .drag-scroll-area.dragging th,
+    .drag-scroll-area.dragging td,
+    .drag-scroll-area.dragging input,
+    .drag-scroll-area.dragging select,
+    .drag-scroll-area.dragging textarea,
+    .drag-scroll-area.dragging button {
+      cursor: grabbing !important;
     }
 
     .table-scroll.dragging,
@@ -1994,6 +2014,65 @@
     }
 
 
+    /* Simplified downtime code setup details popup */
+    .code-setup-details-button {
+      width: 100%;
+      min-height: 46px;
+      display: grid;
+      gap: 4px;
+      align-items: center;
+      background: rgba(255,255,255,0.065);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .code-setup-details-button.has-definition {
+      border-color: rgba(18, 163, 154, 0.55);
+      background: rgba(18, 163, 154, 0.12);
+    }
+
+    .code-detail-summary {
+      display: block;
+      color: #a1a1aa !important;
+      font-size: 11px;
+      font-weight: 850;
+      line-height: 1.25;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .code-setup-edit-modal {
+      width: min(760px, calc(100vw - 24px));
+    }
+
+    .code-setup-edit-grid input {
+      text-align: center;
+      min-height: 46px;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    #codeSetupDescriptionTextarea {
+      min-height: 92px;
+      max-height: 26vh;
+      text-align: left;
+    }
+
+    @media (max-width: 700px) {
+      .code-setup-edit-modal {
+        width: calc(100vw - 18px);
+        margin-top: 8px;
+        max-height: calc(100vh - 16px);
+      }
+
+      #codeSetupDescriptionTextarea {
+        min-height: 64px;
+        max-height: 18vh;
+      }
+    }
+
+
     /* Category / Cause downtime code structure */
     .template-row {
       display: grid;
@@ -2065,6 +2144,9 @@
     .event-note-modal {
       width: min(980px, calc(100vw - 24px));
       margin-top: min(18vh, 150px);
+      max-height: calc(100vh - 36px);
+      display: flex;
+      flex-direction: column;
       border: 1px solid rgba(255,255,255,0.30);
       border-radius: 18px;
       background:
@@ -2104,12 +2186,14 @@
 
     .event-note-modal-body {
       padding: 14px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .event-note-modal textarea {
       width: 100%;
-      min-height: 112px;
-      max-height: 32vh;
+      min-height: 82px;
+      max-height: 22vh;
       resize: vertical;
       text-align: left;
       line-height: 1.45;
@@ -2122,6 +2206,8 @@
       justify-content: flex-end;
       gap: 10px;
       padding: 0 14px 14px;
+      flex-shrink: 0;
+      background: rgba(17,18,20,0.96);
     }
 
     .event-note-save {
@@ -2133,6 +2219,133 @@
     .category-select,
     .cause-select {
       min-width: 150px;
+    }
+
+
+    .event-edit-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.045);
+    }
+
+    .event-edit-meta-item {
+      min-width: 0;
+      text-align: center;
+    }
+
+    .event-edit-meta-label {
+      color: #a1a1aa !important;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .event-edit-meta-value {
+      color: #ffffff !important;
+      font-size: 13px;
+      font-weight: 850;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .event-edit-modal {
+      width: min(720px, calc(100vw - 24px));
+    }
+
+    .event-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .event-edit-grid label,
+    .event-edit-note-label {
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .event-edit-select {
+      min-height: 46px;
+      font-weight: 800;
+    }
+
+    #eventEditCauseSelect option {
+      white-space: nowrap;
+    }
+
+    .event-entry-button {
+      width: 100%;
+      min-height: 48px;
+      display: grid;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .event-entry-button .note-preview-text {
+      margin-top: 0;
+      white-space: normal;
+    }
+
+    @media (max-width: 700px) {
+      .event-edit-modal {
+        width: calc(100vw - 18px);
+        margin-top: 8px;
+        max-height: calc(100vh - 16px);
+        border-radius: 16px;
+      }
+
+      .event-note-modal-header {
+        padding: 9px 11px;
+      }
+
+      .event-note-modal-body {
+        padding: 10px;
+      }
+
+      .event-edit-meta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-bottom: 9px;
+        padding: 8px;
+      }
+
+      .event-edit-meta-label {
+        font-size: 9px;
+        margin-bottom: 3px;
+      }
+
+      .event-edit-meta-value {
+        font-size: 12px;
+      }
+
+      .event-edit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .event-note-modal textarea {
+        min-height: 66px;
+        max-height: 18vh;
+      }
+
+      .event-note-modal-footer {
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: 8px 10px 10px;
+        gap: 8px;
+      }
+
+      .event-note-save {
+        width: 100%;
+        min-height: 48px;
+      }
     }
 
     @media (max-width: 700px) {
@@ -2185,6 +2398,404 @@
       padding: 5px 8px;
       font-size: 11px;
       border-radius: 9px;
+    }
+
+
+    @media (max-width: 700px) {
+      #eventTable {
+        width: 100% !important;
+        min-width: 0 !important;
+        table-layout: fixed !important;
+      }
+
+      #eventTable th.mobile-hide,
+      #eventTable td.mobile-hide {
+        display: none !important;
+      }
+
+      #eventTable th.mobile-duration,
+      #eventTable td.mobile-duration {
+        display: table-cell !important;
+        width: 34% !important;
+      }
+
+      #eventTable th.mobile-details,
+      #eventTable td.mobile-details {
+        display: table-cell !important;
+        width: 66% !important;
+      }
+
+      #eventTable input {
+        min-width: 0;
+        padding: 9px 6px;
+      }
+
+      #eventTable .event-entry-button {
+        min-height: 54px;
+        padding: 8px 6px;
+      }
+
+      #eventTable .note-preview-text {
+        font-size: 10px;
+        letter-spacing: 0.02em;
+      }
+
+      .event-edit-meta-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+
+    /* Standardized compact event log views: all event tables show only Duration + Details. */
+    #eventTable,
+    .compact-event-log-table,
+    .load-save-event-preview-table {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed !important;
+    }
+
+    #eventTable th.event-duration-col,
+    #eventTable td.event-duration-col,
+    .compact-event-log-table th:first-child,
+    .compact-event-log-table td:first-child {
+      width: 34% !important;
+    }
+
+    #eventTable th.event-details-col,
+    #eventTable td.event-details-col,
+    .compact-event-log-table th:nth-child(2),
+    .compact-event-log-table td:nth-child(2) {
+      width: 66% !important;
+    }
+
+    .event-detail-summary {
+      display: block;
+      margin-top: 5px;
+      color: #a1a1aa !important;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .event-delete-modal-btn {
+      min-width: 130px;
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.48);
+    }
+
+    @media (max-width: 700px) {
+      #eventTable th.event-duration-col,
+      #eventTable td.event-duration-col,
+      .compact-event-log-table th:first-child,
+      .compact-event-log-table td:first-child {
+        width: 38% !important;
+      }
+
+      #eventTable th.event-details-col,
+      #eventTable td.event-details-col,
+      .compact-event-log-table th:nth-child(2),
+      .compact-event-log-table td:nth-child(2) {
+        width: 62% !important;
+      }
+    }
+
+    /* ============================================================
+       Top navigation tabs for phone-friendly section browsing
+       ============================================================ */
+    .tracker-tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1500;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(17,18,20,0.98), rgba(12,13,15,0.94));
+      box-shadow: 0 14px 28px rgba(0,0,0,0.34);
+      backdrop-filter: blur(10px);
+    }
+
+
+    .tracker-tab-nav-top {
+      margin-top: 0;
+    }
+
+    .tracker-tab-nav-bottom {
+      margin: 18px 0 0;
+      position: static;
+      bottom: auto;
+      z-index: 1;
+    }
+
+    .tracker-tab-nav-bottom::before {
+      content: "Sections";
+      grid-column: 1 / -1;
+      color: #d4d4d8 !important;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: -2px;
+    }
+
+    .tracker-tab-btn {
+      min-height: 44px;
+      padding: 9px 10px;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.065);
+      color: #f4f4f5;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0.045em;
+      line-height: 1.15;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .tracker-tab-btn.active,
+    .tracker-tab-btn[aria-selected="true"] {
+      border-color: rgba(18, 163, 154, 0.72);
+      background: linear-gradient(135deg, var(--mpg-blue), var(--mpg-teal));
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(18,163,154,0.22);
+    }
+
+    .tracker-tab-item[hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .tracker-tab-nav-bottom {
+        position: static;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        margin: 18px 0 0;
+        z-index: 1;
+        box-shadow: 0 14px 28px rgba(0,0,0,0.34);
+      }
+
+      .tracker-tab-nav-top {
+        top: 0;
+      }
+
+      .tracker-tab-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-bottom: 12px;
+        border-radius: 16px;
+      }
+
+      .tracker-tab-btn {
+        min-height: 42px;
+        font-size: 11px;
+        padding: 8px 8px;
+      }
+    }
+
+    @media print {
+      body {
+        padding-bottom: 0 !important;
+      }
+
+      .tracker-tab-nav {
+        display: none !important;
+      }
+
+      .tracker-tab-item[hidden] {
+        display: block !important;
+      }
+    }
+
+
+    .load-save-event-preview-table {
+      min-width: 980px;
+    }
+
+    .load-save-event-preview-table td {
+      line-height: 1.3;
+    }
+
+    .load-save-event-preview-table .preview-note-cell {
+      text-align: left;
+      max-width: 320px;
+      overflow-wrap: anywhere;
+    }
+
+    .load-save-event-preview-table .preview-active-row td {
+      background: rgba(245,130,32,0.11) !important;
+    }
+
+    @media (max-width: 700px) {
+      .load-save-event-preview-table {
+        min-width: 860px;
+      }
+    }
+
+
+    /* ============================================================
+       Executive report mobile viewing patch
+       Screen-only adjustments so the PDF/print export CSS stays untouched.
+       - Keeps the report readable on phones.
+       - Makes the chart and summary table horizontally draggable instead
+         of squeezing/overlapping content.
+       ============================================================ */
+    @media screen and (max-width: 760px) {
+      .executive-report-shell {
+        overflow: visible;
+      }
+
+      .executive-report {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px 10px 14px;
+      }
+
+      .executive-report .report-title {
+        font-size: 20px;
+        line-height: 1.12;
+      }
+
+      .executive-report .report-subtitle {
+        font-size: 12px;
+        margin-bottom: 10px;
+      }
+
+      .executive-report .report-line-name {
+        font-size: 14px;
+        line-height: 1.3;
+        margin-bottom: 12px;
+        overflow-wrap: anywhere;
+      }
+
+      .executive-report .report-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+      }
+
+      .executive-report .report-panel {
+        border-radius: 14px;
+        min-width: 0;
+      }
+
+      .executive-report .report-panel-header {
+        font-size: 12px;
+        letter-spacing: 0.045em;
+        line-height: 1.25;
+        padding: 10px 9px 9px;
+      }
+
+      .executive-report .report-panel-body {
+        padding: 10px;
+        min-width: 0;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+
+      .executive-report .report-metrics {
+        grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+        gap: 8px;
+      }
+
+      .executive-report .report-metric {
+        padding: 9px 7px;
+        border-radius: 11px;
+      }
+
+      .executive-report .report-metric-label {
+        font-size: 9px;
+        line-height: 1.2;
+        letter-spacing: 0.035em;
+        margin-bottom: 5px;
+      }
+
+      .executive-report .report-metric-value {
+        font-size: 15px;
+        line-height: 1.15;
+        overflow-wrap: anywhere;
+      }
+
+      .executive-report .executive-chart-wrap {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        padding-bottom: 18px;
+        border-radius: 12px;
+        scrollbar-width: thin;
+      }
+
+      .executive-report .executive-chart-svg {
+        width: 760px !important;
+        min-width: 760px !important;
+        max-width: none !important;
+        min-height: 330px;
+      }
+
+      .executive-summary-table-wrap {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto !important;
+        padding-bottom: 14px !important;
+        scrollbar-width: thin;
+      }
+
+      .executive-report .report-pareto-table {
+        width: 680px !important;
+        min-width: 680px !important;
+        max-width: none !important;
+        table-layout: auto !important;
+        font-size: 11px;
+      }
+
+      .executive-report .report-pareto-table th,
+      .executive-report .report-pareto-table td {
+        padding: 6px 5px;
+        line-height: 1.25;
+        overflow-wrap: normal !important;
+        word-break: normal !important;
+      }
+
+      .executive-report .report-pareto-table th:nth-child(1),
+      .executive-report .report-pareto-table td:nth-child(1) { width: 54px; }
+      .executive-report .report-pareto-table th:nth-child(2),
+      .executive-report .report-pareto-table td:nth-child(2) { width: 72px; }
+      .executive-report .report-pareto-table th:nth-child(3),
+      .executive-report .report-pareto-table td:nth-child(3) { width: 230px; }
+      .executive-report .report-pareto-table th:nth-child(4),
+      .executive-report .report-pareto-table td:nth-child(4) { width: 92px; }
+      .executive-report .report-pareto-table th:nth-child(5),
+      .executive-report .report-pareto-table td:nth-child(5) { width: 120px; }
+      .executive-report .report-pareto-table th:nth-child(6),
+      .executive-report .report-pareto-table td:nth-child(6) { width: 104px; }
+    }
+
+    @media screen and (max-width: 430px) {
+      .executive-report .report-metrics {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .executive-report .report-metric-value {
+        font-size: 14px;
+      }
+
+      .executive-report .executive-chart-svg {
+        width: 700px !important;
+        min-width: 700px !important;
+        min-height: 310px;
+      }
     }
 
 
@@ -2350,7 +2961,91 @@
         min-height: 280px !important;
       }
     }
-  </style>
+  
+
+    /* ============================================================
+       Executive report print/PDF Pareto fit patch
+       Keeps mobile graph scrolling for screen use, but forces the
+       full executive Pareto SVG to scale into the printed page with
+       no horizontal scrollbar or drag hint.
+       ============================================================ */
+    @media print {
+      .executive-report-shell,
+      .executive-report,
+      .executive-report .report-panel,
+      .executive-report .report-panel-body,
+      .executive-report .executive-chart-wrap,
+      .executive-summary-table-wrap {
+        overflow: visible !important;
+      }
+
+      .executive-report .report-grid {
+        grid-template-columns: 0.9fr 1.1fr !important;
+        gap: 12px !important;
+        align-items: stretch !important;
+      }
+
+      .executive-report .executive-chart-wrap,
+      .executive-report .executive-chart-wrap.pareto-drag-scroll {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        cursor: default !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+
+      .executive-report .executive-chart-wrap::-webkit-scrollbar,
+      .executive-report .executive-chart-wrap.pareto-drag-scroll::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+
+      .executive-report .executive-chart-wrap::after,
+      .executive-report .executive-chart-wrap.pareto-drag-scroll::after,
+      .executive-chart-wrap + .drag-scroll-hint,
+      .executive-summary-table-wrap + .drag-scroll-hint {
+        display: none !important;
+        content: none !important;
+      }
+
+      .executive-report .executive-chart-svg {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 260px !important;
+        max-height: 3.65in !important;
+        display: block !important;
+      }
+
+      .executive-summary-table-wrap,
+      .executive-summary-table-wrap.drag-scroll-area {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow: visible !important;
+        overflow-x: visible !important;
+        padding: 0 !important;
+        cursor: default !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+
+      .executive-summary-table-wrap::-webkit-scrollbar,
+      .executive-summary-table-wrap.drag-scroll-area::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+    }
+</style>
 </head>
 <body>
   <main class="page-wrap">
@@ -2370,6 +3065,14 @@
     </section>
 
     <div class="mpg-rule"></div>
+
+    <!-- Top section tabs: start of page content -->
+    <nav class="tracker-tab-nav tracker-tab-nav-top" aria-label="Downtime tracker section tabs">
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="info" onclick="showTrackerTab('info')">Information</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="load" onclick="showTrackerTab('load')">Load / Save</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="study" onclick="showTrackerTab('study')">Study</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="results" onclick="showTrackerTab('results')">Results</button>
+    </nav>
 
     <section class="grid">
       <section class="box">
@@ -2427,17 +3130,6 @@
           <label for="productionSpeed">Production Speed, Units Per Hour</label>
           <input id="productionSpeed" type="number" min="0" step="1" placeholder="Example: 12000" oninput="updateProductionAnalysis()" />
         </div>
-        <div>
-          <label for="collectionMode">Entry Mode</label>
-          <select id="collectionMode" onchange="setCollectionMode(this.value)">
-            <option value="timer">Timer Capture</option>
-            <option value="manual">Manual Entry</option>
-          </select>
-        </div>
-        <div class="manual-only">
-          <label for="manualStudyDuration">Actual Study Duration</label>
-          <input id="manualStudyDuration" type="text" placeholder="Example: 120, 120:00, or 2:00:00" oninput="updateManualStudyDuration()" />
-        </div>
       </div>
 
       <div style="margin-top: 13px;">
@@ -2445,6 +3137,29 @@
         <textarea id="studyObjective" placeholder="Example: Capture downtime reasons and production impact for line improvement study."></textarea>
       </div>
     </section>
+
+    <section class="box" id="loadSaveStatusSection">
+      <div class="box-header">
+        <h2>Load / Save Status</h2>
+        <span class="box-tag">Load Confirmation</span>
+      </div>
+      <div class="instruction-box">
+        This tab only shows the file/load confirmation and current downtime capture state. Event details stay in the Study tab.
+      </div>
+
+      <div class="summary-grid load-save-status-grid" style="grid-template-columns: repeat(2, minmax(220px, 1fr));">
+        <div class="metric">
+          <label>Last load / file status</label>
+          <div id="loadSaveFileStatusMirror" class="metric-value" style="font-size: 16px; line-height: 1.25;">Ready for JSON study file.</div>
+        </div>
+        <div class="metric">
+          <label>Downtime capture status</label>
+          <div id="loadSaveDowntimeStatusMirror" class="metric-value" style="font-size: 16px; line-height: 1.25;">Ready.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="mpg-rule"></div>
 
     <section class="box white-border">
       <div class="box-header">
@@ -2600,6 +3315,35 @@
 
     <div class="mpg-rule"></div>
 
+    <section class="box white-border" id="entryModeSection">
+      <div class="box-header">
+        <h2>Entry Mode</h2>
+        <span class="box-tag">Study Setup</span>
+      </div>
+
+      <div class="instruction-box">
+        Choose how the study will be entered. Use <strong>Timer Capture</strong> for live observations with timestamps, or <strong>Manual Entry</strong> when entering a completed handwritten or spreadsheet-based study.
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label for="collectionMode">Entry Mode</label>
+          <select id="collectionMode" onchange="setCollectionMode(this.value)">
+            <option value="timer">Timer Capture</option>
+            <option value="manual">Manual Entry</option>
+          </select>
+        </div>
+        <div class="manual-only">
+          <label for="manualStudyDuration">Actual Study Duration</label>
+          <input id="manualStudyDuration" type="text" placeholder="Example: 120, 120:00, or 2:00:00" oninput="updateManualStudyDuration()" />
+        </div>
+      </div>
+
+      <div id="entryModeStatus" class="mode-status">Timer Capture mode is active. Use Start Study and Start Downtime to capture live timestamps.</div>
+    </section>
+
+    <div class="mpg-rule"></div>
+
 <section class="box table-shell">
       <div class="table-header">
         <div class="box-header">
@@ -2609,7 +3353,7 @@
         </div>
 
         <div id="eventLogInfo" class="info-popover" role="tooltip">
-          The Event Log is the main downtime record. Timer mode captures timestamps automatically; Manual Entry mode simplifies the sheet to event duration, reason code, and notes.
+          The Event Log is the main downtime record. Timer mode captures timestamps automatically. All event views stay compact with only Duration and Details; open Details to review or edit category, cause/reason code, start/stop timestamps, and notes.
           <ul>
             <li class="timer-only"><strong>Study timer:</strong> Press <strong>Start Study</strong> when observation begins and <strong>Stop Study</strong> when observation pauses or ends. You can start and stop the study multiple times; each run is added to the total logged study time.</li>
             <li class="timer-only"><strong>Study timer calculations:</strong> Hidden or excluded event time is removed from study-scope calculations for included uptime, utilization, projected production, and estimated production loss. Stopping the study also stops any active downtime event.</li>
@@ -2683,14 +3427,8 @@
         <table id="eventTable">
           <thead>
             <tr id="eventHeadRow">
-              <th>Event #</th>
-              <th>Start<br />(HH:MM)</th>
-              <th>Stop<br />(HH:MM)</th>
-              <th>Category</th>
-              <th>Cause</th>
-              <th>Duration<br />([MM]:SS)</th>
-              <th>Note</th>
-              <th>Remove</th>
+              <th class="event-duration-col mobile-duration">Duration<br />([MM]:SS)</th>
+              <th class="event-details-col mobile-details">Details</th>
             </tr>
           </thead>
           <tbody id="eventBody"></tbody>
@@ -2767,11 +3505,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           <thead>
             <tr>
               <th>Code #</th>
-              <th>Category / Group</th>
-              <th>Cause Code</th>
-              <th>Cause Description</th>
-              <th>Include in Summary</th>
-              <th>Remove</th>
+              <th>Include in Study</th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody id="codeBody"></tbody>
@@ -2826,7 +3561,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
               <th>Priority</th>
               <th>Status</th>
               <th>Notes</th>
-              <th>Remove</th>
+              <th class="mobile-hide">Remove</th>
             </tr>
           </thead>
           <tbody id="actionBody"></tbody>
@@ -3075,7 +3810,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
         <div class="report-panel" style="margin-top: 18px;">
           <div class="report-panel-header">Included-Cause Pareto Summary</div>
-          <div class="report-panel-body">
+          <div class="report-panel-body executive-summary-table-wrap">
             <table class="report-pareto-table">
               <thead>
                 <tr>
@@ -3094,25 +3829,78 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       </div>
     </section>
 
+    </section><!-- /.grid -->
+
     <div class="footer-note">
       Standalone local HTML file. No macros, no external dependencies, and no VBA required. Start and stop the study timer as needed, capture downtime events, define/apply reason codes, then review production impact and Pareto analysis at the bottom.
     </div>
+
+    <!-- Bottom section tabs: end of page content -->
+    <nav class="tracker-tab-nav tracker-tab-nav-bottom" aria-label="Downtime tracker section tabs at bottom">
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="info" onclick="showTrackerTab('info')">Information</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="load" onclick="showTrackerTab('load')">Load / Save</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="study" onclick="showTrackerTab('study')">Study</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="results" onclick="showTrackerTab('results')">Results</button>
+    </nav>
   </main>
 
   <datalist id="downtimeCategoryOptions">
   </datalist>
+  <datalist id="downtimeCauseOptions">
+  </datalist>
 
-  <div id="eventNoteModalBackdrop" class="event-note-modal-backdrop" onclick="handleEventNoteBackdropClick(event)" aria-hidden="true">
-    <div class="event-note-modal" role="dialog" aria-modal="true" aria-labelledby="eventNoteModalTitle">
+  <div id="codeSetupModalBackdrop" class="event-note-modal-backdrop" onclick="handleCodeSetupBackdropClick(event)" aria-hidden="true">
+    <div class="event-note-modal code-setup-edit-modal" role="dialog" aria-modal="true" aria-labelledby="codeSetupModalTitle">
       <div class="event-note-modal-header">
-        <div id="eventNoteModalTitle" class="event-note-modal-title">Event Note</div>
-        <button type="button" class="event-note-close" onclick="closeEventNoteModal()" aria-label="Close note">×</button>
+        <div id="codeSetupModalTitle" class="event-note-modal-title">Edit Downtime Code</div>
+        <button type="button" class="event-note-close" onclick="closeCodeSetupModal(false)" aria-label="Close code editor">×</button>
       </div>
       <div class="event-note-modal-body">
+        <div id="codeSetupEditMetaGrid" class="event-edit-meta-grid" aria-label="Downtime code setup details"></div>
+        <div class="event-edit-grid code-setup-edit-grid">
+          <div>
+            <label for="codeSetupCategoryInput">Category</label>
+            <input id="codeSetupCategoryInput" class="event-edit-select" list="downtimeCategoryOptions" placeholder="Select or type category" />
+          </div>
+          <div>
+            <label for="codeSetupCauseInput">Cause Code</label>
+            <input id="codeSetupCauseInput" class="event-edit-select" list="downtimeCauseOptions" placeholder="Select or type cause code" />
+          </div>
+        </div>
+        <label for="codeSetupDescriptionTextarea" class="event-edit-note-label">Cause Description</label>
+        <textarea id="codeSetupDescriptionTextarea" placeholder="Describe what this downtime reason means..."></textarea>
+      </div>
+      <div class="event-note-modal-footer">
+        <button type="button" class="event-delete-modal-btn" onclick="deleteActiveCodeFromModal()">Delete Code</button>
+        <button type="button" class="event-note-save" onclick="closeCodeSetupModal(true)">Save Code</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="eventNoteModalBackdrop" class="event-note-modal-backdrop" onclick="handleEventNoteBackdropClick(event)" aria-hidden="true">
+    <div class="event-note-modal event-edit-modal" role="dialog" aria-modal="true" aria-labelledby="eventNoteModalTitle">
+      <div class="event-note-modal-header">
+        <div id="eventNoteModalTitle" class="event-note-modal-title">Edit Event</div>
+        <button type="button" class="event-note-close" onclick="closeEventNoteModal()" aria-label="Close event editor">×</button>
+      </div>
+      <div class="event-note-modal-body">
+        <div id="eventEditMetaGrid" class="event-edit-meta-grid" aria-label="Event timing details"></div>
+        <div class="event-edit-grid">
+          <div>
+            <label for="eventEditCategorySelect">Category</label>
+            <select id="eventEditCategorySelect" class="event-edit-select" onchange="handleEventEditCategoryChange(this.value)"></select>
+          </div>
+          <div>
+            <label for="eventEditCauseSelect">Cause</label>
+            <select id="eventEditCauseSelect" class="event-edit-select"></select>
+          </div>
+        </div>
+        <label for="eventNoteModalTextarea" class="event-edit-note-label">Note</label>
         <textarea id="eventNoteModalTextarea" placeholder="Add event notes..." oninput="updateActiveEventNote(this.value)"></textarea>
       </div>
       <div class="event-note-modal-footer">
-        <button type="button" class="event-note-save" onclick="closeEventNoteModal()">Save Note</button>
+        <button type="button" class="event-delete-modal-btn" onclick="deleteActiveEventFromModal()">Delete Event</button>
+        <button type="button" class="event-note-save" onclick="closeEventNoteModal()">Save Event</button>
       </div>
     </div>
   </div>
@@ -3122,48 +3910,289 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     let downtimeCodes = [];
     let openNoteEventIndexes = new Set();
     let activeNoteEventIndex = null;
+    let activeCodeSetupIndex = null;
     let actionItems = [];
 
     const TAG_TEMPLATES = {
-      SLITTER_STUDY: {
-        label: 'SLITTER STUDY',
-        codes: [
-          { codeNumber: 1, category: 'FEED', abbreviation: 'DOUBLE FEED', description: 'Running sheets fail to separate during pickup.', includeInSummary: true },
-          { codeNumber: 2, category: 'FEED', abbreviation: 'FEED JAM', description: 'Running sheet skews on entry or collides with entrance due to warp or feeding condition.', includeInSummary: true },
-          { codeNumber: 3, category: 'FEED', abbreviation: 'SUCTION FAIL', description: 'Suction cups fail to pick up the running sheet.', includeInSummary: true },
-          { codeNumber: 4, category: 'CUTTING AXIS', abbreviation: 'BLADE ADJUST', description: 'Running sheet lead-in adjustments needed due to border quality or cut alignment condition.', includeInSummary: true },
-          { codeNumber: 5, category: 'CUTTING AXIS', abbreviation: 'BLADE JAM', description: 'Running sheets feed into the cutting axis and jam, commonly related to double feeding or sheet transfer.', includeInSummary: true },
-          { codeNumber: 6, category: 'CUTTING AXIS', abbreviation: 'SCRAP REMOVAL', description: 'Downtime caused by scrap pileup or scrap not dropping out from the slitter axis.', includeInSummary: true },
-          { codeNumber: 7, category: 'CUTTING AXIS', abbreviation: 'PARTIAL CUT', description: 'Downtime caused by running sheets not being slit completely.', includeInSummary: true },
-          { codeNumber: 8, category: 'CUTTING AXIS', abbreviation: 'STUCK SHEET', description: 'Running sheet transfer issues in or out of the cutting axis causing sheets to become stuck.', includeInSummary: true },
-          { codeNumber: 9, category: 'COLLATOR', abbreviation: 'COLLATOR JAM', description: 'Scrap material or running sheet jams at the entrance to the collator.', includeInSummary: true },
-          { codeNumber: 10, category: 'COLLATOR', abbreviation: 'CARD FLIP', description: 'Collator card stuck on green belt causing cards to become displaced or flip.', includeInSummary: true },
-          { codeNumber: 11, category: 'COLLATOR', abbreviation: 'STACK ERROR', description: 'Issues where collated stacks are not presented well to the PSU due to stacking condition.', includeInSummary: true },
-          { codeNumber: 12, category: 'PSU', abbreviation: 'CARD FLIP', description: 'Downtime caused by cards flipping or twisting during movement in the PSU.', includeInSummary: true },
-          { codeNumber: 13, category: 'PSU', abbreviation: 'CARD JAM', description: 'Cards have fallen into the chain section and need to be removed.', includeInSummary: true },
-          { codeNumber: 14, category: 'PSU', abbreviation: 'PACK SEPARATION', description: 'Improper deck splitting or pack separation through the PSU.', includeInSummary: true },
-          { codeNumber: 15, category: 'PSU', abbreviation: 'TIMING ERROR', description: 'Timing of the travel lugs does not match belt speed, causing card or deck interference.', includeInSummary: true },
-          { codeNumber: 16, category: 'TRANSFER', abbreviation: 'PSU EXIT', description: 'Cards flip or jam when exiting the PSU due to the exit condition.', includeInSummary: true },
-          { codeNumber: 17, category: 'TRANSFER', abbreviation: 'R&S ENTRANCE', description: 'Issues transitioning from the transfer section to the R&S, likely a turn or handoff issue.', includeInSummary: true },
-          { codeNumber: 18, category: 'TRANSFER', abbreviation: 'GUIDE RAILS', description: 'Cards flipping or jamming at the guide rail section due to collision with rails or transfer hardware.', includeInSummary: true },
-          { codeNumber: 19, category: 'R&S', abbreviation: 'BLADES', description: 'R&S blade replacement downtime due to bad cuts altering blade reliability.', includeInSummary: true },
-          { codeNumber: 20, category: 'R&S', abbreviation: 'ANVIL', description: 'Replacement of the blade anvil, required more often for plastic anvils.', includeInSummary: true },
-          { codeNumber: 21, category: 'R&S', abbreviation: 'PUSHER', description: 'Issues moving a deck stack into the cutting bay due to timing or card stack position.', includeInSummary: true },
-          { codeNumber: 22, category: 'R&S', abbreviation: 'BRUSH', description: 'Issues with brush height or quality causing cards to shift or flip in the exit area.', includeInSummary: true },
-          { codeNumber: 23, category: 'R&S', abbreviation: 'WIPERS', description: 'Replacement of tape on the wipers at the exit of the R&S.', includeInSummary: true },
-          { codeNumber: 24, category: 'ROBOT', abbreviation: 'TRANSFER', description: 'Downtime caused by cards skewing along the transfer, including pileups or poor handoff into the robot area.', includeInSummary: true },
-          { codeNumber: 25, category: 'ROBOT', abbreviation: 'BOTTOM CAMERA', description: 'Stops caused by bad border reads or borders not found for the bottom camera.', includeInSummary: true },
-          { codeNumber: 26, category: 'ROBOT', abbreviation: 'TOP CAMERA', description: 'Stops caused by bad border reads or borders not found for the top camera.', includeInSummary: true },
-          { codeNumber: 27, category: 'ROBOT', abbreviation: 'DECK JAM', description: 'Decks becoming jammed in the accumulator, likely due to shifted stacks.', includeInSummary: true },
-          { codeNumber: 28, category: 'ROBOT', abbreviation: 'BOX MAGAZINE', description: 'New box loading errors, including boxes not releasing from the magazine or loading incorrectly.', includeInSummary: true },
-          { codeNumber: 29, category: 'ROBOT', abbreviation: 'BOX OPEN', description: 'Errors with opening a box, either due to suction loss or a box closing after partial opening.', includeInSummary: true },
-          { codeNumber: 30, category: 'ROBOT', abbreviation: 'BOX CLOSE', description: 'Errors closing the box, mostly due to deck stacking errors.', includeInSummary: true },
-          { codeNumber: 31, category: 'ROBOT', abbreviation: 'TRAY', description: 'Downtime caused by deck collision with trays during placement.', includeInSummary: true },
-          { codeNumber: 32, category: 'ROBOT', abbreviation: 'LOW DECK', description: 'Errors while picking up a deck stack at the pick point when the deck stack is too low.', includeInSummary: true },
-          { codeNumber: 33, category: 'ROBOT', abbreviation: 'HIGH DECK', description: 'Errors while picking up a deck stack at the pick point when the deck stack is too high.', includeInSummary: true }
-        ]
+      "SLITTER_STUDY": {
+            "label": "SLITTER STUDY",
+            "codes": [
+                  {
+                        "codeNumber": 1,
+                        "category": "FEED",
+                        "abbreviation": "DOUBLE FEED",
+                        "description": "Running sheets fail to separate during pickup.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 2,
+                        "category": "FEED",
+                        "abbreviation": "FEED JAM",
+                        "description": "Running sheet skews on entry or collides with entrance due to warp or feeding condition.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 3,
+                        "category": "FEED",
+                        "abbreviation": "SUCTION FAIL",
+                        "description": "Suction cups fail to pick up the running sheet.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 4,
+                        "category": "CUTTING AXIS",
+                        "abbreviation": "BLADE ADJUST",
+                        "description": "Running sheet lead-in adjustments needed due to border quality or cut alignment condition.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 5,
+                        "category": "CUTTING AXIS",
+                        "abbreviation": "BLADE JAM",
+                        "description": "Running sheets feed into the cutting axis and jam, commonly related to double feeding or sheet transfer.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 6,
+                        "category": "CUTTING AXIS",
+                        "abbreviation": "SCRAP REMOVAL",
+                        "description": "Downtime caused by scrap pileup or scrap not dropping out from the slitter axis.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 7,
+                        "category": "CUTTING AXIS",
+                        "abbreviation": "PARTIAL CUT",
+                        "description": "Downtime caused by running sheets not being slit completely.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 8,
+                        "category": "CUTTING AXIS",
+                        "abbreviation": "STUCK SHEET",
+                        "description": "Running sheet transfer issues in or out of the cutting axis causing sheets to become stuck.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 9,
+                        "category": "COLLATOR",
+                        "abbreviation": "COLLATOR JAM",
+                        "description": "Scrap material or running sheet jams at the entrance to the collator.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 10,
+                        "category": "COLLATOR",
+                        "abbreviation": "CARD FLIP",
+                        "description": "Collator card stuck on green belt causing cards to become displaced or flip.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 11,
+                        "category": "COLLATOR",
+                        "abbreviation": "STACK ERROR",
+                        "description": "Issues where collated stacks are not presented well to the PSU due to stacking condition.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 12,
+                        "category": "PSU",
+                        "abbreviation": "CARD FLIP",
+                        "description": "Downtime caused by cards flipping or twisting during movement in the PSU.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 13,
+                        "category": "PSU",
+                        "abbreviation": "CARD JAM",
+                        "description": "Cards have fallen into the chain section and need to be removed.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 14,
+                        "category": "PSU",
+                        "abbreviation": "PACK SEPARATION",
+                        "description": "Improper deck splitting or pack separation through the PSU.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 15,
+                        "category": "PSU",
+                        "abbreviation": "TIMING ERROR",
+                        "description": "Timing of the travel lugs does not match belt speed, causing card or deck interference.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 16,
+                        "category": "TRANSFER",
+                        "abbreviation": "PSU EXIT",
+                        "description": "Cards flip or jam when exiting the PSU due to the exit condition.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 17,
+                        "category": "TRANSFER",
+                        "abbreviation": "R&S ENTRANCE",
+                        "description": "Issues transitioning from the transfer section to the R&S, likely a turn or handoff issue.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 18,
+                        "category": "TRANSFER",
+                        "abbreviation": "GUIDE RAILS",
+                        "description": "Cards flipping or jamming at the guide rail section due to collision with rails or transfer hardware.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 19,
+                        "category": "R&S",
+                        "abbreviation": "BLADES",
+                        "description": "R&S blade replacement downtime due to bad cuts altering blade reliability.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 20,
+                        "category": "R&S",
+                        "abbreviation": "ANVIL",
+                        "description": "Replacement of the blade anvil, required more often for plastic anvils.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 21,
+                        "category": "R&S",
+                        "abbreviation": "PUSHER",
+                        "description": "Issues moving a deck stack into the cutting bay due to timing or card stack position.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 22,
+                        "category": "R&S",
+                        "abbreviation": "BRUSH",
+                        "description": "Issues with brush height or quality causing cards to shift or flip in the exit area.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 23,
+                        "category": "R&S",
+                        "abbreviation": "WIPERS",
+                        "description": "Replacement of tape on the wipers at the exit of the R&S.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 24,
+                        "category": "ROBOT",
+                        "abbreviation": "TRANSFER",
+                        "description": "Downtime caused by cards skewing along the transfer, including pileups or poor handoff into the robot area.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 25,
+                        "category": "ROBOT",
+                        "abbreviation": "BOTTOM CAMERA",
+                        "description": "Stops caused by bad border reads or borders not found for the bottom camera.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 26,
+                        "category": "ROBOT",
+                        "abbreviation": "TOP CAMERA",
+                        "description": "Stops caused by bad border reads or borders not found for the top camera.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 27,
+                        "category": "ROBOT",
+                        "abbreviation": "DECK JAM",
+                        "description": "Decks becoming jammed in the accumulator, likely due to shifted stacks.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 28,
+                        "category": "ROBOT",
+                        "abbreviation": "BOX MAGAZINE",
+                        "description": "New box loading errors, including boxes not releasing from the magazine or loading incorrectly.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 29,
+                        "category": "ROBOT",
+                        "abbreviation": "BOX OPEN",
+                        "description": "Errors with opening a box, either due to suction loss or a box closing after partial opening.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 30,
+                        "category": "ROBOT",
+                        "abbreviation": "BOX CLOSE",
+                        "description": "Errors closing the box, mostly due to deck stacking errors.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 31,
+                        "category": "ROBOT",
+                        "abbreviation": "TRAY",
+                        "description": "Downtime caused by deck collision with trays during placement.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 32,
+                        "category": "ROBOT",
+                        "abbreviation": "LOW DECK",
+                        "description": "Errors while picking up a deck stack at the pick point when the deck stack is too low.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 33,
+                        "category": "ROBOT",
+                        "abbreviation": "HIGH DECK",
+                        "description": "Errors while picking up a deck stack at the pick point when the deck stack is too high.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 34,
+                        "category": "PALLET",
+                        "abbreviation": "NEW SKID",
+                        "description": "Downtime caused by loading a new pallet / skid for production",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 35,
+                        "category": "PALLET",
+                        "abbreviation": "NON-COMFORMING MATERIAL",
+                        "description": "Material issues that require a pallet change. Barcode, print quality, or other.",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 36,
+                        "category": "JOB CHANGE",
+                        "abbreviation": "MAKE READY",
+                        "description": "Adjustments to the lead ins for the cutting axis, and adjustment to the suction of the feed to accomodate the new job and paper condition",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 37,
+                        "category": "JOB CHANGE",
+                        "abbreviation": "NEW SKID",
+                        "description": "Downtime caused by loading a new pallet / skid for production during a job change",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 38,
+                        "category": "JOB CHANGE",
+                        "abbreviation": "LINE CLEARANCE",
+                        "description": "Downtime caused during line clearance. Waiting on lead / supervisor pass off for a cleaned line of materials",
+                        "includeInSummary": true
+                  },
+                  {
+                        "codeNumber": 39,
+                        "category": "WAITING ON MATERIAL",
+                        "abbreviation": "WAITING ON MATERIAL",
+                        "description": "Downtime caused by waiting for material to be delivered to the line",
+                        "includeInSummary": true
+                  }
+            ]
       }
-    };
+};
     let activeEventIndex = null;
     let studySegments = [];
     let currentStudyStartTimestamp = '';
@@ -3343,6 +4372,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       updateStudyButton();
       updateStudyStatus();
       updateProductionAnalysis();
+      updateLoadSaveEventLogPreview();
     }
 
     function stopStudy() {
@@ -3369,6 +4399,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       updateStudyButton();
       updateStudyStatus();
       updateProductionAnalysis();
+      updateLoadSaveEventLogPreview();
     }
 
     function getStudyDurationSeconds() {
@@ -3430,6 +4461,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       if (!studyIsRunning && completedSegments === 0) {
         status.textContent = 'Study not started. Press Start Study when the observation period begins.';
         status.className = 'status';
+        updateLoadSaveEventLogPreview();
         return;
       }
 
@@ -3444,6 +4476,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           '. Total logged study time: ' + totalDuration + '.';
         status.className = 'status';
       }
+      updateLoadSaveEventLogPreview();
     }
 
     function startStudyTimerInterval() {
@@ -3682,8 +4715,16 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     function refreshDowntimeCategoryOptions() {
       const list = document.getElementById('downtimeCategoryOptions');
-      if (!list) return;
-      list.innerHTML = renderCategoryOptionsDataList();
+      if (list) list.innerHTML = renderCategoryOptionsDataList();
+
+      const causeList = document.getElementById('downtimeCauseOptions');
+      if (causeList) {
+        const causes = Array.from(new Set((downtimeCodes || [])
+          .map(code => String(code.abbreviation || '').trim().toUpperCase())
+          .filter(Boolean)))
+          .sort((a, b) => a.localeCompare(b));
+        causeList.innerHTML = causes.map(cause => `<option value="${escapeHTML(cause)}"></option>`).join('');
+      }
     }
 
     function getCausesForCategory(category) {
@@ -4181,13 +5222,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const renderCodeRow = (code, index) => {
         const row = document.createElement('tr');
         const checked = code.includeInSummary === false ? '' : 'checked';
+        const detailText = buildCodeSetupDetailSummary(code);
+        const hasDefinition = (code.category || code.abbreviation || code.description) ? 'has-definition' : '';
         row.innerHTML = `
-          <td class="number">${code.codeNumber}</td>
-          <td><input class="category-input" list="downtimeCategoryOptions" value="${escapeHTML(code.category || '')}" placeholder="Type or select category" onchange="updateDowntimeCode(${index}, 'category', this.value)" onblur="updateDowntimeCode(${index}, 'category', this.value)" /></td>
-          <td><input value="${escapeHTML(code.abbreviation)}" placeholder="Example: LOW DECK" onchange="updateDowntimeCode(${index}, 'abbreviation', this.value)" /></td>
-          <td><textarea placeholder="Example: Robot pickpoint underloaded" onchange="updateDowntimeCode(${index}, 'description', this.value)">${escapeHTML(code.description)}</textarea></td>
-          <td class="code-include-cell"><label class="code-include-label"><input type="checkbox" ${checked} onchange="updateDowntimeCode(${index}, 'includeInSummary', this.checked)" />Show</label></td>
-          <td><button class="delete-row" onclick="deleteDowntimeCode(${index})">X</button></td>
+          <td class="number">${escapeHTML(code.codeNumber)}</td>
+          <td class="code-include-cell"><label class="code-include-label"><input type="checkbox" ${checked} onchange="updateDowntimeCode(${index}, 'includeInSummary', this.checked)" />Include</label></td>
+          <td><button type="button" class="code-setup-details-button ${hasDefinition}" onclick="openCodeSetupModal(${index})" title="${escapeHTML(detailText)}">Details<span class="code-detail-summary">${escapeHTML(detailText)}</span></button></td>
         `;
         body.appendChild(row);
       };
@@ -4197,13 +5237,119 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         const hiddenCount = downtimeCodes.length - 2;
         const summaryRow = document.createElement('tr');
         summaryRow.className = 'collapsed-summary-row';
-        summaryRow.innerHTML = `<td colspan="6">${hiddenCount} additional downtime code${hiddenCount === 1 ? '' : 's'} hidden. Expand to review or edit the full tag setup.</td>`;
+        summaryRow.innerHTML = `<td colspan="3">${hiddenCount} additional downtime code${hiddenCount === 1 ? '' : 's'} hidden. Expand to review or edit the full tag setup.</td>`;
         body.appendChild(summaryRow);
         renderCodeRow(downtimeCodes[downtimeCodes.length - 1], downtimeCodes.length - 1);
         return;
       }
 
       downtimeCodes.forEach((code, index) => renderCodeRow(code, index));
+    }
+
+    function buildCodeSetupDetailSummary(code) {
+      const category = normalizeCategory(code?.category || '') || 'No category';
+      const cause = String(code?.abbreviation || '').trim().toUpperCase() || 'No cause';
+      const descState = String(code?.description || '').trim() ? 'Description saved' : 'No description';
+      return [category, cause, descState].join(' / ');
+    }
+
+    function openCodeSetupModal(index) {
+      if (!downtimeCodes[index]) return;
+      activeCodeSetupIndex = index;
+      refreshDowntimeCategoryOptions();
+
+      const code = downtimeCodes[index];
+      const backdrop = document.getElementById('codeSetupModalBackdrop');
+      const title = document.getElementById('codeSetupModalTitle');
+      const meta = document.getElementById('codeSetupEditMetaGrid');
+      const categoryInput = document.getElementById('codeSetupCategoryInput');
+      const causeInput = document.getElementById('codeSetupCauseInput');
+      const descTextarea = document.getElementById('codeSetupDescriptionTextarea');
+
+      if (title) title.textContent = 'Downtime Code Details #' + (code.codeNumber || index + 1);
+      if (meta) {
+        meta.innerHTML = `
+          <div class="event-edit-meta-card"><div class="event-edit-meta-label">Code #</div><div class="event-edit-meta-value">${escapeHTML(code.codeNumber || index + 1)}</div></div>
+          <div class="event-edit-meta-card"><div class="event-edit-meta-label">Included</div><div class="event-edit-meta-value">${code.includeInSummary === false ? 'No' : 'Yes'}</div></div>
+          <div class="event-edit-meta-card"><div class="event-edit-meta-label">Current Category</div><div class="event-edit-meta-value">${escapeHTML(normalizeCategory(code.category || '') || 'None')}</div></div>
+          <div class="event-edit-meta-card"><div class="event-edit-meta-label">Current Cause</div><div class="event-edit-meta-value">${escapeHTML(String(code.abbreviation || '').trim().toUpperCase() || 'None')}</div></div>
+        `;
+      }
+      if (categoryInput) categoryInput.value = normalizeCategory(code.category || '');
+      if (causeInput) causeInput.value = String(code.abbreviation || '').trim().toUpperCase();
+      if (descTextarea) descTextarea.value = code.description || '';
+      if (backdrop) {
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+      }
+      setTimeout(() => categoryInput?.focus(), 0);
+    }
+
+    function saveActiveCodeSetupEdit() {
+      if (activeCodeSetupIndex === null || !downtimeCodes[activeCodeSetupIndex]) return;
+      const code = downtimeCodes[activeCodeSetupIndex];
+      const oldAbbreviation = String(code.abbreviation || '').trim().toUpperCase();
+      const categoryInput = document.getElementById('codeSetupCategoryInput');
+      const causeInput = document.getElementById('codeSetupCauseInput');
+      const descTextarea = document.getElementById('codeSetupDescriptionTextarea');
+      const newCategory = normalizeCategory(categoryInput?.value || 'UNCATEGORIZED');
+      const newAbbreviation = String(causeInput?.value || '').trim().toUpperCase();
+      const newDescription = String(descTextarea?.value || '').trim();
+
+      code.category = newCategory;
+      code.abbreviation = newAbbreviation;
+      code.description = newDescription;
+
+      if (oldAbbreviation && newAbbreviation && oldAbbreviation !== newAbbreviation) {
+        events.forEach(event => {
+          const eventCode = String(event.downtimeCode || event.downtimeCause || '').trim().toUpperCase();
+          if (eventCode === oldAbbreviation) {
+            event.downtimeCode = newAbbreviation;
+            event.downtimeCause = newAbbreviation;
+            if (!event.downtimeCategory || normalizeCategory(event.downtimeCategory) === normalizeCategory(code.category)) {
+              event.downtimeCategory = newCategory;
+            }
+          }
+        });
+      }
+
+      normalizeDowntimeCodes();
+    }
+
+    function closeCodeSetupModal(saveChanges = true) {
+      if (saveChanges) saveActiveCodeSetupEdit();
+      activeCodeSetupIndex = null;
+      const backdrop = document.getElementById('codeSetupModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      renderCodeTable();
+      renderTable();
+      updateSummary();
+      updateProductionAnalysis();
+      updatePareto();
+      updateTopLossSummary();
+      updateDataQualityChecks();
+      updateExecutiveReport();
+    }
+
+    function handleCodeSetupBackdropClick(event) {
+      if (event.target && event.target.id === 'codeSetupModalBackdrop') {
+        closeCodeSetupModal(true);
+      }
+    }
+
+    function deleteActiveCodeFromModal() {
+      if (activeCodeSetupIndex === null || !downtimeCodes[activeCodeSetupIndex]) return;
+      const deleteIndex = activeCodeSetupIndex;
+      activeCodeSetupIndex = null;
+      const backdrop = document.getElementById('codeSetupModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      deleteDowntimeCode(deleteIndex);
     }
 
     function renderCategoryOptionsDataList() {
@@ -4351,19 +5497,112 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       updateExecutiveReport();
     }
 
+
+    function populateEventEditMeta(event) {
+      const meta = document.getElementById('eventEditMetaGrid');
+      if (!meta || !event) return;
+
+      const startTimestamp = event.startTimestamp || event.startTime || '';
+      const stopTimestamp = event.stopTimestamp || event.stopTime || '';
+      const rows = [
+        ['Event #', event.eventNumber || '—'],
+        ['Duration', formatDuration(event.durationSeconds)],
+        ['Start Time', event.startTime || '—'],
+        ['Stop Time', event.stopTime || 'Running / not stopped'],
+        ['Start Timestamp', startTimestamp || '—'],
+        ['Stop Timestamp', stopTimestamp || 'Running / not stopped']
+      ];
+
+      meta.innerHTML = rows.map(([label, value]) => `
+        <div class="event-edit-meta-item">
+          <div class="event-edit-meta-label">${escapeHTML(label)}</div>
+          <div class="event-edit-meta-value">${escapeHTML(value)}</div>
+        </div>
+      `).join('');
+    }
+
+    function populateEventEditCategoryOptions(currentValue) {
+      const select = document.getElementById('eventEditCategorySelect');
+      if (!select) return;
+
+      const normalizedCurrent = normalizeCategory(currentValue);
+      const categories = getDowntimeCategories();
+      const hasUnknownCurrent = normalizedCurrent && !categories.includes(normalizedCurrent);
+      let htmlText = '<option value="">Select category</option>';
+
+      categories.forEach(category => {
+        const selected = category === normalizedCurrent ? 'selected' : '';
+        htmlText += `<option value="${escapeHTML(category)}" ${selected}>${escapeHTML(category)}</option>`;
+      });
+
+      if (hasUnknownCurrent) {
+        htmlText += `<option value="${escapeHTML(normalizedCurrent)}" selected>${escapeHTML(normalizedCurrent)} (current saved value)</option>`;
+      }
+
+      select.innerHTML = htmlText;
+      select.value = normalizedCurrent || '';
+    }
+
+    function populateEventEditCauseOptions(categoryValue, currentValue) {
+      const select = document.getElementById('eventEditCauseSelect');
+      if (!select) return;
+
+      const normalizedCategory = normalizeCategory(categoryValue);
+      const currentCause = String(currentValue || '').trim().toUpperCase();
+      const causeRows = isLegacyEventLogView() && !normalizedCategory
+        ? downtimeCodes.filter(code => code.abbreviation).slice().sort((a, b) => String(a.abbreviation || '').localeCompare(String(b.abbreviation || '')))
+        : getCausesForCategory(normalizedCategory);
+      const knownCauses = causeRows.map(code => String(code.abbreviation || '').trim().toUpperCase()).filter(Boolean);
+      const hasUnknownCurrent = currentCause && !knownCauses.includes(currentCause);
+
+      let htmlText = normalizedCategory || isLegacyEventLogView()
+        ? '<option value="">Select reason code</option>'
+        : '<option value="">Select category first</option>';
+
+      causeRows.forEach(code => {
+        const causeValue = String(code.abbreviation || '').trim().toUpperCase();
+        const description = String(code.description || '').trim();
+        const selected = causeValue === currentCause ? 'selected' : '';
+        const titleText = description ? ` title="${escapeHTML(description)}"` : '';
+        htmlText += `<option value="${escapeHTML(causeValue)}"${titleText} ${selected}>${escapeHTML(causeValue)}</option>`;
+      });
+
+      if (hasUnknownCurrent) {
+        htmlText += `<option value="${escapeHTML(currentCause)}" selected>${escapeHTML(currentCause)} (current saved value)</option>`;
+      }
+
+      select.innerHTML = htmlText;
+      select.disabled = !normalizedCategory && !isLegacyEventLogView();
+      select.value = currentCause || '';
+    }
+
+    function handleEventEditCategoryChange(value) {
+      const category = normalizeCategory(value);
+      const causeSelect = document.getElementById('eventEditCauseSelect');
+      populateEventEditCauseOptions(category, '');
+      if (causeSelect) causeSelect.value = '';
+    }
+
     function openEventNoteModal(index) {
       if (!events[index]) return;
       activeNoteEventIndex = index;
+      const event = events[index];
       const backdrop = document.getElementById('eventNoteModalBackdrop');
       const textarea = document.getElementById('eventNoteModalTextarea');
       const title = document.getElementById('eventNoteModalTitle');
-      if (title) title.textContent = 'Event #' + (events[index].eventNumber || index + 1) + ' Note';
-      if (textarea) textarea.value = events[index].notes || '';
+      const currentCause = String(event.downtimeCause || event.downtimeCode || '').trim().toUpperCase();
+      const currentCategory = normalizeCategory(event.downtimeCategory || getCodeCategory(currentCause) || '');
+
+      if (title) title.textContent = 'Event Details #' + (event.eventNumber || index + 1);
+      populateEventEditMeta(event);
+      populateEventEditCategoryOptions(currentCategory);
+      populateEventEditCauseOptions(currentCategory, currentCause);
+      if (textarea) textarea.value = event.notes || '';
       if (backdrop) {
         backdrop.classList.add('open');
         backdrop.setAttribute('aria-hidden', 'false');
       }
-      setTimeout(() => textarea?.focus(), 0);
+      setTimeout(() => document.getElementById('eventEditCategorySelect')?.focus(), 0);
     }
 
     function updateActiveEventNote(value) {
@@ -4371,18 +5610,57 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       events[activeNoteEventIndex].notes = value;
     }
 
+    function saveActiveEventEdit() {
+      if (activeNoteEventIndex === null || !events[activeNoteEventIndex]) return;
+
+      const event = events[activeNoteEventIndex];
+      const categorySelect = document.getElementById('eventEditCategorySelect');
+      const causeSelect = document.getElementById('eventEditCauseSelect');
+      const textarea = document.getElementById('eventNoteModalTextarea');
+      const category = normalizeCategory(categorySelect?.value || '');
+      const cause = String(causeSelect?.value || '').trim().toUpperCase();
+
+      event.downtimeCategory = category;
+      event.downtimeCause = cause;
+      event.downtimeCode = cause;
+      event.notes = textarea ? textarea.value : (event.notes || '');
+
+      if (!event.downtimeCategory && event.downtimeCode) {
+        const inferredCategory = getCodeCategory(event.downtimeCode);
+        if (inferredCategory && inferredCategory !== 'UNCATEGORIZED') {
+          event.downtimeCategory = inferredCategory;
+        }
+      }
+    }
+
+
+    function deleteActiveEventFromModal() {
+      if (activeNoteEventIndex === null || !events[activeNoteEventIndex]) return;
+      const proceed = confirm('Delete this downtime event?');
+      if (!proceed) return;
+      const deleteIndex = activeNoteEventIndex;
+      activeNoteEventIndex = null;
+      const backdrop = document.getElementById('eventNoteModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      deleteRow(deleteIndex);
+    }
+
     function closeEventNoteModal() {
       const backdrop = document.getElementById('eventNoteModalBackdrop');
-      const textarea = document.getElementById('eventNoteModalTextarea');
-      if (activeNoteEventIndex !== null && events[activeNoteEventIndex] && textarea) {
-        events[activeNoteEventIndex].notes = textarea.value;
-      }
+      saveActiveEventEdit();
       activeNoteEventIndex = null;
       if (backdrop) {
         backdrop.classList.remove('open');
         backdrop.setAttribute('aria-hidden', 'true');
       }
       renderTable();
+      updateSummary();
+      updateProductionAnalysis();
+      updatePareto();
+      updateTopLossSummary();
       updateDataQualityChecks();
       updateExecutiveReport();
     }
@@ -4396,6 +5674,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     document.addEventListener('keydown', function(event) {
       if (event.key === 'Escape' && activeNoteEventIndex !== null) {
         closeEventNoteModal();
+      } else if (event.key === 'Escape' && activeCodeSetupIndex !== null) {
+        closeCodeSetupModal(true);
       }
     });
 
@@ -4405,9 +5685,29 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     function renderNoteCell(index, noteValue) {
       const note = String(noteValue || '');
+      const event = events[index] || {};
+      const cause = String(event.downtimeCause || event.downtimeCode || '').trim().toUpperCase();
+      const category = normalizeCategory(event.downtimeCategory || getCodeCategory(cause) || '');
       const hasNote = note.trim() ? 'has-note' : '';
-      const preview = note.trim() ? 'Note saved' : 'Add note';
-      return `<button type="button" class="note-toggle-btn ${hasNote}" onclick="openEventNoteModal(${index})" title="${escapeHTML(note || 'Open note')}">📝<span class="note-preview-text">${escapeHTML(preview)}</span></button>`;
+      const runningText = index === activeEventIndex ? 'Running' : '';
+      const details = [runningText, category || 'No category', cause || 'No cause', note.trim() ? 'Note saved' : 'No note'].filter(Boolean).join(' / ');
+      return `<button type="button" class="note-toggle-btn event-entry-button ${hasNote}" onclick="openEventNoteModal(${index})" title="${escapeHTML(details)}">Details<span class="note-preview-text">${escapeHTML(details)}</span></button>`;
+    }
+
+
+
+    function renderLoadSavePreviewDetailsButton(index, event) {
+      const safeIndex = Number.isFinite(index) ? index : Math.max(0, Number(event?.eventNumber || 1) - 1);
+      const cause = String(event?.downtimeCause || event?.downtimeCode || '').trim().toUpperCase();
+      const category = normalizeCategory(event?.downtimeCategory || getCodeCategory(cause) || '');
+      const activeText = safeIndex === activeEventIndex ? 'Running' : '';
+      const details = [
+        activeText,
+        category || 'No category',
+        cause || 'No cause',
+        event?.notes ? 'Note saved' : 'No note'
+      ].filter(Boolean).join(' / ');
+      return `<button type="button" class="note-toggle-btn event-entry-button ${event?.notes ? 'has-note' : ''}" onclick="openEventNoteModal(${safeIndex})" title="${escapeHTML(details)}">Details<span class="event-detail-summary">${escapeHTML(details)}</span></button>`;
     }
 
     function updateCell(index, field, value) {
@@ -4504,6 +5804,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       updateStudyStatus();
       updateProductionAnalysis();
       updateExecutiveReport();
+      updateLoadSaveEventLogPreview();
     }
 
     function updateEntryModeStatus() {
@@ -4550,51 +5851,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     function renderEventTableHeader() {
       const head = document.getElementById('eventHeadRow');
       if (!head) return;
-
-      if (isLegacyEventLogView()) {
-        if (isManualEntryMode()) {
-          head.innerHTML = `
-            <th>Event #</th>
-            <th>Duration<br />([MM]:SS)</th>
-            <th>Reason Code</th>
-            <th>Note</th>
-            <th>Remove</th>
-          `;
-        } else {
-          head.innerHTML = `
-            <th>Event #</th>
-            <th>Start<br />(HH:MM)</th>
-            <th>Stop<br />(HH:MM)</th>
-            <th>Reason Code</th>
-            <th>Duration<br />([MM]:SS)</th>
-            <th>Note</th>
-            <th>Remove</th>
-          `;
-        }
-        return;
-      }
-
-      if (isManualEntryMode()) {
-        head.innerHTML = `
-          <th>Event #</th>
-          <th>Duration<br />([MM]:SS)</th>
-          <th>Category</th>
-          <th>Cause</th>
-          <th>Note</th>
-          <th>Remove</th>
-        `;
-      } else {
-        head.innerHTML = `
-          <th>Event #</th>
-          <th>Start<br />(HH:MM)</th>
-          <th>Stop<br />(HH:MM)</th>
-          <th>Category</th>
-          <th>Cause</th>
-          <th>Duration<br />([MM]:SS)</th>
-          <th>Note</th>
-          <th>Remove</th>
-        `;
-      }
+      head.innerHTML = `
+        <th class="event-duration-col mobile-duration">Duration<br />([MM]:SS)</th>
+        <th class="event-details-col mobile-details">Details</th>
+      `;
     }
 
     function renderTable() {
@@ -4606,49 +5866,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const renderEventRow = (event, index) => {
         const row = document.createElement('tr');
         if (index === activeEventIndex) row.className = 'active-row';
-
-        if (isLegacyEventLogView()) {
-          if (isManualEntryMode()) {
-            row.innerHTML = `
-              <td class="number">${event.eventNumber}</td>
-              <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
-              <td>${renderLegacyDowntimeCauseSelect(index, event.downtimeCause || event.downtimeCode || '')}</td>
-              <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
-              <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
-            `;
-          } else {
-            row.innerHTML = `
-              <td class="number">${event.eventNumber}</td>
-              <td><input value="${escapeHTML(event.startTime)}" onchange="updateCell(${index}, 'startTime', this.value)" /></td>
-              <td><input value="${escapeHTML(event.stopTime)}" onchange="updateCell(${index}, 'stopTime', this.value)" /></td>
-              <td>${renderLegacyDowntimeCauseSelect(index, event.downtimeCause || event.downtimeCode || '')}</td>
-              <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
-              <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
-              <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
-            `;
-          }
-        } else if (isManualEntryMode()) {
-          row.innerHTML = `
-            <td class="number">${event.eventNumber}</td>
-            <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
-            <td>${renderDowntimeCategorySelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''))}</td>
-            <td>${renderDowntimeCauseSelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''), event.downtimeCause || event.downtimeCode || '')}</td>
-            <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
-            <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
-          `;
-        } else {
-          row.innerHTML = `
-            <td class="number">${event.eventNumber}</td>
-            <td><input value="${escapeHTML(event.startTime)}" onchange="updateCell(${index}, 'startTime', this.value)" /></td>
-            <td><input value="${escapeHTML(event.stopTime)}" onchange="updateCell(${index}, 'stopTime', this.value)" /></td>
-            <td>${renderDowntimeCategorySelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''))}</td>
-            <td>${renderDowntimeCauseSelect(index, event.downtimeCategory || getCodeCategory(event.downtimeCode || ''), event.downtimeCause || event.downtimeCode || '')}</td>
-            <td><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
-            <td class="notes-cell">${renderNoteCell(index, event.notes)}</td>
-            <td><button class="delete-row" onclick="deleteRow(${index})">X</button></td>
-          `;
-        }
-
+        row.innerHTML = `
+          <td class="event-duration-col mobile-duration"><input value="${escapeHTML(formatDuration(event.durationSeconds))}" onchange="updateCell(${index}, 'durationManual', this.value)" /></td>
+          <td class="event-details-col notes-cell mobile-details">${renderNoteCell(index, event.notes)}</td>
+        `;
         body.appendChild(row);
       };
 
@@ -4657,7 +5878,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         const hiddenCount = events.length - 2;
         const summaryRow = document.createElement('tr');
         summaryRow.className = 'collapsed-summary-row';
-        const colSpan = isLegacyEventLogView() ? (isManualEntryMode() ? 5 : 7) : (isManualEntryMode() ? 6 : 8);
+        const colSpan = 2;
         summaryRow.innerHTML = `<td colspan="${colSpan}">${hiddenCount} additional event${hiddenCount === 1 ? '' : 's'} hidden. Expand to review or edit the full event log.</td>`;
         body.appendChild(summaryRow);
         renderEventRow(events[events.length - 1], events.length - 1);
@@ -4665,6 +5886,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       }
 
       events.forEach((event, index) => renderEventRow(event, index));
+      updateLoadSaveEventLogPreview();
     }
 
     function escapeHTML(value) {
@@ -5119,10 +6341,26 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       return (value * 100).toFixed(1) + '%';
     }
 
+
+    function updateLoadSaveEventLogPreview() {
+      const fileMirror = document.getElementById('loadSaveFileStatusMirror');
+      const downtimeMirror = document.getElementById('loadSaveDowntimeStatusMirror');
+
+      const jsonStatus = document.getElementById('jsonDropStatus');
+      const downtimeStatus = document.getElementById('status');
+
+      if (fileMirror) fileMirror.textContent = jsonStatus?.textContent || 'Ready for JSON study file.';
+      if (downtimeMirror) {
+        downtimeMirror.textContent = downtimeStatus?.textContent || (activeEventIndex !== null ? 'Downtime event running.' : 'Ready.');
+        downtimeMirror.classList.toggle('running', activeEventIndex !== null);
+      }
+    }
+
     function setStatus(message, running) {
       const status = document.getElementById('status');
       status.textContent = message;
       status.className = running ? 'status running' : 'status';
+      updateLoadSaveEventLogPreview();
     }
 
     function collectFormFieldValues() {
@@ -5510,6 +6748,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       if (!status) return;
       status.textContent = message;
       status.style.color = isError ? '#fecaca' : '#a1a1aa';
+      updateLoadSaveEventLogPreview();
     }
 
     function setJsonDropActive(isActive) {
@@ -7244,6 +8483,162 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
 
+
+    /* Standardized compact event log views: all event tables show only Duration + Details. */
+    #eventTable,
+    .compact-event-log-table,
+    .load-save-event-preview-table {
+      width: 100% !important;
+      min-width: 0 !important;
+      table-layout: fixed !important;
+    }
+
+    #eventTable th.event-duration-col,
+    #eventTable td.event-duration-col,
+    .compact-event-log-table th:first-child,
+    .compact-event-log-table td:first-child {
+      width: 34% !important;
+    }
+
+    #eventTable th.event-details-col,
+    #eventTable td.event-details-col,
+    .compact-event-log-table th:nth-child(2),
+    .compact-event-log-table td:nth-child(2) {
+      width: 66% !important;
+    }
+
+    .event-detail-summary {
+      display: block;
+      margin-top: 5px;
+      color: #a1a1aa !important;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .event-delete-modal-btn {
+      min-width: 130px;
+      background: rgba(239, 68, 68, 0.18);
+      border-color: rgba(239, 68, 68, 0.48);
+    }
+
+    @media (max-width: 700px) {
+      #eventTable th.event-duration-col,
+      #eventTable td.event-duration-col,
+      .compact-event-log-table th:first-child,
+      .compact-event-log-table td:first-child {
+        width: 38% !important;
+      }
+
+      #eventTable th.event-details-col,
+      #eventTable td.event-details-col,
+      .compact-event-log-table th:nth-child(2),
+      .compact-event-log-table td:nth-child(2) {
+        width: 62% !important;
+      }
+    }
+
+    /* ============================================================
+       Top navigation tabs for phone-friendly section browsing
+       ============================================================ */
+    .tracker-tab-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1500;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 18px;
+      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(17,18,20,0.98), rgba(12,13,15,0.94));
+      box-shadow: 0 14px 28px rgba(0,0,0,0.34);
+      backdrop-filter: blur(10px);
+    }
+
+    .tracker-tab-btn {
+      min-height: 44px;
+      padding: 9px 10px;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,0.20);
+      background: rgba(255,255,255,0.065);
+      color: #f4f4f5;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0.045em;
+      line-height: 1.15;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .tracker-tab-btn.active,
+    .tracker-tab-btn[aria-selected="true"] {
+      border-color: rgba(18, 163, 154, 0.72);
+      background: linear-gradient(135deg, var(--mpg-blue), var(--mpg-teal));
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(18,163,154,0.22);
+    }
+
+    .tracker-tab-item[hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .tracker-tab-nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 7px;
+        margin-bottom: 12px;
+        border-radius: 16px;
+      }
+
+      .tracker-tab-btn {
+        min-height: 42px;
+        font-size: 11px;
+        padding: 8px 8px;
+      }
+    }
+
+    @media print {
+      .tracker-tab-nav {
+        display: none !important;
+      }
+
+      .tracker-tab-item[hidden] {
+        display: block !important;
+      }
+    }
+
+
+    .load-save-event-preview-table {
+      min-width: 980px;
+    }
+
+    .load-save-event-preview-table td {
+      line-height: 1.3;
+    }
+
+    .load-save-event-preview-table .preview-note-cell {
+      text-align: left;
+      max-width: 320px;
+      overflow-wrap: anywhere;
+    }
+
+    .load-save-event-preview-table .preview-active-row td {
+      background: rgba(245,130,32,0.11) !important;
+    }
+
+    @media (max-width: 700px) {
+      .load-save-event-preview-table {
+        min-width: 860px;
+      }
+    }
+
+
     @page {
                 size: landscape;
                 margin: 0.35in;
@@ -7301,7 +8696,87 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
                   -webkit-print-color-adjust: exact !important;
                 }
               }
-            </style>
+            
+
+              /* Print/export-only Pareto fit override.
+                 This appears after the drag-scroll CSS so the printed graph scales to page width. */
+              @media print {
+                .executive-report,
+                .executive-report .report-panel,
+                .executive-report .report-panel-body,
+                .executive-report .executive-chart-wrap,
+                .executive-summary-table-wrap {
+                  overflow: visible !important;
+                }
+
+                .executive-report .report-grid {
+                  display: grid !important;
+                  grid-template-columns: 0.9fr 1.1fr !important;
+                  gap: 12px !important;
+                  align-items: stretch !important;
+                }
+
+                .executive-report .executive-chart-wrap,
+                .executive-report .executive-chart-wrap.pareto-drag-scroll {
+                  width: 100% !important;
+                  max-width: 100% !important;
+                  min-width: 0 !important;
+                  overflow: visible !important;
+                  overflow-x: visible !important;
+                  overflow-y: visible !important;
+                  padding: 0 !important;
+                  margin: 0 !important;
+                  cursor: default !important;
+                  scrollbar-width: none !important;
+                  -ms-overflow-style: none !important;
+                }
+
+                .executive-report .executive-chart-wrap::-webkit-scrollbar,
+                .executive-report .executive-chart-wrap.pareto-drag-scroll::-webkit-scrollbar {
+                  display: none !important;
+                  width: 0 !important;
+                  height: 0 !important;
+                }
+
+                .executive-report .executive-chart-wrap::after,
+                .executive-report .executive-chart-wrap.pareto-drag-scroll::after,
+                .executive-chart-wrap + .drag-scroll-hint,
+                .executive-summary-table-wrap + .drag-scroll-hint {
+                  display: none !important;
+                  content: none !important;
+                }
+
+                .executive-report .executive-chart-svg {
+                  width: 100% !important;
+                  min-width: 0 !important;
+                  max-width: 100% !important;
+                  height: auto !important;
+                  min-height: 300px !important;
+                  max-height: 3.75in !important;
+                  display: block !important;
+                }
+
+                .executive-summary-table-wrap,
+                .executive-summary-table-wrap.drag-scroll-area {
+                  width: 100% !important;
+                  max-width: 100% !important;
+                  min-width: 0 !important;
+                  overflow: visible !important;
+                  overflow-x: visible !important;
+                  padding: 0 !important;
+                  cursor: default !important;
+                  scrollbar-width: none !important;
+                  -ms-overflow-style: none !important;
+                }
+
+                .executive-summary-table-wrap::-webkit-scrollbar,
+                .executive-summary-table-wrap.drag-scroll-area::-webkit-scrollbar {
+                  display: none !important;
+                  width: 0 !important;
+                  height: 0 !important;
+                }
+              }
+</style>
           </head>
           <body>
             ${reportElement.outerHTML}
@@ -7923,6 +9398,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const selector = [
         '.table-scroll',
         '.executive-chart-wrap',
+        '.executive-summary-table-wrap',
         '.table-wrap',
         '.chart-card',
         '.prod-chart-card',
@@ -7954,9 +9430,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
         area.addEventListener('pointerdown', event => {
           if (event.button !== undefined && event.button !== 0) return;
-          if (event.target.closest('button, input, select, textarea, a, label')) return;
           if (area.scrollWidth <= area.clientWidth + 2) return;
 
+          // Allow drag-scroll to start from ANY part of a wide table, including
+          // cells that contain buttons, inputs, selects, labels, or textareas.
+          // A normal tap/click is still allowed; only an actual drag suppresses
+          // the click and moves the table.
           isDown = true;
           hasMoved = false;
           pointerId = event.pointerId;
@@ -7972,10 +9451,13 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           const dx = event.clientX - startX;
           const dy = event.clientY - startY;
 
-          if (!hasMoved && Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
-          hasMoved = true;
+          // Keep regular taps/clicks untouched. Treat as a drag only after
+          // the pointer moves enough to show user intent.
+          if (!hasMoved && Math.abs(dx) < 7 && Math.abs(dy) < 7) return;
 
+          // Horizontal intent scrolls the table. Vertical intent remains page scroll.
           if (Math.abs(dx) >= Math.abs(dy)) {
+            hasMoved = true;
             event.preventDefault();
             area.scrollLeft = startScrollLeft - dx;
           }
@@ -7989,6 +9471,15 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           pointerId = null;
         }
 
+        area.addEventListener('click', event => {
+          if (!hasMoved) return;
+          // Dragging across controls should not also press a button, open a
+          // select, focus a field, or toggle a checkbox after release.
+          event.preventDefault();
+          event.stopPropagation();
+          hasMoved = false;
+        }, true);
+
         area.addEventListener('pointerup', endDrag);
         area.addEventListener('pointercancel', endDrag);
         area.addEventListener('pointerleave', endDrag);
@@ -8001,7 +9492,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const needsScroll = area.scrollWidth > area.clientWidth + 2;
       area.classList.toggle('needs-horizontal-scroll', needsScroll);
 
-      const isHintEligible = area.matches('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card');
+      const isHintEligible = area.matches('.table-scroll, .executive-chart-wrap, .executive-summary-table-wrap, .table-wrap, .chart-card, .prod-chart-card');
       if (!isHintEligible) return;
 
       let hint = area.nextElementSibling;
@@ -8013,6 +9504,144 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       }
     }
 
+
+
+    const trackerTabConfig = {
+      info: {
+        label: 'Information',
+        sections: [
+          ['Study Information', 10]
+        ]
+      },
+      load: {
+        label: 'Load / Save',
+        sections: [
+          ['Load / Save Status', 5],
+          ['Load / Recover', 10],
+          ['Save / Export', 20],
+          ['Data Quality Checks', 30]
+        ]
+      },
+      study: {
+        label: 'Study',
+        sections: [
+          ['Entry Mode', 5],
+          ['Event Log', 10],
+          ['Downtime Code Setup', 20],
+          ['Observation Summary', 30]
+        ]
+      },
+      results: {
+        label: 'Results',
+        sections: [
+          ['Summary Statistics', 10],
+          ['Top Included Downtime Causes', 20],
+          ['Action Items / Follow-Up', 30],
+          ['Study-Scope Production Analysis', 40],
+          ['Included-Cause Pareto', 50],
+          ['Executive Report', 60]
+        ]
+      }
+    };
+
+    function normalizeTrackerHeading(text) {
+      return String(text || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function getTrackerSectionInfo(section) {
+      const heading = normalizeTrackerHeading(section?.querySelector?.('h2')?.textContent || '');
+      for (const [tabKey, tabData] of Object.entries(trackerTabConfig)) {
+        const match = tabData.sections.find(([title]) => title === heading);
+        if (match) return { tabKey, order: match[1], heading };
+      }
+      return null;
+    }
+
+    function initializeTrackerTabs() {
+      const grid = document.querySelector('.page-wrap > .grid');
+      if (!grid) return;
+
+      let lastTabKey = null;
+      let lastOrder = 0;
+      Array.from(grid.children).forEach(child => {
+        const isSection = child.matches?.('section.box, section.box.table-shell, section.box.white-border, section.box.executive-report-shell');
+        const isDivider = child.matches?.('.mpg-rule');
+        const isFooter = child.matches?.('.footer-note');
+        let info = isSection ? getTrackerSectionInfo(child) : null;
+
+        if (info) {
+          lastTabKey = info.tabKey;
+          lastOrder = info.order;
+          child.classList.add('tracker-tab-item');
+          child.dataset.trackerTab = info.tabKey;
+          child.style.order = String(info.order);
+          return;
+        }
+
+        if (isDivider && lastTabKey) {
+          child.classList.add('tracker-tab-item');
+          child.dataset.trackerTab = lastTabKey;
+          child.style.order = String(lastOrder + 1);
+          return;
+        }
+
+        if (isFooter) {
+          child.classList.add('tracker-tab-item');
+          child.dataset.trackerTab = 'results';
+          child.style.order = '70';
+        }
+      });
+
+      const savedTab = localStorage.getItem('mpgDowntimeTrackerActiveTab');
+      const hashTab = window.location.hash ? window.location.hash.replace('#', '') : '';
+      const startingTab = trackerTabConfig[hashTab] ? hashTab : (trackerTabConfig[savedTab] ? savedTab : 'info');
+      showTrackerTab(startingTab, { preserveHash: true });
+    }
+
+    function showTrackerTab(tabKey, options = {}) {
+      if (!trackerTabConfig[tabKey]) tabKey = 'info';
+
+      document.querySelectorAll('[data-tracker-tab-button]').forEach(button => {
+        const isActive = button.dataset.trackerTabButton === tabKey;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      document.querySelectorAll('.tracker-tab-item').forEach(item => {
+        const isActive = item.dataset.trackerTab === tabKey;
+        item.hidden = !isActive;
+        item.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      localStorage.setItem('mpgDowntimeTrackerActiveTab', tabKey);
+      if (!options.preserveHash && window.history?.replaceState) {
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${tabKey}`);
+      }
+
+      refreshTrackerTabCalculations(tabKey);
+      window.requestAnimationFrame?.(() => initializeParetoDragScroll?.());
+    }
+
+    function refreshTrackerTabCalculations(tabKey) {
+      try {
+        if (typeof updateSummary === 'function') updateSummary();
+        if (typeof updateTopLossSummary === 'function') updateTopLossSummary();
+        if (typeof updateProductionAnalysis === 'function') updateProductionAnalysis();
+        if (typeof updatePareto === 'function') updatePareto();
+        if (typeof updateExecutiveReport === 'function') updateExecutiveReport();
+        if (typeof updateDataQualityChecks === 'function') updateDataQualityChecks();
+        if (typeof updateStudyFilePreview === 'function') updateStudyFilePreview();
+      } catch (error) {
+        console.warn('Tab refresh skipped one calculation:', error);
+      }
+    }
+
+    window.addEventListener('hashchange', () => {
+      const hashTab = window.location.hash ? window.location.hash.replace('#', '') : '';
+      if (trackerTabConfig[hashTab]) showTrackerTab(hashTab, { preserveHash: true });
+    });
+
+
     if (window.ResizeObserver) {
       const dragScrollResizeObserver = new ResizeObserver(() => initializeParetoDragScroll());
       document.querySelectorAll('.table-scroll, .executive-chart-wrap, .table-wrap, .chart-card, .prod-chart-card').forEach(el => {
@@ -8021,7 +9650,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     document.addEventListener('DOMContentLoaded', initializeParetoDragScroll);
+    document.addEventListener('DOMContentLoaded', updateLoadSaveEventLogPreview);
+    document.addEventListener('DOMContentLoaded', initializeTrackerTabs);
     initializeParetoDragScroll();
+    initializeTrackerTabs();
 
   </script>
 </body>
