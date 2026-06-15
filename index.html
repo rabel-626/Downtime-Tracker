@@ -2964,10 +2964,10 @@
   
 
     /* ============================================================
-       Executive report print/PDF Pareto fit patch
-       Keeps mobile graph scrolling for screen use, but forces the
-       full executive Pareto SVG to scale into the printed page with
-       no horizontal scrollbar or drag hint.
+       Executive report print/PDF quality patch
+       Keeps the mobile view scrollable, but removes scrollbars and
+       drag hints in print/PDF without compressing the SVG height.
+       The chart remains vector-based for sharper print output.
        ============================================================ */
     @media print {
       .executive-report-shell,
@@ -2980,28 +2980,38 @@
       }
 
       .executive-report .report-grid {
-        grid-template-columns: 0.9fr 1.1fr !important;
-        gap: 12px !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
         align-items: stretch !important;
+      }
+
+      .executive-report .report-panel {
+        width: 100% !important;
+      }
+
+      .executive-report .report-metrics {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 8px !important;
       }
 
       .executive-report .executive-chart-wrap,
       .executive-report .executive-chart-wrap.pareto-drag-scroll {
         width: 100% !important;
         max-width: 100% !important;
-        min-width: 0 !important;
         overflow: visible !important;
         overflow-x: visible !important;
         overflow-y: visible !important;
         padding: 0 !important;
-        margin: 0 !important;
         cursor: default !important;
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
       }
 
       .executive-report .executive-chart-wrap::-webkit-scrollbar,
-      .executive-report .executive-chart-wrap.pareto-drag-scroll::-webkit-scrollbar {
+      .executive-report .executive-chart-wrap.pareto-drag-scroll::-webkit-scrollbar,
+      .executive-summary-table-wrap::-webkit-scrollbar,
+      .executive-summary-table-wrap.drag-scroll-area::-webkit-scrollbar {
         display: none !important;
         width: 0 !important;
         height: 0 !important;
@@ -3017,11 +3027,11 @@
 
       .executive-report .executive-chart-svg {
         width: 100% !important;
-        min-width: 0 !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         height: auto !important;
-        min-height: 260px !important;
-        max-height: 3.65in !important;
+        min-height: 330px !important;
+        max-height: none !important;
         display: block !important;
       }
 
@@ -3029,7 +3039,6 @@
       .executive-summary-table-wrap.drag-scroll-area {
         width: 100% !important;
         max-width: 100% !important;
-        min-width: 0 !important;
         overflow: visible !important;
         overflow-x: visible !important;
         padding: 0 !important;
@@ -3037,14 +3046,236 @@
         scrollbar-width: none !important;
         -ms-overflow-style: none !important;
       }
+    }
 
-      .executive-summary-table-wrap::-webkit-scrollbar,
-      .executive-summary-table-wrap.drag-scroll-area::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
+
+    /* Executive report print layout: analysis and graph together on page 1; breakdown on page 2. */
+    @media print {
+      .executive-report {
+        break-inside: auto !important;
+        page-break-inside: auto !important;
+      }
+
+      .executive-report .report-grid {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        align-items: stretch !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .executive-report .report-analysis-panel,
+      .executive-report .report-chart-panel {
+        width: 100% !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      .executive-report .report-breakdown-panel {
+        width: 100% !important;
+        margin-top: 0 !important;
+        break-before: page !important;
+        page-break-before: always !important;
+      }
+
+      .executive-report .report-panel-header {
+        padding: 8px 10px 7px !important;
+        font-size: 13px !important;
+      }
+
+      .executive-report .report-panel-body {
+        padding: 8px 10px !important;
+      }
+
+      .executive-report .report-metrics {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+      }
+
+      .executive-report .report-metric {
+        padding: 7px 6px !important;
+        min-height: 0 !important;
+      }
+
+      .executive-report .report-metric-label {
+        font-size: 8.5px !important;
+        line-height: 1.15 !important;
+        margin-bottom: 4px !important;
+      }
+
+      .executive-report .report-metric-value {
+        font-size: 15px !important;
+        line-height: 1.15 !important;
+      }
+
+      .executive-report .executive-chart-wrap,
+      .executive-report .executive-chart-wrap.pareto-drag-scroll {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: visible !important;
+        padding: 0 !important;
+      }
+
+      .executive-report .executive-chart-svg {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        min-height: 320px !important;
+        max-height: none !important;
       }
     }
+
+
+
+    /* Executive category drilldown popup and print charts */
+    .executive-category-breakdown-panel {
+      display: none;
+    }
+
+    .executive-category-breakdown-charts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .executive-subcategory-chart-card {
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.035) !important;
+      padding: 8px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .executive-subcategory-chart-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      background: rgba(0,0,0,0.14) !important;
+      border-radius: 10px;
+    }
+
+    .category-drilldown-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 25000;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 12px;
+      background: rgba(0,0,0,0.62);
+      backdrop-filter: blur(5px);
+    }
+
+    .category-drilldown-modal-backdrop.open {
+      display: flex;
+    }
+
+    .category-drilldown-modal {
+      width: min(980px, calc(100vw - 24px));
+      max-height: calc(100vh - 28px);
+      border: 1px solid rgba(255,255,255,0.30);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.055)), #111214;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.68);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .category-drilldown-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.20);
+    }
+
+    .category-drilldown-modal-title {
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .category-drilldown-close {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border-radius: 999px;
+      font-size: 18px;
+      line-height: 1;
+      background: rgba(255,255,255,0.08);
+      flex: 0 0 auto;
+    }
+
+    .category-drilldown-modal-body {
+      padding: 14px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .category-drilldown-chart-wrap {
+      min-width: 720px;
+    }
+
+    @media (max-width: 760px) {
+      .category-drilldown-modal {
+        align-self: stretch;
+      }
+
+      .category-drilldown-modal-body {
+        padding: 10px;
+      }
+    }
+
+    @media print {
+      .category-drilldown-modal-backdrop {
+        display: none !important;
+      }
+
+      .executive-category-breakdown-panel {
+        display: block !important;
+        break-before: page !important;
+        page-break-before: always !important;
+      }
+
+      .executive-category-breakdown-panel .report-panel-body {
+        padding: 8px 10px !important;
+      }
+
+      .executive-category-breakdown-charts {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        grid-auto-rows: auto !important;
+        gap: 8px !important;
+      }
+
+      .executive-subcategory-chart-card {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+        padding: 5px !important;
+        border-radius: 8px !important;
+      }
+
+      .executive-subcategory-chart-card:nth-child(6n + 7) {
+        break-before: page !important;
+        page-break-before: always !important;
+      }
+
+      .executive-subcategory-chart-svg {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 0 !important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -3288,7 +3519,6 @@
         <div class="save-load-actions">
           <button class="export" onclick="selectStudyFolder()">Select Study Folder</button>
           <button class="export" onclick="saveStudyJsonToSelectedFolder()">Save to Selected Folder</button>
-          <button class="export" onclick="shareStudyJson()">Share JSON</button>
           <button class="copy" onclick="copyStudyJsonToClipboard()">Copy JSON</button>
           <button onclick="saveStudyFile()">Export JSON</button>
           <button onclick="populateStudyFileName(true)">Refresh Auto Name</button>
@@ -3738,11 +3968,11 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     <section class="box executive-report-shell">
       <div class="box-header" style="padding: 18px 18px 0;">
         <h2>Executive Report</h2>
-        <span class="box-tag">Study-Scope Analysis + Pareto</span>
+        <span class="box-tag">Category Pareto + Drilldown</span>
       </div>
 
       <div class="instruction-box" style="margin: 0 18px 14px;">
-        This section creates a simplified executive view using the line name, study-scope production impact, and included-cause Pareto only. Use the export button below to print or save just this report as a PDF. PDF is the best fit here because it preserves the report layout and chart cleanly.
+        This section creates a simplified executive view using the line name, study-scope production impact, category-level Pareto, and cause-code drilldown charts. Use the export button below to print or save just this report as a PDF. PDF is the best fit here because it preserves the report layout and chart cleanly.
       </div>
 
       <div class="report-actions">
@@ -3758,7 +3988,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         <div class="report-line-name" id="reportLineName">Line: N/A | Date: N/A | Shift: N/A</div>
 
         <div class="report-grid">
-          <div class="report-panel">
+          <div class="report-panel report-analysis-panel">
             <div class="report-panel-header">Study-Scope Production Analysis</div>
             <div class="report-panel-body">
               <div class="report-metrics">
@@ -3798,8 +4028,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
             </div>
           </div>
 
-          <div class="report-panel">
-            <div class="report-panel-header">Included-Cause Pareto Graph</div>
+          <div class="report-panel report-chart-panel">
+            <div class="report-panel-header">Included Downtime Category Pareto Graph</div>
             <div class="report-panel-body">
               <div class="executive-chart-wrap">
                 <svg id="executiveParetoChart" class="executive-chart-svg" viewBox="0 0 760 360" preserveAspectRatio="xMidYMid meet" aria-label="Pareto chart"></svg>
@@ -3808,14 +4038,14 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           </div>
         </div>
 
-        <div class="report-panel" style="margin-top: 18px;">
-          <div class="report-panel-header">Included-Cause Pareto Summary</div>
+        <div class="report-panel report-breakdown-panel" style="margin-top: 18px;">
+          <div class="report-panel-header">Downtime Cause Breakdown</div>
           <div class="report-panel-body executive-summary-table-wrap">
             <table class="report-pareto-table">
               <thead>
                 <tr>
                   <th>Rank</th>
-                  <th>Code</th>
+                  <th>Category / Code</th>
                   <th>Description</th>
                   <th>Total Time</th>
                   <th>% of Included Downtime</th>
@@ -3824,6 +4054,13 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
               </thead>
               <tbody id="executiveParetoTableBody"></tbody>
             </table>
+          </div>
+        </div>
+
+        <div class="report-panel executive-category-breakdown-panel" style="margin-top: 18px;">
+          <div class="report-panel-header">Category Cause-Code Drilldown Charts</div>
+          <div class="report-panel-body">
+            <div id="executiveCategoryBreakdownCharts" class="executive-category-breakdown-charts"></div>
           </div>
         </div>
       </div>
@@ -4341,14 +4578,49 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         if (button.dataset.boundCollapse === 'true') return;
         button.dataset.boundCollapse = 'true';
         const section = button.dataset.collapseSection;
+        let collapsePointerStartX = 0;
+        let collapsePointerStartY = 0;
+        let collapsePointerMoved = false;
+
+        function isDragSuppressedClick() {
+          const suppressUntil = Number(window.__dragScrollSuppressClickUntil || 0);
+          return collapsePointerMoved || Date.now() < suppressUntil;
+        }
 
         button.addEventListener('pointerdown', event => {
           if (event.pointerType === 'mouse' && event.button !== 0) return;
+          collapsePointerStartX = event.clientX;
+          collapsePointerStartY = event.clientY;
+          collapsePointerMoved = false;
+        });
+
+        button.addEventListener('pointermove', event => {
+          const dx = event.clientX - collapsePointerStartX;
+          const dy = event.clientY - collapsePointerStartY;
+          if (Math.abs(dx) > 7 || Math.abs(dy) > 7) {
+            collapsePointerMoved = true;
+            window.__dragScrollSuppressClickUntil = Date.now() + 450;
+          }
+        });
+
+        button.addEventListener('pointercancel', () => {
+          collapsePointerMoved = true;
+          window.__dragScrollSuppressClickUntil = Date.now() + 450;
+        });
+
+        button.addEventListener('click', event => {
+          if (isDragSuppressedClick()) {
+            event.preventDefault();
+            event.stopPropagation();
+            collapsePointerMoved = false;
+            return;
+          }
           handleCollapseControl(section, event);
         });
 
         button.addEventListener('keydown', event => {
           if (event.key === 'Enter' || event.key === ' ') {
+            collapsePointerMoved = false;
             handleCollapseControl(section, event);
           }
         });
@@ -6032,9 +6304,11 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const counts = new Map();
 
       downtimeCodes.forEach(code => {
+        const category = normalizeCategory(code.category || 'UNCATEGORIZED');
         const abbreviation = String(code.abbreviation || '').trim().toUpperCase();
         if (!abbreviation) return;
-        counts.set(abbreviation, (counts.get(abbreviation) || 0) + 1);
+        const uniqueKey = category + ' / ' + abbreviation;
+        counts.set(uniqueKey, (counts.get(uniqueKey) || 0) + 1);
       });
 
       return Array.from(counts.entries())
@@ -6053,7 +6327,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const studySeconds = scopeMetrics.includedStudySeconds;
       const totalDowntimeSeconds = scopeMetrics.includedDowntimeSeconds;
       const productionSpeed = Number(document.getElementById('productionSpeed')?.value || 0);
-      const undefinedCodes = completedEvents.filter(event => event.downtimeCode && !getCodeDescription(event.downtimeCode)).length;
+      const undefinedCodes = completedEvents.filter(event => event.downtimeCode && !getCodeDescription(event.downtimeCode, event.downtimeCategory || '')).length;
       const duplicateCodes = getDuplicateDowntimeCodes();
 
       const checks = [];
@@ -6081,8 +6355,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       checks.push({
         level: duplicateCodes.length === 0 ? 'good' : 'bad',
         text: duplicateCodes.length === 0
-          ? 'No duplicate reason code/tag abbreviations found.'
-          : 'Duplicate reason code/tag abbreviation(s): ' + duplicateCodes.join(', ') + '. Each code must be unique.'
+          ? 'No duplicate category + reason code combinations found.'
+          : 'Duplicate category + reason code combination(s): ' + duplicateCodes.join(', ') + '. Each category/code pair must be unique.'
       });
 
       checks.push({
@@ -6215,16 +6489,22 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         if (!isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '')) return;
 
         const code = event.downtimeCode || 'UNCODED';
-        if (!grouped.has(code)) {
-          grouped.set(code, {
+        const category = code === 'UNCODED'
+          ? 'UNCODED'
+          : normalizeCategory(event.downtimeCategory || getCodeCategory(code) || 'UNCATEGORIZED');
+        const groupKey = code === 'UNCODED' ? 'UNCODED' : category + ' / ' + code;
+        if (!grouped.has(groupKey)) {
+          grouped.set(groupKey, {
             code,
-            description: code === 'UNCODED' ? 'No downtime code assigned' : getCodeDescription(code),
+            category,
+            displayCode: groupKey,
+            description: code === 'UNCODED' ? 'No downtime code assigned' : getCodeDescription(code, category),
             count: 0,
             totalSeconds: 0
           });
         }
 
-        const row = grouped.get(code);
+        const row = grouped.get(groupKey);
         row.count += 1;
         row.totalSeconds += duration;
       });
@@ -6572,7 +6852,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     async function selectStudyFolder() {
       if (!window.showDirectoryPicker) {
-        alert('Direct folder save is not supported in this browser. Use desktop Chrome/Edge for this feature, or use Export JSON / Share JSON instead.');
+        alert('Direct folder save is not supported in this browser. Use desktop Chrome/Edge for this feature, or use Export JSON instead.');
         updateSelectedFolderStatus('Direct folder save is not supported in this browser.');
         return;
       }
@@ -6606,7 +6886,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     async function saveStudyJsonToSelectedFolder() {
       if (!window.showDirectoryPicker) {
-        alert('Direct folder save is not supported in this browser. Use Export JSON or Share JSON instead.');
+        alert('Direct folder save is not supported in this browser. Use Export JSON instead.');
         return;
       }
 
@@ -7664,7 +7944,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const studySeconds = scopeMetrics.includedStudySeconds;
       const totalDowntimeSeconds = scopeMetrics.includedDowntimeSeconds;
       const productionSpeed = Number(document.getElementById('productionSpeed')?.value || 0);
-      const undefinedCodes = completedEvents.filter(event => event.downtimeCode && !getCodeDescription(event.downtimeCode)).length;
+      const undefinedCodes = completedEvents.filter(event => event.downtimeCode && !getCodeDescription(event.downtimeCode, event.downtimeCategory || '')).length;
       const duplicateCodes = getDuplicateDowntimeCodes();
 
       return [
@@ -7672,7 +7952,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         [productionSpeed > 0 ? 'Production speed is entered.' : 'Warning: Production speed is missing.'],
         [uncodedEvents === 0 ? 'All completed events have downtime codes.' : 'Warning: ' + uncodedEvents + ' completed event(s) missing downtime codes.'],
         [undefinedCodes === 0 ? 'All used codes have descriptions.' : 'Warning: ' + undefinedCodes + ' event(s) use codes without descriptions.'],
-        [duplicateCodes.length === 0 ? 'No duplicate reason code/tag abbreviations found.' : 'Error: Duplicate reason code/tag abbreviation(s): ' + duplicateCodes.join(', ') + '. Each code must be unique.'],
+        [duplicateCodes.length === 0 ? 'No duplicate category + reason code combinations found.' : 'Error: Duplicate category + reason code combination(s): ' + duplicateCodes.join(', ') + '. Each category/code pair must be unique.'],
         [missingNotes === 0 ? 'All completed events have notes.' : 'Warning: ' + missingNotes + ' completed event(s) missing notes.'],
         [studySeconds === 0 || totalDowntimeSeconds <= studySeconds ? 'Included downtime does not exceed included study time.' : 'Error: Included downtime exceeds included study time.'],
         [activeEventIndex === null ? 'No downtime event currently running.' : 'Warning: A downtime event is currently running.'],
@@ -7940,6 +8220,15 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       });
     }
 
+    function getExecutiveCategoryFromEventTarget(target) {
+      const el = target && target.closest ? target.closest('[data-category-drilldown]') : null;
+      return el ? el.getAttribute('data-category-drilldown') : '';
+    }
+
+    function shouldPreserveExecutiveChartClick(event) {
+      return Boolean(event && event.target && getExecutiveCategoryFromEventTarget(event.target));
+    }
+
     function drawExecutiveParetoChart() {
       const svg = document.getElementById('executiveParetoChart');
       if (!svg) return;
@@ -7951,10 +8240,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       // chart now does the same and expands horizontally as needed.
       const rows = getParetoRows();
       const minWidth = 760;
-      const widthPerCause = 92;
-      const width = Math.max(minWidth, 108 + rows.length * widthPerCause);
-      const height = 400;
-      const margin = { top: 28, right: 52, bottom: 132, left: 56 };
+      const longestCodeLength = rows.reduce((max, row) => Math.max(max, String(row.code || '').length), 0);
+      const widthPerCause = Math.max(96, Math.min(138, 72 + longestCodeLength * 4));
+      const width = Math.max(minWidth, 118 + rows.length * widthPerCause);
+      const labelRows = Math.min(4, Math.max(2, rows.length > 8 ? 4 : 3));
+      const height = 430;
+      const margin = { top: 28, right: 52, bottom: 164, left: 56 };
       const plotWidth = width - margin.left - margin.right;
       const plotHeight = height - margin.top - margin.bottom;
 
@@ -8059,6 +8350,22 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
         const contributorColor = getParetoContributorColor(index, rows.length);
 
+        const hitBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        hitBox.setAttribute('x', String(margin.left + step * index));
+        hitBox.setAttribute('y', String(margin.top));
+        hitBox.setAttribute('width', String(step));
+        hitBox.setAttribute('height', String(plotHeight + margin.bottom - 42));
+        hitBox.setAttribute('fill', 'transparent');
+        hitBox.setAttribute('style', 'cursor: pointer;');
+        hitBox.setAttribute('data-category-drilldown', row.category);
+        hitBox.setAttribute('aria-label', 'Open cause-code drilldown for ' + row.category);
+        hitBox.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openCategoryDrilldown(row.category);
+        });
+        svg.appendChild(hitBox);
+
         const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         bar.setAttribute('class', 'pareto-column');
         bar.setAttribute('x', String(x));
@@ -8085,12 +8392,35 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
         const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
         label.setAttribute('x', String(xCenter));
-        label.setAttribute('y', String(margin.top + plotHeight + 18));
+        const labelRow = index % labelRows;
+        label.setAttribute('y', String(margin.top + plotHeight + 20 + labelRow * 18));
         label.setAttribute('fill', '#f4f4f5');
-        label.setAttribute('font-size', '11');
+        label.setAttribute('font-size', rows.length > 14 ? '10' : '11');
         label.setAttribute('font-weight', '800');
         label.setAttribute('text-anchor', 'middle');
-        label.textContent = row.code;
+
+        // Stagger cause-code labels so adjacent labels cannot occupy the same baseline.
+        // Very long codes are split into two compact SVG tspans instead of spilling
+        // into the neighboring cause label.
+        const labelText = String(row.code || '');
+        const maxChars = rows.length > 14 ? 10 : 12;
+        if (labelText.length > maxChars) {
+          const first = labelText.slice(0, maxChars);
+          const second = labelText.slice(maxChars, maxChars * 2 - 1);
+          const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+          tspan1.setAttribute('x', String(xCenter));
+          tspan1.setAttribute('dy', '0');
+          tspan1.textContent = first;
+          label.appendChild(tspan1);
+
+          const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+          tspan2.setAttribute('x', String(xCenter));
+          tspan2.setAttribute('dy', '12');
+          tspan2.textContent = second + (labelText.length > (maxChars * 2 - 1) ? '…' : '');
+          label.appendChild(tspan2);
+        } else {
+          label.textContent = labelText;
+        }
         svg.appendChild(label);
 
         points.push([xCenter, margin.top + plotHeight - plotHeight * row.cumulative]);
@@ -8235,8 +8565,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
               }
               .report-grid {
                 display: grid;
-                grid-template-columns: 0.9fr 1.1fr;
-                gap: 18px;
+                grid-template-columns: 1fr;
+                gap: 14px;
                 align-items: stretch;
               }
               .report-panel {
@@ -8306,14 +8636,26 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
                 background: rgba(255,255,255,0.03) !important;
                 color: #f4f4f5 !important;
               }
-              .executive-chart-wrap {
+              .executive-chart-wrap,
+              .executive-chart-wrap.pareto-drag-scroll {
                 width: 100%;
-                overflow: visible;
+                max-width: 100%;
+                overflow: visible !important;
+                overflow-x: visible !important;
+                cursor: default !important;
+                scrollbar-width: none !important;
+              }
+              .executive-chart-wrap::after,
+              .executive-chart-wrap.pareto-drag-scroll::after,
+              .executive-chart-wrap + .drag-scroll-hint {
+                display: none !important;
+                content: none !important;
               }
               .executive-chart-svg {
                 width: 100%;
-                height: 360px;
-                min-height: 360px;
+                height: auto;
+                min-height: 390px;
+                max-height: none;
                 display: block;
                 background:
                   linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
@@ -8711,9 +9053,18 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
                 .executive-report .report-grid {
                   display: grid !important;
-                  grid-template-columns: 0.9fr 1.1fr !important;
+                  grid-template-columns: 1fr !important;
                   gap: 12px !important;
                   align-items: stretch !important;
+                }
+
+                .executive-report .report-panel {
+                  width: 100% !important;
+                }
+
+                .executive-report .report-metrics {
+                  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                  gap: 8px !important;
                 }
 
                 .executive-report .executive-chart-wrap,
@@ -8751,8 +9102,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
                   min-width: 0 !important;
                   max-width: 100% !important;
                   height: auto !important;
-                  min-height: 300px !important;
-                  max-height: 3.75in !important;
+                  min-height: 360px !important;
+                  max-height: none !important;
                   display: block !important;
                 }
 
@@ -8775,6 +9126,106 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
                   width: 0 !important;
                   height: 0 !important;
                 }
+              }
+
+              /* Executive export print layout: page 1 = analysis + graph; page 2 = downtime cause breakdown. */
+              @media print {
+                .executive-report .report-grid {
+                  display: grid !important;
+                  grid-template-columns: 1fr !important;
+                  gap: 10px !important;
+                  break-inside: avoid !important;
+                  page-break-inside: avoid !important;
+                }
+
+                .executive-report .report-analysis-panel,
+                .executive-report .report-chart-panel {
+                  width: 100% !important;
+                  break-inside: avoid !important;
+                  page-break-inside: avoid !important;
+                }
+
+                .executive-report .report-breakdown-panel {
+                  width: 100% !important;
+                  margin-top: 0 !important;
+                  break-before: page !important;
+                  page-break-before: always !important;
+                }
+
+                .executive-report .report-panel-header {
+                  padding: 8px 10px 7px !important;
+                  font-size: 13px !important;
+                }
+
+                .executive-report .report-panel-body {
+                  padding: 8px 10px !important;
+                }
+
+                .executive-report .report-metrics {
+                  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+                  gap: 6px !important;
+                }
+
+                .executive-report .report-metric {
+                  padding: 7px 6px !important;
+                  min-height: 0 !important;
+                }
+
+                .executive-report .report-metric-label {
+                  font-size: 8.5px !important;
+                  line-height: 1.15 !important;
+                  margin-bottom: 4px !important;
+                }
+
+                .executive-report .report-metric-value {
+                  font-size: 15px !important;
+                  line-height: 1.15 !important;
+                }
+
+                .executive-report .executive-chart-svg {
+                  width: 100% !important;
+                  min-width: 0 !important;
+                  max-width: 100% !important;
+                  height: auto !important;
+                  min-height: 320px !important;
+                  max-height: none !important;
+                  display: block !important;
+                }
+              }
+
+
+
+              .executive-category-breakdown-panel {
+                display: block !important;
+                break-before: page !important;
+                page-break-before: always !important;
+              }
+              .executive-category-breakdown-charts {
+                display: grid !important;
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                gap: 8px !important;
+              }
+              .executive-subcategory-chart-card {
+                border: 1px solid rgba(255,255,255,0.14);
+                border-radius: 8px;
+                background: rgba(255,255,255,0.035) !important;
+                padding: 5px;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+              }
+              .executive-subcategory-chart-card:nth-child(6n + 7) {
+                break-before: page !important;
+                page-break-before: always !important;
+              }
+              .executive-subcategory-chart-svg {
+                width: 100% !important;
+                height: auto !important;
+                display: block !important;
+                background: rgba(0,0,0,0.14) !important;
+                border-radius: 8px;
+              }
+              .category-drilldown-modal-backdrop {
+                display: none !important;
               }
 </style>
           </head>
@@ -9443,7 +9894,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           startY = event.clientY;
           startScrollLeft = area.scrollLeft;
           area.classList.add('dragging');
-          area.setPointerCapture?.(pointerId);
+          if (!shouldPreserveExecutiveChartClick(event)) {
+            area.setPointerCapture?.(pointerId);
+          }
         });
 
         area.addEventListener('pointermove', event => {
@@ -9466,6 +9919,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         function endDrag() {
           if (!isDown) return;
           isDown = false;
+          if (hasMoved) {
+            window.__dragScrollSuppressClickUntil = Date.now() + 450;
+          }
           area.classList.remove('dragging');
           if (pointerId !== null) area.releasePointerCapture?.(pointerId);
           pointerId = null;
@@ -9654,6 +10110,606 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     document.addEventListener('DOMContentLoaded', initializeTrackerTabs);
     initializeParetoDragScroll();
     initializeTrackerTabs();
+
+
+
+    /* ============================================================
+       Executive category Pareto + cause-code drilldown
+       Main executive graph groups by category. Clicking a category
+       opens a cause-code breakdown. Print/PDF includes 6 drilldown
+       charts per page after the cause breakdown table.
+       ============================================================ */
+    function getCategoryParetoRows() {
+      const grouped = new Map();
+
+      events.forEach(event => {
+        const duration = event.durationSeconds;
+        if (duration === null || duration === undefined || isNaN(duration) || duration < 0) return;
+        if (!isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '')) return;
+
+        const code = event.downtimeCode || 'UNCODED';
+        const category = code === 'UNCODED'
+          ? 'UNCODED'
+          : normalizeCategory(event.downtimeCategory || getCodeCategory(code) || 'UNCATEGORIZED');
+
+        if (!grouped.has(category)) {
+          grouped.set(category, {
+            category,
+            count: 0,
+            totalSeconds: 0
+          });
+        }
+
+        const row = grouped.get(category);
+        row.count += 1;
+        row.totalSeconds += duration;
+      });
+
+      const totalDowntime = Array.from(grouped.values()).reduce((sum, row) => sum + row.totalSeconds, 0);
+      let cumulative = 0;
+
+      return Array.from(grouped.values())
+        .sort((a, b) => b.totalSeconds - a.totalSeconds)
+        .map((row, index) => {
+          const percent = totalDowntime ? row.totalSeconds / totalDowntime : 0;
+          cumulative += percent;
+          return {
+            rank: index + 1,
+            category: row.category,
+            code: row.category,
+            description: 'All included downtime assigned to ' + row.category,
+            count: row.count,
+            totalSeconds: row.totalSeconds,
+            percent,
+            cumulative
+          };
+        });
+    }
+
+    function getCauseRowsForCategory(categoryName) {
+      const normalizedCategory = normalizeCategory(categoryName || 'UNCATEGORIZED');
+      const grouped = new Map();
+
+      events.forEach(event => {
+        const duration = event.durationSeconds;
+        if (duration === null || duration === undefined || isNaN(duration) || duration < 0) return;
+        if (!isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '')) return;
+
+        const code = event.downtimeCode || 'UNCODED';
+        const category = code === 'UNCODED'
+          ? 'UNCODED'
+          : normalizeCategory(event.downtimeCategory || getCodeCategory(code) || 'UNCATEGORIZED');
+        if (category !== normalizedCategory) return;
+
+        const key = category + ' / ' + code;
+        if (!grouped.has(key)) {
+          grouped.set(key, {
+            code,
+            category,
+            displayCode: key,
+            description: code === 'UNCODED' ? 'No downtime code assigned' : getCodeDescription(code, category),
+            count: 0,
+            totalSeconds: 0
+          });
+        }
+
+        const row = grouped.get(key);
+        row.count += 1;
+        row.totalSeconds += duration;
+      });
+
+      const categoryTotal = Array.from(grouped.values()).reduce((sum, row) => sum + row.totalSeconds, 0);
+      const includedTotal = getParetoRows().reduce((sum, row) => sum + row.totalSeconds, 0);
+      let cumulativeWithinCategory = 0;
+
+      return Array.from(grouped.values())
+        .sort((a, b) => b.totalSeconds - a.totalSeconds)
+        .map((row, index) => {
+          const percentOfCategory = categoryTotal ? row.totalSeconds / categoryTotal : 0;
+          const percentOfIncluded = includedTotal ? row.totalSeconds / includedTotal : 0;
+          cumulativeWithinCategory += percentOfCategory;
+          return {
+            rank: index + 1,
+            code: row.code,
+            category: row.category,
+            displayCode: row.displayCode,
+            description: row.description,
+            count: row.count,
+            totalSeconds: row.totalSeconds,
+            percentOfCategory,
+            percentOfIncluded,
+            cumulativeWithinCategory,
+            categoryTotalSeconds: categoryTotal,
+            categoryPercentOfIncluded: includedTotal ? categoryTotal / includedTotal : 0
+          };
+        });
+    }
+
+    function createSvgText(svg, text, x, y, options = {}) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      el.setAttribute('x', String(x));
+      el.setAttribute('y', String(y));
+      el.setAttribute('fill', options.fill || '#f4f4f5');
+      el.setAttribute('font-size', String(options.fontSize || 11));
+      el.setAttribute('font-weight', String(options.fontWeight || 700));
+      el.setAttribute('text-anchor', options.anchor || 'middle');
+      if (options.transform) el.setAttribute('transform', options.transform);
+      el.textContent = text;
+      svg.appendChild(el);
+      return el;
+    }
+
+    function splitLabelForSvg(text, maxChars) {
+      const clean = String(text || '').trim();
+      if (clean.length <= maxChars) return [clean];
+      const parts = [];
+      let remaining = clean;
+      while (remaining.length && parts.length < 2) {
+        let cut = Math.min(maxChars, remaining.length);
+        const space = remaining.lastIndexOf(' ', cut);
+        if (space > 3) cut = space;
+        parts.push(remaining.slice(0, cut).trim());
+        remaining = remaining.slice(cut).trim();
+      }
+      if (remaining.length && parts.length) parts[parts.length - 1] += '…';
+      return parts.filter(Boolean);
+    }
+
+    function drawCauseBreakdownSvg(svg, categoryName, opts = {}) {
+      if (!svg) return;
+      const rows = getCauseRowsForCategory(categoryName);
+      const categoryRow = getCategoryParetoRows().find(row => row.category === normalizeCategory(categoryName));
+      const width = opts.width || 760;
+      const height = opts.height || 360;
+      const compact = !!opts.compact;
+      const margin = compact
+        ? { top: 62, right: 22, bottom: 70, left: 42 }
+        : { top: 72, right: 34, bottom: 110, left: 54 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.innerHTML = '';
+
+      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bg.setAttribute('x', '0');
+      bg.setAttribute('y', '0');
+      bg.setAttribute('width', String(width));
+      bg.setAttribute('height', String(height));
+      bg.setAttribute('rx', compact ? '10' : '12');
+      bg.setAttribute('fill', 'rgba(0,0,0,0.10)');
+      svg.appendChild(bg);
+
+      const categoryPercent = categoryRow ? categoryRow.percent : (rows[0]?.categoryPercentOfIncluded || 0);
+      createSvgText(svg, String(categoryName || 'UNCATEGORIZED'), width / 2, compact ? 20 : 24, {
+        fontSize: compact ? 15 : 18,
+        fontWeight: 950,
+        fill: '#ffffff'
+      });
+      createSvgText(svg, 'Category share of included downtime: ' + formatPercent(categoryPercent), width / 2, compact ? 40 : 48, {
+        fontSize: compact ? 10 : 12,
+        fontWeight: 800,
+        fill: '#d4d4d8'
+      });
+      createSvgText(svg, 'Bars show each cause as % of this category; labels also show % of included downtime.', width / 2, compact ? 55 : 64, {
+        fontSize: compact ? 8.5 : 10,
+        fontWeight: 700,
+        fill: '#a1a1aa'
+      });
+
+      if (!rows.length) {
+        createSvgText(svg, 'No cause data available for this category.', width / 2, height / 2, {
+          fontSize: compact ? 11 : 16,
+          fontWeight: 800,
+          fill: '#e5e7eb'
+        });
+        return;
+      }
+
+      for (let i = 0; i <= 4; i++) {
+        const y = margin.top + plotHeight - (plotHeight * i / 4);
+        const pct = i * 25;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', String(margin.left));
+        line.setAttribute('x2', String(width - margin.right));
+        line.setAttribute('y1', String(y));
+        line.setAttribute('y2', String(y));
+        line.setAttribute('stroke', 'rgba(255,255,255,0.12)');
+        line.setAttribute('stroke-width', '1');
+        svg.appendChild(line);
+        createSvgText(svg, pct + '%', margin.left - 8, y + 4, {
+          fontSize: compact ? 8 : 10,
+          fontWeight: 700,
+          fill: '#d4d4d8',
+          anchor: 'end'
+        });
+      }
+
+      const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      xAxis.setAttribute('x1', String(margin.left));
+      xAxis.setAttribute('x2', String(width - margin.right));
+      xAxis.setAttribute('y1', String(margin.top + plotHeight));
+      xAxis.setAttribute('y2', String(margin.top + plotHeight));
+      xAxis.setAttribute('stroke', '#ffffff');
+      xAxis.setAttribute('stroke-width', '1.2');
+      svg.appendChild(xAxis);
+
+      const step = plotWidth / rows.length;
+      const barWidth = Math.max(compact ? 18 : 24, Math.min(compact ? 46 : 64, step * 0.56));
+      const labelRows = compact ? 2 : 3;
+
+      rows.forEach((row, index) => {
+        const xCenter = margin.left + step * index + step / 2;
+        const barHeight = plotHeight * row.percentOfCategory;
+        const x = xCenter - barWidth / 2;
+        const y = margin.top + plotHeight - barHeight;
+        const color = getParetoContributorColor(index, rows.length);
+
+        const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        rect.setAttribute('x', String(x));
+        rect.setAttribute('y', String(y));
+        rect.setAttribute('width', String(barWidth));
+        rect.setAttribute('height', String(Math.max(1, barHeight)));
+        rect.setAttribute('rx', compact ? '4' : '6');
+        rect.setAttribute('fill', color);
+        svg.appendChild(rect);
+
+        const labelY = barHeight > 30 ? y + 16 : y - 7;
+        createSvgText(svg, formatPercent(row.percentOfCategory), xCenter, labelY, {
+          fontSize: compact ? 8.5 : 11,
+          fontWeight: 900,
+          fill: '#ffffff'
+        });
+        createSvgText(svg, '(' + formatPercent(row.percentOfIncluded) + ' total)', xCenter, labelY + (compact ? 10 : 13), {
+          fontSize: compact ? 7.5 : 9,
+          fontWeight: 800,
+          fill: '#d4d4d8'
+        });
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', String(xCenter));
+        label.setAttribute('y', String(margin.top + plotHeight + 18 + (index % labelRows) * (compact ? 16 : 18)));
+        label.setAttribute('fill', '#f4f4f5');
+        label.setAttribute('font-size', compact ? '8.5' : '10.5');
+        label.setAttribute('font-weight', '850');
+        label.setAttribute('text-anchor', 'middle');
+        const labelParts = splitLabelForSvg(row.code, compact ? 10 : 13);
+        labelParts.forEach((part, i) => {
+          const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+          tspan.setAttribute('x', String(xCenter));
+          tspan.setAttribute('dy', i === 0 ? '0' : (compact ? '9' : '11'));
+          tspan.textContent = part;
+          label.appendChild(tspan);
+        });
+        svg.appendChild(label);
+      });
+    }
+
+    function openCategoryDrilldown(categoryName) {
+      let backdrop = document.getElementById('categoryDrilldownModalBackdrop');
+      if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.id = 'categoryDrilldownModalBackdrop';
+        backdrop.className = 'category-drilldown-modal-backdrop';
+        backdrop.innerHTML = `
+          <div class="category-drilldown-modal" role="dialog" aria-modal="true" aria-labelledby="categoryDrilldownModalTitle">
+            <div class="category-drilldown-modal-header">
+              <div id="categoryDrilldownModalTitle" class="category-drilldown-modal-title">Category Drilldown</div>
+              <button type="button" class="category-drilldown-close" aria-label="Close category drilldown">×</button>
+            </div>
+            <div class="category-drilldown-modal-body">
+              <div class="category-drilldown-chart-wrap">
+                <svg id="categoryDrilldownChart" class="executive-chart-svg" viewBox="0 0 760 360" preserveAspectRatio="xMidYMid meet" aria-label="Category cause-code drilldown chart"></svg>
+              </div>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(backdrop);
+        backdrop.querySelector('.category-drilldown-close')?.addEventListener('click', () => backdrop.classList.remove('open'));
+        backdrop.addEventListener('click', (event) => {
+          if (event.target === backdrop) backdrop.classList.remove('open');
+        });
+      }
+
+      const title = backdrop.querySelector('#categoryDrilldownModalTitle');
+      if (title) title.textContent = 'Cause-Code Drilldown: ' + categoryName;
+      backdrop.classList.add('open');
+      drawCauseBreakdownSvg(backdrop.querySelector('#categoryDrilldownChart'), categoryName, { width: 880, height: 430, compact: false });
+    }
+
+    function getExecutiveCategoryFromEventTarget(target) {
+      const el = target && target.closest ? target.closest('[data-category-drilldown]') : null;
+      return el ? el.getAttribute('data-category-drilldown') : '';
+    }
+
+    function shouldPreserveExecutiveChartClick(event) {
+      return Boolean(event && event.target && getExecutiveCategoryFromEventTarget(event.target));
+    }
+
+    function drawExecutiveParetoChart() {
+      const svg = document.getElementById('executiveParetoChart');
+      if (!svg) return;
+
+      const rows = getCategoryParetoRows();
+      const minWidth = 760;
+      const longestCodeLength = rows.reduce((max, row) => Math.max(max, String(row.category || '').length), 0);
+      const widthPerCategory = Math.max(108, Math.min(152, 78 + longestCodeLength * 4));
+      const width = Math.max(minWidth, 118 + rows.length * widthPerCategory);
+      const labelRows = Math.min(3, Math.max(2, rows.length > 6 ? 3 : 2));
+      const height = 410;
+      const margin = { top: 30, right: 52, bottom: 134, left: 56 };
+      const plotWidth = width - margin.left - margin.right;
+      const plotHeight = height - margin.top - margin.bottom;
+
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      svg.style.width = width + 'px';
+      svg.style.minWidth = width + 'px';
+      svg.innerHTML = '';
+
+      const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      bg.setAttribute('x', '0');
+      bg.setAttribute('y', '0');
+      bg.setAttribute('width', String(width));
+      bg.setAttribute('height', String(height));
+      bg.setAttribute('fill', 'transparent');
+      svg.appendChild(bg);
+
+      if (!rows.length) {
+        createSvgText(svg, 'No Pareto data available', width / 2, height / 2, { fontSize: 18, fontWeight: 700, fill: '#e5e7eb' });
+        return;
+      }
+
+      for (let i = 0; i <= 5; i++) {
+        const y = margin.top + plotHeight - (plotHeight * i / 5);
+        const percent = i * 20;
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', String(margin.left));
+        line.setAttribute('x2', String(width - margin.right));
+        line.setAttribute('y1', String(y));
+        line.setAttribute('y2', String(y));
+        line.setAttribute('stroke', 'rgba(255,255,255,0.12)');
+        line.setAttribute('stroke-width', '1');
+        svg.appendChild(line);
+        createSvgText(svg, percent + '%', margin.left - 10, y + 4, { fill: '#d4d4d8', fontSize: 11, fontWeight: 700, anchor: 'end' });
+        createSvgText(svg, percent + '%', width - margin.right + 10, y + 4, { fill: '#d4d4d8', fontSize: 11, fontWeight: 700, anchor: 'start' });
+      }
+
+      const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      xAxis.setAttribute('x1', String(margin.left));
+      xAxis.setAttribute('x2', String(width - margin.right));
+      xAxis.setAttribute('y1', String(margin.top + plotHeight));
+      xAxis.setAttribute('y2', String(margin.top + plotHeight));
+      xAxis.setAttribute('stroke', '#ffffff');
+      xAxis.setAttribute('stroke-width', '1.5');
+      svg.appendChild(xAxis);
+
+      const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      yAxis.setAttribute('x1', String(margin.left));
+      yAxis.setAttribute('x2', String(margin.left));
+      yAxis.setAttribute('y1', String(margin.top));
+      yAxis.setAttribute('y2', String(margin.top + plotHeight));
+      yAxis.setAttribute('stroke', '#ffffff');
+      yAxis.setAttribute('stroke-width', '1.5');
+      svg.appendChild(yAxis);
+
+      const rightAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      rightAxis.setAttribute('x1', String(width - margin.right));
+      rightAxis.setAttribute('x2', String(width - margin.right));
+      rightAxis.setAttribute('y1', String(margin.top));
+      rightAxis.setAttribute('y2', String(margin.top + plotHeight));
+      rightAxis.setAttribute('stroke', '#ffffff');
+      rightAxis.setAttribute('stroke-width', '1.5');
+      svg.appendChild(rightAxis);
+
+      const step = plotWidth / rows.length;
+      const barWidth = Math.max(32, step * 0.58);
+      const points = [];
+
+      rows.forEach((row, index) => {
+        const xCenter = margin.left + step * index + step / 2;
+        const barHeight = plotHeight * row.percent;
+        const x = xCenter - barWidth / 2;
+        const y = margin.top + plotHeight - barHeight;
+        const contributorColor = getParetoContributorColor(index, rows.length);
+
+        const hitBox = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        hitBox.setAttribute('x', String(margin.left + step * index));
+        hitBox.setAttribute('y', String(margin.top));
+        hitBox.setAttribute('width', String(step));
+        hitBox.setAttribute('height', String(plotHeight + margin.bottom - 42));
+        hitBox.setAttribute('fill', 'transparent');
+        hitBox.setAttribute('style', 'cursor: pointer;');
+        hitBox.setAttribute('data-category-drilldown', row.category);
+        hitBox.setAttribute('aria-label', 'Open cause-code drilldown for ' + row.category);
+        hitBox.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openCategoryDrilldown(row.category);
+        });
+        svg.appendChild(hitBox);
+
+        const bar = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        bar.setAttribute('class', 'pareto-column executive-category-column');
+        bar.setAttribute('x', String(x));
+        bar.setAttribute('y', String(y));
+        bar.setAttribute('width', String(barWidth));
+        bar.setAttribute('height', String(Math.max(1, barHeight)));
+        bar.setAttribute('rx', '6');
+        bar.setAttribute('fill', contributorColor);
+        bar.setAttribute('style', `--pareto-color: ${contributorColor}; fill: ${contributorColor} !important; cursor: pointer;`);
+        bar.setAttribute('role', 'button');
+        bar.setAttribute('tabindex', '0');
+        bar.setAttribute('aria-label', 'Open cause-code drilldown for ' + row.category);
+        bar.setAttribute('data-category-drilldown', row.category);
+        bar.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openCategoryDrilldown(row.category);
+        });
+        bar.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openCategoryDrilldown(row.category);
+          }
+        });
+        svg.appendChild(bar);
+
+        const percentText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        percentText.setAttribute('x', String(xCenter));
+        percentText.setAttribute('y', String(barHeight > 28 ? y + 18 : y - 8));
+        percentText.setAttribute('fill', '#ffffff');
+        percentText.setAttribute('font-size', '11');
+        percentText.setAttribute('font-weight', '800');
+        percentText.setAttribute('text-anchor', 'middle');
+        percentText.style.cursor = 'pointer';
+        percentText.setAttribute('data-category-drilldown', row.category);
+        percentText.textContent = formatPercent(row.percent);
+        percentText.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openCategoryDrilldown(row.category);
+        });
+        svg.appendChild(percentText);
+
+        const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        label.setAttribute('x', String(xCenter));
+        label.setAttribute('y', String(margin.top + plotHeight + 20 + (index % labelRows) * 20));
+        label.setAttribute('fill', '#f4f4f5');
+        label.setAttribute('font-size', rows.length > 10 ? '10' : '11');
+        label.setAttribute('font-weight', '850');
+        label.setAttribute('text-anchor', 'middle');
+        label.style.cursor = 'pointer';
+        label.setAttribute('data-category-drilldown', row.category);
+        splitLabelForSvg(row.category, rows.length > 10 ? 11 : 14).forEach((part, i) => {
+          const tspan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+          tspan.setAttribute('x', String(xCenter));
+          tspan.setAttribute('dy', i === 0 ? '0' : '12');
+          tspan.textContent = part;
+          label.appendChild(tspan);
+        });
+        label.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          openCategoryDrilldown(row.category);
+        });
+        svg.appendChild(label);
+
+        points.push([xCenter, margin.top + plotHeight - plotHeight * row.cumulative]);
+      });
+
+      const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      polyline.setAttribute('fill', 'none');
+      polyline.setAttribute('stroke', '#d82f8b');
+      polyline.setAttribute('stroke-width', '4');
+      polyline.setAttribute('stroke-linecap', 'round');
+      polyline.setAttribute('stroke-linejoin', 'round');
+      polyline.setAttribute('points', points.map(p => p.join(',')).join(' '));
+      svg.appendChild(polyline);
+
+      points.forEach(([x, y], i) => {
+        const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot.setAttribute('cx', String(x));
+        dot.setAttribute('cy', String(y));
+        dot.setAttribute('r', '4.5');
+        dot.setAttribute('fill', '#d82f8b');
+        svg.appendChild(dot);
+        createSvgText(svg, formatPercent(rows[i].cumulative), x, Math.max(14, y - (i === 0 ? 26 : 18)), {
+          fill: '#ffd1ea', fontSize: 11, fontWeight: 800
+        });
+      });
+
+      const legendY = height - 34;
+      const barLegend = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      barLegend.setAttribute('x', String(margin.left));
+      barLegend.setAttribute('y', String(legendY - 10));
+      barLegend.setAttribute('width', '18');
+      barLegend.setAttribute('height', '10');
+      barLegend.setAttribute('fill', '#df1f2d');
+      svg.appendChild(barLegend);
+      createSvgText(svg, '% of included downtime by category', margin.left + 24, legendY, { anchor: 'start', fill: '#f4f4f5', fontSize: 11, fontWeight: 700 });
+
+      const lineLegend = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      lineLegend.setAttribute('x1', String(margin.left + 268));
+      lineLegend.setAttribute('x2', String(margin.left + 294));
+      lineLegend.setAttribute('y1', String(legendY - 5));
+      lineLegend.setAttribute('y2', String(legendY - 5));
+      lineLegend.setAttribute('stroke', '#d82f8b');
+      lineLegend.setAttribute('stroke-width', '4');
+      svg.appendChild(lineLegend);
+      createSvgText(svg, 'Cumulative %', margin.left + 302, legendY, { anchor: 'start', fill: '#f4f4f5', fontSize: 11, fontWeight: 700 });
+
+      createSvgText(svg, 'Click a category to view cause-code contributors', width - margin.right, legendY, { anchor: 'end', fill: '#a1a1aa', fontSize: 10, fontWeight: 800 });
+    }
+
+    function renderExecutiveCategoryBreakdownCharts() {
+      const container = document.getElementById('executiveCategoryBreakdownCharts');
+      if (!container) return;
+      const rows = getCategoryParetoRows();
+      container.innerHTML = '';
+
+      if (!rows.length) {
+        const empty = document.createElement('div');
+        empty.className = 'small-note';
+        empty.textContent = 'No category drilldown charts available.';
+        container.appendChild(empty);
+        return;
+      }
+
+      rows.forEach(row => {
+        const card = document.createElement('div');
+        card.className = 'executive-subcategory-chart-card';
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'executive-subcategory-chart-svg');
+        svg.setAttribute('viewBox', '0 0 360 255');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.setAttribute('aria-label', row.category + ' cause-code breakdown chart');
+        card.appendChild(svg);
+        container.appendChild(card);
+        drawCauseBreakdownSvg(svg, row.category, { width: 360, height: 255, compact: true });
+      });
+    }
+
+    function updateExecutiveReport() {
+      const locationName = document.getElementById('studyLocation')?.value?.trim() || '';
+      const lineName = document.getElementById('studyLine')?.value?.trim() || 'N/A';
+      const studyDate = formatStudyDateForReport(document.getElementById('studyDate')?.value || '');
+      const studyShift = document.getElementById('studyShift')?.value?.trim() || 'N/A';
+      const lineDisplay = locationName ? locationName + ' - ' + lineName : lineName;
+      const observedTime = document.getElementById('studyDuration')?.textContent || '00:00';
+      const uptime = document.getElementById('uptimeDuration')?.textContent || '00:00';
+      const utilization = document.getElementById('utilizationValue')?.textContent || 'N/A';
+      const speedInput = document.getElementById('productionSpeed')?.value || '';
+      const projectedUnits = document.getElementById('projectedUnits')?.textContent || 'N/A';
+      const lostUnits = document.getElementById('lostUnits')?.textContent || 'N/A';
+      const scopeMetrics = getStudyScopeMetrics();
+      const eventsPerHour = scopeMetrics.includedEventsPerHour === null ? 'N/A' : scopeMetrics.includedEventsPerHour.toFixed(2);
+      const avgEventDuration = formatDuration(scopeMetrics.averageIncludedDuration) || '00:00';
+
+      const lineEl = document.getElementById('reportLineName');
+      if (lineEl) lineEl.textContent = 'Line: ' + lineDisplay + ' | Date: ' + studyDate + ' | Shift: ' + studyShift;
+
+      const observedEl = document.getElementById('reportObservedTime');
+      const uptimeEl = document.getElementById('reportUptime');
+      const utilEl = document.getElementById('reportUtilization');
+      const speedEl = document.getElementById('reportSpeed');
+      const projectedEl = document.getElementById('reportProjectedUnits');
+      const lostEl = document.getElementById('reportLostUnits');
+      const eventsPerHourEl = document.getElementById('reportEventsPerHour');
+      const avgEventDurationEl = document.getElementById('reportAvgEventDuration');
+
+      if (observedEl) observedEl.textContent = observedTime;
+      if (uptimeEl) uptimeEl.textContent = uptime;
+      if (utilEl) utilEl.textContent = utilization;
+      if (speedEl) speedEl.textContent = speedInput ? formatNumber(speedInput) + ' / hr' : 'N/A';
+      if (projectedEl) projectedEl.textContent = projectedUnits;
+      if (lostEl) lostEl.textContent = lostUnits;
+      if (eventsPerHourEl) eventsPerHourEl.textContent = eventsPerHour;
+      if (avgEventDurationEl) avgEventDurationEl.textContent = avgEventDuration;
+
+      updateExecutiveParetoTable();
+      drawExecutiveParetoChart();
+      renderExecutiveCategoryBreakdownCharts();
+    }
 
   </script>
 </body>
