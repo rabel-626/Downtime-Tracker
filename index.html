@@ -3281,6 +3281,32 @@
       }
     }
 
+
+
+/* ======================================================================
+   Abel Engineering Downtime — repository/template workflow correction
+   ====================================================================== */
+:root{--ae-bg:#08080a;--ae-panel:#111014;--ae-panel2:#19161f;--ae-purple:#74439f;--ae-purple-mid:#8d58c7;--ae-purple-light:#a66ed9;--ae-border:rgba(159,103,218,.27);--ae-muted:#b6b0bc}
+html,body{font-family:"Segoe UI",Arial,sans-serif!important;background:radial-gradient(circle at 12% -8%,rgba(141,88,199,.24),transparent 34rem),radial-gradient(circle at 92% 2%,rgba(228,224,234,.08),transparent 28rem),linear-gradient(180deg,#070708 0%,#0d0b10 52%,#08080a 100%)!important;color:#f7f5fa!important}
+.page-wrap{width:min(1220px,calc(100% - 26px))!important;padding:18px 0 44px!important}
+.hero,.box{border-color:var(--ae-border)!important;background:linear-gradient(180deg,rgba(174,121,226,.07),rgba(255,255,255,.018)),var(--ae-panel)!important;box-shadow:0 16px 42px rgba(0,0,0,.40),inset 0 1px 0 rgba(255,255,255,.035)!important}
+.hero{border-radius:18px!important;padding:18px 22px!important;margin-bottom:14px!important}.hero-inner{grid-template-columns:126px minmax(0,1fr)!important;gap:24px!important;max-width:980px!important;margin:0 auto!important;align-items:center!important}.logo-card{width:126px!important;height:126px!important;min-height:126px!important;border-radius:24px!important;border-color:rgba(204,168,238,.36)!important;background:#08070a!important;box-shadow:0 12px 30px rgba(0,0,0,.46),0 0 28px rgba(141,88,199,.19)!important}.logo-card img{width:126px!important;height:126px!important;min-height:126px!important;object-fit:cover!important}.eyebrow{color:#d7cae3!important;letter-spacing:.28em!important}h1{font-size:clamp(34px,7vw,64px)!important;line-height:.98!important}.title-gradient{background:linear-gradient(92deg,#c69bea 0%,#9a63ce 42%,#f4f1f7 72%,#a873dc 100%)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}.subtitle{color:#d4d4d8!important;max-width:800px!important;margin:12px auto 0!important}.mpg-rule{height:4px!important;background:linear-gradient(90deg,transparent,#74439f 15%,#a66ed9 50%,#74439f 85%,transparent)!important;box-shadow:0 0 15px rgba(141,88,199,.30)!important}.box{border-radius:18px!important;padding:17px!important;margin-bottom:14px!important}.box h2,.save-load-title{font-family:"Segoe UI",Arial,sans-serif!important;font-weight:900!important;letter-spacing:.07em!important}
+button,.file-button,.filebtn{font-family:"Segoe UI",Arial,sans-serif!important;border-radius:12px!important;font-weight:850!important;min-height:42px;border-color:rgba(183,139,224,.24)!important;background:#27232d!important;color:#fff!important}button:hover,.file-button:hover,.filebtn:hover{border-color:rgba(200,158,238,.55)!important;filter:brightness(1.08)!important}button.primary,button.export,button.copy,button.add,.file-button.primary,.file-button.export,.filebtn.primary{background:linear-gradient(135deg,#74439f,#a66ed9)!important;border-color:rgba(205,163,239,.42)!important;color:#fff!important}input,select,textarea{font-family:"Segoe UI",Arial,sans-serif!important;background:#0c0a0e!important;border-color:rgba(211,190,230,.19)!important;color:#fff!important;border-radius:11px!important}input:focus,select:focus,textarea:focus{border-color:#aa74df!important;box-shadow:0 0 0 3px rgba(170,116,223,.2)!important}.instruction-box,.status,.save-load-panel,.file-preview,.autosave-panel{border-color:rgba(159,103,218,.24)!important}th{background:#27222d!important}.metric{border-color:rgba(159,103,218,.20)!important;background:rgba(255,255,255,.035)!important}
+
+.ae-retired-storage-controls,[hidden].ae-retired-storage-controls,.ae-admin-only,.ae-report-export-inline{display:none!important}
+.ae-repo-panel{border:1px solid rgba(196,181,253,.38)!important;background:linear-gradient(145deg,rgba(139,92,246,.13),rgba(255,255,255,.025)),#100e14!important;box-shadow:0 14px 34px rgba(0,0,0,.34),0 0 30px rgba(124,58,237,.08)!important}
+.ae-repo-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}.ae-repo-head h2{margin:0!important}.ae-repo-badge{display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(196,181,253,.35);border-radius:999px;padding:6px 10px;background:rgba(124,58,237,.10);font-size:11px;font-weight:900;color:#ddd6fe}.ae-repo-dot{width:9px;height:9px;border-radius:50%;background:#6b7280}.ae-repo-dot.good{background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}.ae-repo-dot.warn{background:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,.5)}.ae-repo-dot.bad{background:#ef4444;box-shadow:0 0 10px rgba(239,68,68,.5)}
+.ae-repo-route{margin-top:9px;padding:8px 10px;border:1px solid rgba(255,255,255,.11);border-radius:10px;background:#09080b;color:#b9b3c2;font:700 11px/1.4 Consolas,ui-monospace,monospace;text-align:center;overflow-wrap:anywhere}.ae-repo-actions{display:grid!important;grid-template-columns:repeat(2,minmax(180px,1fr));gap:9px!important;max-width:780px;margin:12px auto 0!important;align-items:stretch}.ae-repo-actions button{width:100%;min-height:46px!important;margin:0!important;font-size:12px!important;font-weight:900!important;letter-spacing:.025em!important;text-transform:uppercase!important;white-space:normal!important}.ae-repo-primary{background:linear-gradient(135deg,#74439f,#a66ed9)!important;border-color:rgba(210,170,245,.58)!important;box-shadow:0 8px 20px rgba(116,67,159,.24)!important}.ae-repo-open{background:linear-gradient(135deg,#5f3890,#8d58c7)!important;border-color:rgba(196,181,253,.48)!important}.ae-legacy-button,.ae-options-button{background:#27232d!important;border:1px solid rgba(196,181,253,.28)!important;color:#ece8f1!important}.ae-repo-utility{display:flex;justify-content:center;margin-top:9px}.ae-repo-utility button{min-height:34px!important;padding:6px 10px!important;font-size:10px!important;background:transparent!important;color:#b9b3c2!important;border-color:rgba(196,181,253,.17)!important}.ae-repo-status{margin-top:10px;padding:10px 12px;border:1px solid rgba(196,181,253,.22);border-radius:12px;background:rgba(255,255,255,.04);color:#d4d4d8;font-size:12px;line-height:1.45;text-align:center;overflow-wrap:anywhere}.ae-repo-status.good{border-color:rgba(34,197,94,.36);background:rgba(34,197,94,.07);color:#bbf7d0}.ae-repo-status.warn{border-color:rgba(245,158,11,.42);background:rgba(245,158,11,.08);color:#fde68a}.ae-repo-status.bad{border-color:rgba(239,68,68,.42);background:rgba(239,68,68,.08);color:#fecaca}.ae-official-only-note{margin-top:9px;color:#b9b3c2;font-size:11px;line-height:1.4;text-align:center}
+
+.ae-repo-browser,.ae-legacy-modal,.ae-options-modal,.ae-template-admin-modal{position:fixed;inset:0;z-index:32000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.76);backdrop-filter:blur(6px)}.ae-repo-browser[hidden],.ae-legacy-modal[hidden],.ae-options-modal[hidden],.ae-template-admin-modal[hidden]{display:none!important}body.ae-modal-open{overflow:hidden!important}
+.ae-repo-browser-card,.ae-legacy-card,.ae-options-card,.ae-template-admin-card{width:min(860px,96vw);max-height:min(88vh,860px);display:flex;flex-direction:column;border:1px solid rgba(196,181,253,.42);border-radius:18px;background:linear-gradient(180deg,rgba(141,88,199,.11),rgba(255,255,255,.025)),#0d0b10;box-shadow:0 28px 80px rgba(0,0,0,.68);color:#f7f5fa;overflow:hidden}.ae-legacy-card{width:min(680px,96vw)}.ae-template-admin-card{width:min(760px,96vw)}
+.ae-repo-browser-head,.ae-legacy-head,.ae-options-head,.ae-template-admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(196,181,253,.22);background:#18131d}.ae-repo-browser-head h3,.ae-legacy-head h2,.ae-options-head h2,.ae-template-admin-head h2{margin:0!important;text-align:left!important;font-size:18px!important;letter-spacing:.02em!important;text-transform:none!important}.ae-repo-browser-head button,.ae-legacy-close,.ae-options-close,.ae-template-admin-close{flex:0 0 42px;width:42px!important;min-width:42px!important;height:42px!important;padding:0!important;border-radius:50%!important;font-size:22px!important;line-height:1!important}
+.ae-repo-browser-tools{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.025)}.ae-repo-browser-tools input{width:100%;min-height:42px!important}.ae-repo-browser-summary{margin-top:7px;color:#b9b3c2;font-size:11px;font-weight:800;text-align:center}.ae-repo-browser-list{padding:11px 12px 14px;overflow:auto;display:grid;gap:8px}.ae-repo-record{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:center;width:100%;text-align:left;border:1px solid rgba(196,181,253,.18);border-radius:12px;background:rgba(255,255,255,.035);padding:11px 12px;color:#fff;cursor:pointer}.ae-repo-record:hover,.ae-repo-record:focus-within{border-color:rgba(196,181,253,.55);background:rgba(139,92,246,.12)}.ae-repo-record input{width:18px!important;height:18px!important;accent-color:#8b5cf6}.ae-repo-record-title{font-size:13px;font-weight:950;line-height:1.3}.ae-repo-record-meta{margin-top:3px;color:#aaa6b4;font-size:11px;line-height:1.4}.ae-repo-browser-empty{padding:28px 16px;text-align:center;color:#aaa6b4;border:1px dashed rgba(196,181,253,.22);border-radius:12px}.ae-repo-browser-footer{display:flex;justify-content:flex-end;gap:8px;padding:11px 13px;border-top:1px solid rgba(255,255,255,.1);background:#131016}.ae-repo-browser-footer[hidden]{display:none!important}
+.ae-legacy-body,.ae-options-body,.ae-template-admin-body{padding:16px;overflow:auto}.ae-legacy-note,.ae-options-note,.ae-template-admin-note{border:1px solid rgba(196,181,253,.22);border-left:4px solid #8d58c7;border-radius:12px;background:rgba(141,88,199,.07);padding:11px 12px;color:#d8d2dd;font-size:12px;line-height:1.5}.ae-legacy-actions,.ae-options-grid,.ae-template-admin-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:13px}.ae-legacy-actions{grid-template-columns:1fr}.ae-legacy-actions button,.ae-options-grid button,.ae-template-admin-actions button{width:100%;min-height:48px!important}.ae-legacy-foot,.ae-options-foot{margin-top:12px;color:#a9a1ae;font-size:11px;line-height:1.45;text-align:center}.ae-options-section{margin-top:13px;padding-top:12px;border-top:1px solid rgba(196,181,253,.15)}.ae-options-section h3{margin:0 0 8px;text-align:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#cfc6d8}.ae-options-danger{background:rgba(239,68,68,.13)!important;border-color:rgba(239,68,68,.42)!important}
+
+.ae-template-row{position:relative;display:grid;grid-template-columns:minmax(260px,1fr) auto;gap:10px;align-items:end;margin:0 18px 14px;max-width:calc(100% - 36px);padding:12px;border:1px solid rgba(159,103,218,.25);border-radius:14px;background:rgba(141,88,199,.06)}.ae-template-row button{min-height:42px}.ae-template-status{margin-top:6px;color:#aaa6b4;font-size:11px;line-height:1.4;text-align:center}.ae-template-status.good{color:#bbf7d0}.ae-template-status.warn{color:#fde68a}.ae-template-admin-launcher{position:absolute!important;right:5px!important;top:5px!important;width:28px!important;min-width:28px!important;height:28px!important;min-height:28px!important;padding:0!important;border-radius:50%!important;opacity:.15!important;background:transparent!important;border-color:rgba(196,181,253,.18)!important;font-size:14px!important;transition:opacity .15s ease!important}.ae-template-admin-launcher:hover,.ae-template-admin-launcher:focus-visible{opacity:.8!important}.ae-template-admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}.ae-template-admin-grid .full{grid-column:1/-1}.ae-template-admin-grid label{text-align:left}.ae-template-admin-grid textarea{min-height:74px}.ae-template-paste{margin-top:12px}.ae-template-paste textarea{min-height:130px;font-family:Consolas,ui-monospace,monospace!important;font-size:12px!important}.ae-template-source-chip{display:inline-flex;align-items:center;gap:6px;margin-top:7px;border:1px solid rgba(196,181,253,.22);border-radius:999px;padding:4px 8px;background:rgba(141,88,199,.07);color:#d8d2dd;font-size:10px;font-weight:800}
+
+@media(max-width:700px){.hero-inner{grid-template-columns:86px minmax(0,1fr)!important;gap:13px!important}.logo-card,.logo-card img{width:86px!important;height:86px!important;min-height:86px!important;border-radius:18px!important}.hero{padding:14px!important}.page-wrap{width:100%!important;padding:7px!important}.box{padding:12px!important;border-radius:15px!important}.ae-repo-actions,.ae-options-grid,.ae-template-admin-actions,.ae-template-admin-grid,.ae-template-row{grid-template-columns:1fr!important}.ae-repo-browser,.ae-legacy-modal,.ae-options-modal,.ae-template-admin-modal{padding:0;align-items:stretch}.ae-repo-browser-card,.ae-legacy-card,.ae-options-card,.ae-template-admin-card{width:100%;max-width:none;max-height:none;height:100%;border-radius:0}.ae-repo-browser-footer{display:grid;grid-template-columns:1fr}.ae-template-row{margin-left:0;margin-right:0;max-width:none}.ae-template-admin-grid .full{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -3294,7 +3320,7 @@
           <p class="eyebrow">Manufacturing Event Log</p>
           <h1><span class="title-gradient">Downtime</span><br />Tracker</h1>
           <p class="subtitle">
-            Start and stop downtime events, review basic statistics, capture notes, and export the event log as a CSV file for Excel or reporting.
+            Capture downtime events, review loss patterns and production impact, and save verified studies through the shared Abel Engineering Study Repository.
           </p>
         </div>
       </div>
@@ -3305,7 +3331,7 @@
     <!-- Top section tabs: start of page content -->
     <nav class="tracker-tab-nav tracker-tab-nav-top" aria-label="Downtime tracker section tabs">
       <button type="button" class="tracker-tab-btn" data-tracker-tab-button="info" onclick="showTrackerTab('info')">Information</button>
-      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="load" onclick="showTrackerTab('load')">Load / Save</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="load" onclick="showTrackerTab('load')">Repository</button>
       <button type="button" class="tracker-tab-btn" data-tracker-tab-button="study" onclick="showTrackerTab('study')">Study</button>
       <button type="button" class="tracker-tab-btn" data-tracker-tab-button="results" onclick="showTrackerTab('results')">Results</button>
     </nav>
@@ -3374,18 +3400,18 @@
       </div>
     </section>
 
-    <section class="box" id="loadSaveStatusSection">
+    <section class="box ae-retired-storage-controls" id="loadSaveStatusSection" hidden>
       <div class="box-header">
-        <h2>Load / Save Status</h2>
-        <span class="box-tag">Load Confirmation</span>
+        <h2>Study Status</h2>
+        <span class="box-tag">Repository / Capture</span>
       </div>
       <div class="instruction-box">
-        This tab only shows the file/load confirmation and current downtime capture state. Event details stay in the Study tab.
+        This tab shows the latest repository or legacy-load activity together with the current downtime capture state. Event details stay in the Study tab.
       </div>
 
       <div class="summary-grid load-save-status-grid" style="grid-template-columns: repeat(2, minmax(220px, 1fr));">
         <div class="metric">
-          <label>Last load / file status</label>
+          <label>Last repository / file activity</label>
           <div id="loadSaveFileStatusMirror" class="metric-value" style="font-size: 16px; line-height: 1.25;">Ready for JSON study file.</div>
         </div>
         <div class="metric">
@@ -3397,7 +3423,23 @@
 
     <div class="mpg-rule"></div>
 
-    <section class="box white-border">
+<section class="box ae-repo-panel" id="aeRepositorySection">
+      <div class="ae-repo-head">
+        <h2>Study Repository</h2>
+        <div id="aeRepoBadge" class="ae-repo-badge"><span id="aeRepoDot" class="ae-repo-dot"></span><span data-ae-repo-badge-text>Repository Not Connected</span></div>
+      </div>
+      <div class="instruction-box compact"><b>Official study storage:</b> <b>SAVE STUDY</b> writes and verifies the authoritative Downtime Study package under <b>02_DOWNTIME</b>. <b>OPEN STUDY</b> is the normal way to resume a saved study. Use <b>LEGACY FILE LOAD</b> only to migrate an older JSON/CSV file into the current workflow.</div>
+      <div class="ae-repo-actions">
+        <button id="aeRepoSave" class="ae-repo-primary" type="button">SAVE STUDY</button>
+        <button id="aeRepoOpen" class="ae-repo-open" type="button">OPEN STUDY</button>
+        <button id="aeLegacyLoadBtn" class="ae-legacy-button" type="button">LEGACY FILE LOAD</button>
+        <button id="aeAdditionalOptionsBtn" class="ae-options-button" type="button">ADDITIONAL OPTIONS</button>
+      </div>
+      <div class="ae-repo-utility"><button id="aeRepoConnect" type="button">REPOSITORY CONNECTION / RECONNECT</button></div>
+      <div id="aeRepoStatus" class="ae-repo-status">Repository not connected.</div>
+      <div class="ae-repo-route">Study Repository / 02_DOWNTIME / LOCATION / LINE / YYYY / YYYY-MM / DT-RECORD-ID /</div>
+      <div class="ae-official-only-note">Report exports are available under Additional Options. They do not create alternate resumable study files.</div>
+    </section><div class="mpg-rule"></div>    <section class="box white-border ae-retired-storage-controls" hidden>
       <div class="box-header">
         <h2>Load / Recover</h2>
         <span class="box-tag">Study Recovery</span>
@@ -3483,25 +3525,24 @@
 
     <div class="mpg-rule"></div>
 
-    <section class="box white-border">
+    <section class="box white-border ae-retired-storage-controls" hidden>
       <div class="box-header">
-        <h2>Save / Export</h2>
-        <span class="box-tag">Official Output</span>
+        <h2>Reports &amp; Study Controls</h2>
+        <span class="box-tag">Reports</span>
         <button type="button" class="section-info-btn" onmouseenter="showSectionInfo('saveExportInfo')" onmouseleave="hideSectionInfo('saveExportInfo')" onfocus="showSectionInfo('saveExportInfo')" onblur="hideSectionInfo('saveExportInfo')" aria-label="Show save and export help">i</button>
       </div>
 
       <div id="saveExportInfo" class="info-popover" role="tooltip">
-        <strong>Save and export options:</strong>
+        <strong>Report and study controls:</strong>
         <ul>
-          <li><strong>Save to Selected Folder</strong> writes the JSON study file directly to the selected local/OneDrive folder when supported by the browser.</li>
-          <li><strong>Export JSON</strong> downloads a portable study file and is the preferred official backup format.</li>
-          <li><strong>Export CSV</strong> downloads the full event record as a CSV file that can be opened in Excel, including code definitions and the Pareto summary.</li>
-          <li><strong>Export Excel</strong> downloads an Abel Engineering–themed Excel-compatible file with dashboard-style tables and Pareto detail.</li>
-          <li>If the study or downtime timer is still running, exports will show a warning and ask whether to continue anyway.</li>
+          <li><strong>SAVE STUDY</strong> in the Study Repository section is the only official study save path.</li>
+          <li><strong>Export CSV / Excel / PDF</strong> creates one-off report files and does not create a resumable study record.</li>
+          <li><strong>Reset Tracker</strong> clears the active working view only after confirmation.</li>
+          <li>Legacy JSON/CSV files can be opened from the <strong>Legacy File Load</strong> popup.</li>
         </ul>
       </div>
 
-      <div class="save-load-panel">
+      <div class="save-load-panel ae-retired-storage-controls" hidden>
         <div class="save-load-title">Save Study / Export Reports</div>
         <div class="instruction-box compact">
           <strong>Recommended save workflow:</strong> use <strong>Select Study Folder</strong> and <strong>Save to Selected Folder</strong> on desktop Chrome/Edge when working from a local or OneDrive-synced folder. Use <strong>Export JSON</strong> as the reliable fallback download method.
@@ -3535,7 +3576,7 @@
         <div class="reset-wrap">
           <button class="reset" onclick="clearAll()">Reset Tracker</button>
           <div class="small-note" style="margin-top: 10px;">
-            Reset clears the current browser view only. Previously exported CSV files will not be affected. For the official record, use Export CSV or Copy Selected Columns before resetting.
+            Reset clears the current browser view only. Saved Study Repository records are not deleted.
           </div>
         </div>
 
@@ -3543,7 +3584,7 @@
           <button class="export" onclick="exportCSV()">Export CSV</button>
           <button class="export" onclick="exportExcel()">Export Excel</button>
           <button onclick="printFullPagePDF()">Print Full Page PDF</button>
-          <button onclick="saveLocal()">Save Browser Copy</button>
+          <button class="ae-retired-storage-controls" hidden onclick="saveLocal()">Save Browser Copy</button>
         </div>
       </div>
     </section>
@@ -3621,9 +3662,9 @@
 
       <div class="table-actions">
         <button class="add" onclick="addManualRow()">Add Manual Row</button>
-        <button class="copy" onclick="copyEventTable()">Copy Selected Columns</button>
+        <button class="copy ae-report-export-inline" onclick="copyEventTable()">Copy Selected Columns</button>
 
-        <div class="copy-menu-wrap">
+        <div class="copy-menu-wrap ae-report-export-inline">
           <button id="copyMenuTrigger" onclick="toggleCopyMenu()">Copy Column Selection <span class="dropdown-arrow">▼</span></button>
           <div id="copyMenu" class="copy-menu" aria-label="Copy column selection">
             <div class="copy-menu-title">Columns to Copy</div>
@@ -3647,7 +3688,7 @@
           </div>
         </div>
 
-        <button onclick="window.print()">Print / Save PDF</button>
+        <button class="ae-report-export-inline" onclick="window.print()">EXPORT PDF REPORT</button>
       </div>
 
       <div class="event-table-controls">
@@ -3688,38 +3729,37 @@
         <div id="codeSetupInfo" class="info-popover" role="tooltip">
           Define downtime codes here before or during data collection. Use short abbreviations such as <strong>JAM</strong>, <strong>WAIT</strong>, <strong>QA</strong>, or <strong>MAT</strong>. These codes become selectable in the Event Log and are used to build the Pareto summary.
           <ul>
-            <li><strong>Tag Template</strong> can load a predefined machine-specific structure. The first included template is <strong>SLITTER STUDY</strong>.</li>
+            <li><strong>Reason Code Template</strong> is populated from compatible JSON templates found under <strong>90_TEMPLATES</strong> in the connected Study Repository. Templates are no longer baked into this HTML.</li>
             <li><strong>Category / Group</strong> is the broad downtime area shown first in the Event Log.</li>
             <li><strong>Cause Code</strong> is the specific reason selected after a category is chosen. Each cause code must be unique.</li>
             <li><strong>Code description</strong> explains what the reason code means for anyone reviewing the data later.</li>
             <li><strong>Include in Summary</strong> controls whether a code/tag is included in downtime calculations, the Pareto summary, and the executive report. Raw events and exports still keep the original code.</li>
             <li><strong>Collapse</strong> shows the first and most recent code while retaining all definitions for exports and event dropdowns.</li>
-            <li><strong>Import Code CSV</strong> accepts columns like <strong>Code #</strong>, optional <strong>Category</strong> or <strong>Group</strong>, <strong>Code Abbr</strong>, <strong>Code Desc</strong>, and optional <strong>Include in Summary</strong>.</li>
+            <li>Specialty code-file import/export is intentionally kept in the hidden template-maintenance workspace so normal operators use controlled repository templates.</li>
           </ul>
         </div>
       </div>
 
-      <div class="template-row">
+      <div class="ae-template-row">
         <div>
-          <label for="tagTemplateSelect">Tag Template</label>
-          <select id="tagTemplateSelect">
-            <option value="">Select Template ▼</option>
-            <option value="SLITTER_STUDY">SLITTER STUDY</option>
-          </select>
+          <label for="tagTemplateSelect">Reason Code Template</label>
+          <select id="tagTemplateSelect"><option value="">Repository templates load automatically after connection</option></select>
+          <div id="aeTemplateStatus" class="ae-template-status">Connect the Study Repository to load templates from 90_TEMPLATES.</div>
         </div>
-        <button class="add" onclick="applyTagTemplate()">Load Template</button>
+        <button class="add" id="aeLoadTemplateBtn" type="button" onclick="applyTagTemplate()">LOAD TEMPLATE</button>
+        <button id="aeTemplateAdminLauncher" class="ae-template-admin-launcher" type="button" aria-label="Template maintenance" title="Template maintenance">⚙</button>
       </div>
 
       <div class="table-actions">
         <button class="add" onclick="addDowntimeCode()">Add Downtime Code</button>
-        <button class="export" onclick="exportCodeCSV()">Export Code CSV</button>
-        <button class="export" onclick="document.getElementById('codeCsvInput').click()">Import Code CSV</button>
-        <button class="copy" onclick="togglePastePanel()">Paste Code CSV <span class="dropdown-arrow">▼</span></button>
+        <button class="export ae-admin-only" onclick="exportCodeCSV()">Export Code CSV</button>
+        <button class="export ae-admin-only" onclick="document.getElementById('codeCsvInput').click()">Import Code CSV</button>
+        <button class="copy ae-admin-only" onclick="togglePastePanel()">Paste Code CSV <span class="dropdown-arrow">▼</span></button>
         <button class="reset" onclick="clearDowntimeCodes()">Clear Reason Codes</button>
         <input id="codeCsvInput" type="file" accept=".csv,text/csv" style="display:none" onchange="importCodeCSV(event)" />
       </div>
 
-      <div id="pastePanel" class="paste-panel">
+      <div id="pastePanel" class="paste-panel ae-admin-only">
         <div class="instruction-box">
           Paste a downtime-code table copied from Excel or a CSV file. Accepted columns include <strong>Code #</strong>, optional <strong>Category</strong> or <strong>Group</strong>, <strong>Code Abbr</strong>, <strong>Code Desc</strong>, and optional <strong>Include in Summary</strong>. Tab-separated Excel paste and comma-separated CSV are both supported.
         </div>
@@ -3977,10 +4017,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       </div>
 
       <div class="instruction-box" style="margin: 0 18px 14px;">
-        This section creates a simplified executive view using the line name, study-scope production impact, category-level Pareto, and cause-code drilldown charts. Use the export button below to print or save just this report as a PDF. PDF is the best fit here because it preserves the report layout and chart cleanly.
+        This section creates a simplified executive view using the line name, study-scope production impact, category-level Pareto, and cause-code drilldown charts. Use <strong>Repository → Additional Options → Executive Report PDF</strong> when you need a standalone report. PDF preserves the report layout and charts without creating another resumable study file.
       </div>
 
-      <div class="report-actions">
+      <div class="report-actions ae-report-export-inline">
         <button class="export" onclick="exportExecutiveReportPDF()">Export Executive Report PDF</button>
         <div class="small-note" style="width:100%; text-align:center;">
           In the print dialog, enable <strong>Background graphics</strong> if your browser still removes the dark report colors.
@@ -4080,7 +4120,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     <!-- Bottom section tabs: end of page content -->
     <nav class="tracker-tab-nav tracker-tab-nav-bottom" aria-label="Downtime tracker section tabs at bottom">
       <button type="button" class="tracker-tab-btn" data-tracker-tab-button="info" onclick="showTrackerTab('info')">Information</button>
-      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="load" onclick="showTrackerTab('load')">Load / Save</button>
+      <button type="button" class="tracker-tab-btn" data-tracker-tab-button="load" onclick="showTrackerTab('load')">Repository</button>
       <button type="button" class="tracker-tab-btn" data-tracker-tab-button="study" onclick="showTrackerTab('study')">Study</button>
       <button type="button" class="tracker-tab-btn" data-tracker-tab-button="results" onclick="showTrackerTab('results')">Results</button>
     </nav>
@@ -4147,7 +4187,70 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     </div>
   </div>
 
-  <script>
+  <div id="aeRepoBrowser" class="ae-repo-browser" role="dialog" aria-modal="true" aria-labelledby="aeRepoBrowserTitle" hidden>
+  <div class="ae-repo-browser-card">
+    <div class="ae-repo-browser-head"><h3 id="aeRepoBrowserTitle">Study Repository</h3><button id="aeRepoBrowserClose" type="button" aria-label="Close">×</button></div>
+    <div class="ae-repo-browser-tools"><input id="aeRepoBrowserSearch" type="text" placeholder="Search plant, line, study, job, date, or ID" autocomplete="off"><div id="aeRepoBrowserSummary" class="ae-repo-browser-summary"></div></div>
+    <div id="aeRepoBrowserList" class="ae-repo-browser-list"></div>
+    <div id="aeRepoBrowserFooter" class="ae-repo-browser-footer" hidden><button id="aeRepoBrowserCancel" type="button">Cancel</button><button id="aeRepoBrowserOpenSelected" class="ae-repo-primary" type="button">Load Selected</button></div>
+  </div>
+</div>
+
+<div id="aeLegacyModal" class="ae-legacy-modal" role="dialog" aria-modal="true" aria-labelledby="aeLegacyTitle" hidden>
+  <div class="ae-legacy-card">
+    <div class="ae-legacy-head"><h2 id="aeLegacyTitle">Legacy File Load</h2><button id="aeLegacyClose" class="ae-legacy-close" type="button" aria-label="Close legacy file loader">×</button></div>
+    <div class="ae-legacy-body">
+      <div class="ae-legacy-note"><strong>Legacy loading only.</strong> Open an older Downtime Study JSON here, or use CSV recovery for historical tracker exports. Loading does not reconnect the old folder and never enables a legacy save path. The next <strong>SAVE STUDY</strong> always writes to <b>02_DOWNTIME</b>.</div>
+      <div class="ae-legacy-actions"><button id="aeLegacyChooseStudy" type="button">Choose Legacy Downtime JSON</button><button id="aeLegacyChooseCsv" type="button">Choose Legacy CSV Recovery</button></div>
+      <div class="ae-legacy-foot">JSON is preferred because CSV recovery may not contain every field available in a full study record.</div>
+    </div>
+  </div>
+</div>
+
+<div id="aeAdditionalOptionsModal" class="ae-options-modal" role="dialog" aria-modal="true" aria-labelledby="aeAdditionalOptionsTitle" hidden>
+  <div class="ae-options-card">
+    <div class="ae-options-head"><h2 id="aeAdditionalOptionsTitle">Additional Options</h2><button id="aeAdditionalOptionsClose" class="ae-options-close" type="button" aria-label="Close additional options">×</button></div>
+    <div class="ae-options-body">
+      <div class="ae-options-note"><strong>Study storage remains repository-only.</strong> These actions create reports or perform working-session utilities. None creates a second resumable Downtime Study JSON.</div>
+      <div class="ae-options-section"><h3>Report &amp; Data Exports</h3><div class="ae-options-grid">
+        <button id="aeExportEventCsv" class="export" type="button">EVENT LOG CSV</button>
+        <button id="aeExportExcel" class="export" type="button">EXCEL WORKBOOK</button>
+        <button id="aeExportFullPdf" type="button">FULL STUDY PDF</button>
+        <button id="aeExportExecutivePdf" type="button">EXECUTIVE REPORT PDF</button>
+      </div></div>
+      <div class="ae-options-section"><h3>Study Utilities</h3><div class="ae-options-grid">
+        <button id="aeOptionsReconnect" type="button">REPOSITORY CONNECTION</button>
+        <button id="aeOptionsReset" class="ae-options-danger" type="button">RESET CURRENT WORKING STUDY</button>
+      </div></div>
+      <div class="ae-options-foot">Automatic browser recovery remains internal crash protection; use OPEN STUDY for normal study resume and LEGACY FILE LOAD for older external files.</div>
+    </div>
+  </div>
+</div>
+
+<div id="aeTemplateAdminModal" class="ae-template-admin-modal" role="dialog" aria-modal="true" aria-labelledby="aeTemplateAdminTitle" hidden>
+  <div class="ae-template-admin-card">
+    <div class="ae-template-admin-head"><h2 id="aeTemplateAdminTitle">Template &amp; Specialty File Maintenance</h2><button id="aeTemplateAdminClose" class="ae-template-admin-close" type="button" aria-label="Close template maintenance">×</button></div>
+    <div class="ae-template-admin-body">
+      <div class="ae-template-admin-note"><strong>Maintenance workspace.</strong> Normal operators should load controlled templates from the dropdown. This workspace creates/updates repository template files and supports legacy reason-code interchange without changing the official study-save workflow.</div>
+      <div class="ae-template-admin-grid">
+        <div><label for="aeTemplateAdminLabel">Template Name</label><input id="aeTemplateAdminLabel" type="text" placeholder="SLITTER STUDY"></div>
+        <div><label for="aeTemplateAdminId">Template ID</label><input id="aeTemplateAdminId" type="text" placeholder="SLITTER_STUDY"></div>
+        <div><label for="aeTemplateAdminMatch">Line Match Keywords</label><input id="aeTemplateAdminMatch" type="text" placeholder="SLITTER, SHEETER"></div>
+        <div><label for="aeTemplateAdminRevision">Revision</label><input id="aeTemplateAdminRevision" type="text" placeholder="1"></div>
+        <div class="full"><label for="aeTemplateAdminDescription">Description</label><textarea id="aeTemplateAdminDescription" placeholder="Controlled downtime reason-code template..."></textarea></div>
+      </div>
+      <div class="ae-template-admin-actions">
+        <button id="aeSaveTemplateFromCurrent" class="export" type="button">SAVE CURRENT CODES AS REPOSITORY TEMPLATE</button>
+        <button id="aeRefreshTemplatesAdmin" type="button">REFRESH REPOSITORY TEMPLATES</button>
+        <button id="aeAdminImportCodeCsv" type="button">IMPORT REASON-CODE CSV</button>
+        <button id="aeAdminExportCodeCsv" type="button">EXPORT REASON-CODE CSV</button>
+      </div>
+      <div class="ae-template-paste"><label for="aeAdminPasteCodes">Paste Reason-Code CSV / Excel Table</label><textarea id="aeAdminPasteCodes" placeholder="Code #,Category,Code Abbr,Code Desc,Include in Summary"></textarea><div class="ae-template-admin-actions"><button id="aeAdminApplyPaste" type="button">APPLY PASTED REASON CODES</button><button id="aeAdminClearPaste" type="button">CLEAR PASTE BOX</button></div></div>
+      <div id="aeTemplateAdminStatus" class="ae-repo-status">Template maintenance ready.</div>
+    </div>
+  </div>
+</div>
+<script>
     let events = [];
     let downtimeCodes = [];
     let openNoteEventIndexes = new Set();
@@ -4155,286 +4258,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     let activeCodeSetupIndex = null;
     let actionItems = [];
 
-    const TAG_TEMPLATES = {
-      "SLITTER_STUDY": {
-            "label": "SLITTER STUDY",
-            "codes": [
-                  {
-                        "codeNumber": 1,
-                        "category": "FEED",
-                        "abbreviation": "DOUBLE FEED",
-                        "description": "Running sheets fail to separate during pickup.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 2,
-                        "category": "FEED",
-                        "abbreviation": "FEED JAM",
-                        "description": "Running sheet skews on entry or collides with entrance due to warp or feeding condition.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 3,
-                        "category": "FEED",
-                        "abbreviation": "SUCTION FAIL",
-                        "description": "Suction cups fail to pick up the running sheet.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 4,
-                        "category": "CUTTING AXIS",
-                        "abbreviation": "BLADE ADJUST",
-                        "description": "Running sheet lead-in adjustments needed due to border quality or cut alignment condition.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 5,
-                        "category": "CUTTING AXIS",
-                        "abbreviation": "BLADE JAM",
-                        "description": "Running sheets feed into the cutting axis and jam, commonly related to double feeding or sheet transfer.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 6,
-                        "category": "CUTTING AXIS",
-                        "abbreviation": "SCRAP REMOVAL",
-                        "description": "Downtime caused by scrap pileup or scrap not dropping out from the slitter axis.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 7,
-                        "category": "CUTTING AXIS",
-                        "abbreviation": "PARTIAL CUT",
-                        "description": "Downtime caused by running sheets not being slit completely.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 8,
-                        "category": "CUTTING AXIS",
-                        "abbreviation": "STUCK SHEET",
-                        "description": "Running sheet transfer issues in or out of the cutting axis causing sheets to become stuck.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 9,
-                        "category": "COLLATOR",
-                        "abbreviation": "COLLATOR JAM",
-                        "description": "Scrap material or running sheet jams at the entrance to the collator.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 10,
-                        "category": "COLLATOR",
-                        "abbreviation": "CARD FLIP",
-                        "description": "Collator card stuck on green belt causing cards to become displaced or flip.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 11,
-                        "category": "COLLATOR",
-                        "abbreviation": "STACK ERROR",
-                        "description": "Issues where collated stacks are not presented well to the PSU due to stacking condition.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 12,
-                        "category": "PSU",
-                        "abbreviation": "CARD FLIP",
-                        "description": "Downtime caused by cards flipping or twisting during movement in the PSU.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 13,
-                        "category": "PSU",
-                        "abbreviation": "CARD JAM",
-                        "description": "Cards have fallen into the chain section and need to be removed.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 14,
-                        "category": "PSU",
-                        "abbreviation": "PACK SEPARATION",
-                        "description": "Improper deck splitting or pack separation through the PSU.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 15,
-                        "category": "PSU",
-                        "abbreviation": "TIMING ERROR",
-                        "description": "Timing of the travel lugs does not match belt speed, causing card or deck interference.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 16,
-                        "category": "TRANSFER",
-                        "abbreviation": "PSU EXIT",
-                        "description": "Cards flip or jam when exiting the PSU due to the exit condition.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 17,
-                        "category": "TRANSFER",
-                        "abbreviation": "R&S ENTRANCE",
-                        "description": "Issues transitioning from the transfer section to the R&S, likely a turn or handoff issue.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 18,
-                        "category": "TRANSFER",
-                        "abbreviation": "GUIDE RAILS",
-                        "description": "Cards flipping or jamming at the guide rail section due to collision with rails or transfer hardware.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 19,
-                        "category": "R&S",
-                        "abbreviation": "BLADES",
-                        "description": "R&S blade replacement downtime due to bad cuts altering blade reliability.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 20,
-                        "category": "R&S",
-                        "abbreviation": "ANVIL",
-                        "description": "Replacement of the blade anvil, required more often for plastic anvils.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 21,
-                        "category": "R&S",
-                        "abbreviation": "PUSHER",
-                        "description": "Issues moving a deck stack into the cutting bay due to timing or card stack position.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 22,
-                        "category": "R&S",
-                        "abbreviation": "BRUSH",
-                        "description": "Issues with brush height or quality causing cards to shift or flip in the exit area.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 23,
-                        "category": "R&S",
-                        "abbreviation": "WIPERS",
-                        "description": "Replacement of tape on the wipers at the exit of the R&S.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 24,
-                        "category": "ROBOT",
-                        "abbreviation": "TRANSFER",
-                        "description": "Downtime caused by cards skewing along the transfer, including pileups or poor handoff into the robot area.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 25,
-                        "category": "ROBOT",
-                        "abbreviation": "BOTTOM CAMERA",
-                        "description": "Stops caused by bad border reads or borders not found for the bottom camera.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 26,
-                        "category": "ROBOT",
-                        "abbreviation": "TOP CAMERA",
-                        "description": "Stops caused by bad border reads or borders not found for the top camera.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 27,
-                        "category": "ROBOT",
-                        "abbreviation": "DECK JAM",
-                        "description": "Decks becoming jammed in the accumulator, likely due to shifted stacks.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 28,
-                        "category": "ROBOT",
-                        "abbreviation": "BOX MAGAZINE",
-                        "description": "New box loading errors, including boxes not releasing from the magazine or loading incorrectly.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 29,
-                        "category": "ROBOT",
-                        "abbreviation": "BOX OPEN",
-                        "description": "Errors with opening a box, either due to suction loss or a box closing after partial opening.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 30,
-                        "category": "ROBOT",
-                        "abbreviation": "BOX CLOSE",
-                        "description": "Errors closing the box, mostly due to deck stacking errors.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 31,
-                        "category": "ROBOT",
-                        "abbreviation": "TRAY",
-                        "description": "Downtime caused by deck collision with trays during placement.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 32,
-                        "category": "ROBOT",
-                        "abbreviation": "LOW DECK",
-                        "description": "Errors while picking up a deck stack at the pick point when the deck stack is too low.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 33,
-                        "category": "ROBOT",
-                        "abbreviation": "HIGH DECK",
-                        "description": "Errors while picking up a deck stack at the pick point when the deck stack is too high.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 34,
-                        "category": "PALLET",
-                        "abbreviation": "NEW SKID",
-                        "description": "Downtime caused by loading a new pallet / skid for production",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 35,
-                        "category": "PALLET",
-                        "abbreviation": "NON-COMFORMING MATERIAL",
-                        "description": "Material issues that require a pallet change. Barcode, print quality, or other.",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 36,
-                        "category": "JOB CHANGE",
-                        "abbreviation": "MAKE READY",
-                        "description": "Adjustments to the lead ins for the cutting axis, and adjustment to the suction of the feed to accomodate the new job and paper condition",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 37,
-                        "category": "JOB CHANGE",
-                        "abbreviation": "NEW SKID",
-                        "description": "Downtime caused by loading a new pallet / skid for production during a job change",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 38,
-                        "category": "JOB CHANGE",
-                        "abbreviation": "LINE CLEARANCE",
-                        "description": "Downtime caused during line clearance. Waiting on lead / supervisor pass off for a cleaned line of materials",
-                        "includeInSummary": true
-                  },
-                  {
-                        "codeNumber": 39,
-                        "category": "WAITING ON MATERIAL",
-                        "abbreviation": "WAITING ON MATERIAL",
-                        "description": "Downtime caused by waiting for material to be delivered to the line",
-                        "includeInSummary": true
-                  }
-            ]
-      }
-};
+    let TAG_TEMPLATES = Object.create(null);
+    let aeTemplateRecords = [];
+    let aeCurrentTemplateRef = null;
     let activeEventIndex = null;
     let studySegments = [];
     let currentStudyStartTimestamp = '';
@@ -5017,16 +4843,24 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const templateKey = select ? select.value : '';
       const template = TAG_TEMPLATES[templateKey];
       if (!template) {
-        alert('Select a tag template first.');
+        alert('Select a repository reason-code template first.');
         return;
       }
 
       const replaceExisting = downtimeCodes.length > 0
-        ? confirm('Load the ' + template.label + ' template and replace the existing tag list? Existing events will keep their selected causes where possible.')
+        ? confirm('Load the ' + template.label + ' template and replace the existing reason-code list? Existing events will keep their selected causes where possible.')
         : true;
       if (!replaceExisting) return;
 
       downtimeCodes = template.codes.map(code => ({ ...code }));
+      aeCurrentTemplateRef = {
+        templateId: template.templateId || templateKey,
+        label: template.label || templateKey,
+        revision: template.revision || '',
+        sourceFile: template._source?.fileName || '',
+        relativePath: template._source?.relativePath || '',
+        loadedAt: new Date().toISOString()
+      };
       legacyEventLogView = false;
       updateLegacyEventLogNotice();
       normalizeDowntimeCodes();
@@ -5040,7 +4874,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       updateTopLossSummary();
       updateDataQualityChecks();
       updateExecutiveReport();
-      setStatus(template.label + ' template loaded. Event Log now uses Category and Cause selections.', activeEventIndex !== null);
+      aeRenderTemplateStatus();
+      setStatus(template.label + ' repository template loaded. Event Log now uses Category and Cause selections.', activeEventIndex !== null);
     }
 
     function togglePastePanel() {
@@ -5133,6 +4968,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
             : true;
 
           mergeImportedDowntimeCodes(importedCodes, replaceExisting);
+          aeCurrentTemplateRef = null;
+          aeRenderTemplateStatus();
           renderCodeTable();
           renderTable();
           updatePareto();
@@ -5346,6 +5183,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function clearDowntimeCodes() {
+      aeCurrentTemplateRef = null;
       const usedCodes = events
         .map(event => event.downtimeCode)
         .filter(code => code);
@@ -5360,6 +5198,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
       downtimeCodes = [];
       renderCodeTable();
+      aeRenderTemplateStatus();
       renderActionItems();
       updateLegacyEventLogNotice();
       renderTable();
@@ -5368,6 +5207,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function addDowntimeCode() {
+      aeCurrentTemplateRef = null;
       downtimeCodes.push({
         codeNumber: downtimeCodes.length + 1,
         category: '',
@@ -6687,13 +6527,17 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       return new File([getStudyJsonBlob()], fileName, { type: 'application/json' });
     }
 
+    let aeDowntimeRecordId = '';
+
     function buildStudyStatePayload() {
       return {
         fileType: 'MPG_Downtime_Tracker_Study',
         version: 2,
         savedAt: formatTimestamp(new Date()),
+        repository: { recordId: aeDowntimeRecordId || null, route: '02_DOWNTIME' },
         events,
         downtimeCodes,
+        templateReference: aeCurrentTemplateRef ? { ...aeCurrentTemplateRef } : null,
         actionItems,
         studyInfo: getStudyInfoPayload(),
         observationSummary: document.getElementById('observationSummary')?.value || '',
@@ -6718,8 +6562,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         throw new Error('Invalid study file.');
       }
 
+      aeDowntimeRecordId = String(payload.repository?.recordId || '');
       events = payload.events || [];
       downtimeCodes = payload.downtimeCodes || [];
+      aeCurrentTemplateRef = payload.templateReference && typeof payload.templateReference === 'object' ? { ...payload.templateReference } : null;
       legacyEventLogView = detectLegacyEventLogPayload(payload);
       normalizeDowntimeCodes();
       normalizeEventsForCategoryCause();
@@ -7166,6 +7012,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function applyCSVStudyData(csvText) {
+      aeDowntimeRecordId = '';
       const rows = parseCSVRows(csvText).map(row => row.map(cell => String(cell ?? '').trim()));
       const getSingleValue = (label) => {
         const found = rows.find(row => row[0] === label);
@@ -9765,6 +9612,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function clearAll() {
+      aeDowntimeRecordId = '';
       const confirmClear = confirm('Reset the tracker and clear all downtime events from the current view? This will not delete already exported CSV files.');
       if (!confirmClear) return;
 
@@ -9975,12 +9823,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         ]
       },
       load: {
-        label: 'Load / Save',
+        label: 'Repository',
         sections: [
-          ['Load / Save Status', 5],
-          ['Load / Recover', 10],
-          ['Save / Export', 20],
-          ['Data Quality Checks', 30]
+          ['Study Repository', 5],
+          ['Data Quality Checks', 20]
         ]
       },
       study: {
@@ -10080,6 +9926,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       }
 
       refreshTrackerTabCalculations(tabKey);
+      if (tabKey === 'load') aeRefreshDowntimeTemplates({ interactive: false, silent: true }).catch(() => {});
       window.requestAnimationFrame?.(() => initializeParetoDragScroll?.());
     }
 
@@ -10716,6 +10563,153 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       renderExecutiveCategoryBreakdownCharts();
     }
 
-  </script>
+  
+
+const AE_REPO_ALLOWED_ROOT_NAMES=new Set(['study repository','engineering study hub - study repository']);
+const AE_REPO_SCHEMA_FILE='LIBRARY_SCHEMA.json',AE_REPO_SCHEMA_FOLDER='_SYSTEM',AE_REPO_SCHEMA_TYPE='AbelEngineering.StudyRepository',AE_REPO_SCHEMA_VERSION=1;
+const AE_REPO_ROUTES=['01_CYCLE_TIME','02_DOWNTIME','03_TAKT_MATERIAL_FLOW','04_MULTI_STUDY_DOWNTIME','90_TEMPLATES'];
+const AE_REPO_IDB_NAME='AbelEngineeringStudyRepositoryHandles',AE_REPO_IDB_STORE='handles',AE_REPO_IDB_KEY='studyRepositoryRoot';
+let aeRepoRootHandle=null,aeRepoBrowserRecords=[],aeRepoBrowserFiltered=[],aeRepoBrowserMulti=false,aeRepoBrowserCallback=null;
+function aeRepoClean(v){return String(v??'').trim()}
+function aeRepoSafe(v,fallback='UNSPECIFIED',max=64){let x=aeRepoClean(v).replace(/&/g,' and ').replace(/[<>:"/\\|?*\x00-\x1F]/g,' ').replace(/\s+/g,' ').trim().replace(/[. ]+$/g,'');if(!x)x=fallback;return x.slice(0,max)}
+function aeRepoToken(v,fallback='NA',max=54){return aeRepoSafe(v,fallback,max).replace(/\s+/g,'_')}
+function aeRepoDateParts(raw){const m=String(raw||'').match(/^(\d{4})-(\d{2})-(\d{2})/),d=m?`${m[1]}-${m[2]}-${m[3]}`:new Date().toISOString().slice(0,10);return{day:d,year:d.slice(0,4),month:d.slice(0,7),compact:d.replaceAll('-','')}}
+function aeRepoRandom4(){const a=new Uint32Array(1);try{crypto.getRandomValues(a);return(a[0]%1679616).toString(36).toUpperCase().padStart(4,'0')}catch{return Math.random().toString(36).slice(2,6).toUpperCase().padEnd(4,'0')}}
+function aeRepoRootNameApproved(name){return AE_REPO_ALLOWED_ROOT_NAMES.has(aeRepoClean(name).toLowerCase())}
+function aeRepoStatus(message,type=''){const el=document.getElementById('aeRepoStatus'),badge=document.getElementById('aeRepoBadge'),dot=document.getElementById('aeRepoDot');if(el){el.textContent=message;el.className='ae-repo-status'+(type?' '+type:'')}if(dot){dot.className='ae-repo-dot'+(type?' '+type:'')}if(badge){const label=type==='good'?'Repository Connected':type==='bad'?'Repository Error':type==='warn'?'Repository Attention':'Repository Not Connected';const span=badge.querySelector('[data-ae-repo-badge-text]');if(span)span.textContent=label}}
+function aeRepoOpenDb(){return new Promise((resolve,reject)=>{try{const req=indexedDB.open(AE_REPO_IDB_NAME,1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(AE_REPO_IDB_STORE))db.createObjectStore(AE_REPO_IDB_STORE)};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)}catch(e){reject(e)}})}
+async function aeRepoRememberHandle(handle){try{const db=await aeRepoOpenDb();await new Promise((resolve,reject)=>{const tx=db.transaction(AE_REPO_IDB_STORE,'readwrite');tx.objectStore(AE_REPO_IDB_STORE).put(handle,AE_REPO_IDB_KEY);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});db.close()}catch(e){console.warn('Repository handle could not be remembered.',e)}}
+async function aeRepoLoadRememberedHandle(){try{const db=await aeRepoOpenDb(),h=await new Promise((resolve,reject)=>{const tx=db.transaction(AE_REPO_IDB_STORE,'readonly'),r=tx.objectStore(AE_REPO_IDB_STORE).get(AE_REPO_IDB_KEY);r.onsuccess=()=>resolve(r.result||null);r.onerror=()=>reject(r.error)});db.close();return h}catch(e){console.warn('Remembered repository handle unavailable.',e);return null}}
+async function aeRepoPermission(handle,mode='readwrite',prompt=true){if(!handle)return false;try{if(typeof handle.queryPermission!=='function')return true;let p=await handle.queryPermission({mode});if(p!=='granted'&&prompt&&typeof handle.requestPermission==='function')p=await handle.requestPermission({mode});return p==='granted'}catch{return false}}
+async function aeRepoEnsureDir(root,parts,create=true){let d=root;for(const raw of parts){const name=aeRepoSafe(raw,'UNSPECIFIED',70);d=await d.getDirectoryHandle(name,{create})}return d}
+async function aeRepoWriteRaw(directory,name,data,type='application/octet-stream'){const blob=data instanceof Blob?data:new Blob([data],{type}),h=await directory.getFileHandle(aeRepoSafe(name,'FILE',120),{create:true}),w=await h.createWritable();await w.write(blob);await w.close();const f=await h.getFile();if(f.size!==blob.size)throw new Error(`${name} verification failed: saved ${f.size} bytes, expected ${blob.size}.`);return{handle:h,file:f,size:f.size,type:blob.type}}
+async function aeRepoHashText(text){try{const b=new TextEncoder().encode(text),d=await crypto.subtle.digest('SHA-256',b);return[...new Uint8Array(d)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch{return''}}
+async function aeRepoWriteJson(directory,name,value){const text=JSON.stringify(value,null,2),r=await aeRepoWriteRaw(directory,name,text,'application/json'),stored=(await r.file.text()).replace(/^\uFEFF/,'');let parsed;try{parsed=JSON.parse(stored)}catch(e){throw new Error(`${name} was written but is not valid JSON: ${e.message}`)}if(stored!==text)throw new Error(`${name} was written but did not match the generated JSON.`);return{...r,sha256:await aeRepoHashText(stored),parsed}}
+async function aeRepoProbe(root){const n=`.__abel_repo_write_test_${Date.now()}.tmp`;try{const h=await root.getFileHandle(n,{create:true}),w=await h.createWritable();await w.write('Abel Engineering repository write test');await w.close();const f=await h.getFile();if(!f.size)throw new Error('write test returned an empty file');await root.removeEntry(n)}catch(e){throw new Error(`The selected Study Repository is not writable. ${e.message||e}`)}}
+function aeRepoSchemaPayload(){return{fileType:AE_REPO_SCHEMA_TYPE,schemaVersion:AE_REPO_SCHEMA_VERSION,libraryName:'Engineering Study Hub - Study Repository',acceptedRootFolderNames:['Engineering Study Hub - Study Repository','Study Repository'],routes:{cycleTime:'01_CYCLE_TIME',downtime:'02_DOWNTIME',taktMaterialFlow:'03_TAKT_MATERIAL_FLOW',multiStudyDowntime:'04_MULTI_STUDY_DOWNTIME',templates:'90_TEMPLATES'},updatedAt:new Date().toISOString()}}
+async function aeRepoValidateRoot(root,{initialize=false,probe=false}={}){if(!root)throw new Error('No Study Repository folder is selected.');if(!aeRepoRootNameApproved(root.name))throw new Error('Select the folder named exactly “Engineering Study Hub - Study Repository” or “Study Repository”.');if(!await aeRepoPermission(root,'readwrite',initialize))throw new Error('Read/write permission to the Study Repository was not granted.');let sys;try{sys=await root.getDirectoryHandle(AE_REPO_SCHEMA_FOLDER,{create:initialize})}catch(e){throw new Error(`Unable to open ${AE_REPO_SCHEMA_FOLDER}. ${e.message||e}`)};let schema=null;try{const h=await sys.getFileHandle(AE_REPO_SCHEMA_FILE),f=await h.getFile(),t=(await f.text()).replace(/^\uFEFF/,'').trim();if(t)schema=JSON.parse(t)}catch(e){if(e?.name!=='NotFoundError'&&!initialize)throw e}if(schema&&schema.fileType!==AE_REPO_SCHEMA_TYPE)throw new Error(`${AE_REPO_SCHEMA_FOLDER}/${AE_REPO_SCHEMA_FILE} belongs to a different repository type.`);if(initialize&&!schema)await aeRepoWriteJson(sys,AE_REPO_SCHEMA_FILE,aeRepoSchemaPayload());if(initialize){for(const r of AE_REPO_ROUTES)await root.getDirectoryHandle(r,{create:true})}if(probe)await aeRepoProbe(root);return true}
+async function aeRepoConnect(){if(!window.showDirectoryPicker)throw new Error('Study Repository folder access requires desktop Microsoft Edge or Google Chrome with the File System Access API. Use Legacy File Load for older local files. Repository saving requires supported desktop folder access.');const h=await window.showDirectoryPicker({mode:'readwrite'});await aeRepoValidateRoot(h,{initialize:true,probe:true});aeRepoRootHandle=h;await aeRepoRememberHandle(h);aeRepoStatus(`Connected to ${h.name}. Direct saves are verified locally; OneDrive handles SharePoint/Teams synchronization.`,'good');return h}
+async function aeRepoGetRoot({interactive=true,probe=false}={}){let h=aeRepoRootHandle||await aeRepoLoadRememberedHandle();if(h&&aeRepoRootNameApproved(h.name)&&await aeRepoPermission(h,'readwrite',interactive)){try{await aeRepoValidateRoot(h,{initialize:true,probe});aeRepoRootHandle=h;await aeRepoRememberHandle(h);aeRepoStatus(`Connected to ${h.name}.`,'good');return h}catch(e){console.warn(e)}}if(!interactive){aeRepoStatus('Study Repository connection is saved, but browser permission must be re-granted before use.','warn');return null}return aeRepoConnect()}
+async function aeRepoBootstrap(){try{const h=await aeRepoLoadRememberedHandle();if(!h){aeRepoStatus('Connect the Study Repository once. Save/Open will then reuse it whenever browser permission remains available.','');return}aeRepoRootHandle=h;if(!aeRepoRootNameApproved(h.name)){aeRepoStatus('The remembered folder no longer matches the approved Study Repository name. Reconnect the repository.','warn');return}const p=await aeRepoPermission(h,'readwrite',false);if(p==='granted'||p===true){await aeRepoValidateRoot(h,{initialize:false,probe:false});aeRepoStatus(`Repository remembered: ${h.name}.`,'good')}else aeRepoStatus(`Repository remembered: ${h.name}. Click Save, Open, or Reconnect to restore permission.`,'warn')}catch(e){aeRepoStatus(`Repository connection needs attention: ${e.message||e}`,'warn')}}
+async function aeRepoScan(directory,predicate,path=[],out=[],limit=2500){if(out.length>=limit)return out;for await(const [name,h] of directory.entries()){if(out.length>=limit)break;if(h.kind==='directory'){await aeRepoScan(h,predicate,[...path,name],out,limit)}else if(!predicate||predicate(name,h,path))out.push({name,handle:h,pathParts:[...path,name],directoryHandle:directory})}return out}
+async function aeRepoJson(entry){const f=await entry.handle.getFile(),t=(await f.text()).replace(/^\uFEFF/,'').trim();if(!t)throw new Error(`${entry.name} is empty.`);return JSON.parse(t)}
+function aeRepoPath(parts){return parts.join(' / ')}
+function aeRepoCloseBrowser(){document.getElementById('aeRepoBrowser').hidden=true;aeRepoBrowserCallback=null;aeRepoBrowserRecords=[];aeRepoBrowserFiltered=[];setTimeout(()=>typeof aeModalLock==='function'&&aeModalLock(),0)}
+function aeRepoRenderBrowser(){const list=document.getElementById('aeRepoBrowserList'),term=aeRepoClean(document.getElementById('aeRepoBrowserSearch')?.value).toLowerCase();aeRepoBrowserFiltered=aeRepoBrowserRecords.filter(r=>!term||`${r.title} ${r.meta} ${r.search||''}`.toLowerCase().includes(term));document.getElementById('aeRepoBrowserSummary').textContent=`${aeRepoBrowserFiltered.length} of ${aeRepoBrowserRecords.length} repository record${aeRepoBrowserRecords.length===1?'':'s'} shown.`;list.innerHTML='';if(!aeRepoBrowserFiltered.length){list.innerHTML='<div class="ae-repo-browser-empty">No repository records match this search.</div>';return}aeRepoBrowserFiltered.forEach((r,i)=>{const label=document.createElement('label');label.className='ae-repo-record';if(aeRepoBrowserMulti){const cb=document.createElement('input');cb.type='checkbox';cb.checked=r.selected!==false;cb.addEventListener('change',()=>r.selected=cb.checked);label.appendChild(cb)}else{const icon=document.createElement('span');icon.textContent='▸';icon.style.color='#c4b5fd';icon.style.fontWeight='900';label.appendChild(icon);label.tabIndex=0;const open=async()=>{try{aeRepoCloseBrowser();await aeRepoBrowserCallback?.([r])}catch(e){alert(e.message||e)}};label.addEventListener('click',open);label.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})}const text=document.createElement('div');text.innerHTML=`<div class="ae-repo-record-title"></div><div class="ae-repo-record-meta"></div>`;text.querySelector('.ae-repo-record-title').textContent=r.title;text.querySelector('.ae-repo-record-meta').textContent=r.meta;label.appendChild(text);list.appendChild(label)})}
+function aeRepoShowBrowser(records,{title='Study Repository',multi=false,buttonLabel='Load Selected',onOpen}={}){aeRepoBrowserRecords=records;aeRepoBrowserMulti=!!multi;aeRepoBrowserCallback=onOpen||null;document.getElementById('aeRepoBrowserTitle').textContent=title;const search=document.getElementById('aeRepoBrowserSearch');search.value='';const footer=document.getElementById('aeRepoBrowserFooter');footer.hidden=!multi;document.getElementById('aeRepoBrowserOpenSelected').textContent=buttonLabel;document.getElementById('aeRepoBrowser').hidden=false;aeRepoRenderBrowser();setTimeout(()=>{typeof aeModalLock==='function'&&aeModalLock();search.focus()},0)}
+document.getElementById('aeRepoBrowserClose')?.addEventListener('click',aeRepoCloseBrowser);document.getElementById('aeRepoBrowserCancel')?.addEventListener('click',aeRepoCloseBrowser);document.getElementById('aeRepoBrowser')?.addEventListener('click',e=>{if(e.target.id==='aeRepoBrowser')aeRepoCloseBrowser()});document.getElementById('aeRepoBrowserSearch')?.addEventListener('input',aeRepoRenderBrowser);document.getElementById('aeRepoBrowserOpenSelected')?.addEventListener('click',async()=>{const selected=aeRepoBrowserRecords.filter(r=>r.selected!==false);if(!selected.length)return alert('Select at least one repository record.');const cb=aeRepoBrowserCallback;aeRepoCloseBrowser();try{await cb?.(selected)}catch(e){alert(e.message||e)}});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('aeRepoBrowser')?.hidden)aeRepoCloseBrowser()});
+
+const AE_REPO_ROUTE='02_DOWNTIME';
+function aeDowntimeId(){if(aeDowntimeRecordId)return aeDowntimeRecordId;const d=aeRepoDateParts(getStudyInfoPayload().studyDate);aeDowntimeRecordId=`DT-${d.compact}-${aeRepoRandom4()}`;return aeDowntimeRecordId}
+function aeDowntimeFolderParts(){const i=getStudyInfoPayload(),d=aeRepoDateParts(i.studyDate);return[AE_REPO_ROUTE,aeRepoToken(i.studyLocation,'UNSPECIFIED_LOCATION'),aeRepoToken(i.studyLine,'UNSPECIFIED_LINE'),d.year,d.month,aeDowntimeId()]}
+async function aeDowntimeSave(){const root=await aeRepoGetRoot({interactive:true,probe:true}),id=aeDowntimeId(),parts=aeDowntimeFolderParts(),dir=await aeRepoEnsureDir(root,parts,true),payload=buildStudyStatePayload();payload.repository={recordId:id,route:AE_REPO_ROUTE,rootFolder:root.name,relativePath:aeRepoPath(parts),savedAt:new Date().toISOString()};aeRepoStatus(`Saving and verifying ${id}…`,'warn');const study=await aeRepoWriteJson(dir,`${id}__STUDY.json`,payload),manifest={fileType:'AbelEngineering.StudyPackageManifest',schemaVersion:1,recordType:'DOWNTIME',recordId:id,studyDate:payload.studyInfo?.studyDate||'',location:payload.studyInfo?.studyLocation||'',line:payload.studyInfo?.studyLine||'',shift:payload.studyInfo?.studyShift||'',product:payload.studyInfo?.studyProduct||'',savedAt:new Date().toISOString(),relativePath:aeRepoPath(parts),outputs:[{name:`${id}__STUDY.json`,size:study.size,sha256:study.sha256,role:'authoritative_study'}]};await aeRepoWriteJson(dir,`${id}__MANIFEST.json`,manifest);try{saveLocal()}catch{}updateSelectedFolderStatus(`Repository saved: ${aeRepoPath(parts)}`);aeRepoStatus(`Saved & verified: ${aeRepoPath(parts)} • Study JSON + manifest. OneDrive/SharePoint synchronization is handled by OneDrive.`,'good')}
+async function aeDowntimeOpen(){const root=await aeRepoGetRoot({interactive:true}),base=await aeRepoEnsureDir(root,[AE_REPO_ROUTE],true);aeRepoStatus('Scanning Downtime studies…','warn');const entries=await aeRepoScan(base,name=>/__STUDY\.json$/i.test(name)),records=[];for(const e of entries){try{const p=await aeRepoJson(e);if(p?.fileType!=='MPG_Downtime_Tracker_Study')continue;const i=p.studyInfo||{},id=p.repository?.recordId||e.pathParts.at(-2)||e.name;records.push({entry:e,title:`${i.studyLocation||'Unspecified'} • ${i.studyLine||'Unspecified'}`,meta:[i.studyDate,i.studyShift,i.studyProduct,i.studyObserver,id].filter(Boolean).join(' • '),search:JSON.stringify(i)})}catch(err){console.warn('Skipping unreadable downtime repository record',e.name,err)}}records.sort((a,b)=>b.meta.localeCompare(a.meta));aeRepoStatus(`Found ${records.length} Downtime study record${records.length===1?'':'s'}.`,'good');aeRepoShowBrowser(records,{title:'Open Downtime Study',onOpen:async rows=>{const file=await rows[0].entry.handle.getFile();loadStudyJsonFile(file);aeRepoStatus(`Opened ${rows[0].title} from the Study Repository.`,'good')}})}
+document.getElementById('aeRepoConnect')?.addEventListener('click',()=>aeRepoConnect().then(()=>aeRefreshDowntimeTemplates({interactive:false,silent:false})).catch(e=>{aeRepoStatus(e.message||String(e),'bad');alert(e.message||e)}));document.getElementById('aeRepoSave')?.addEventListener('click',()=>aeDowntimeSave().catch(e=>{aeRepoStatus(`Save failed: ${e.message||e}`,'bad');alert(`Repository save failed: ${e.message||e}`)}));document.getElementById('aeRepoOpen')?.addEventListener('click',()=>aeDowntimeOpen().catch(e=>{aeRepoStatus(`Open failed: ${e.message||e}`,'bad');alert(`Repository open failed: ${e.message||e}`)}));aeRepoBootstrap().then(()=>aeRefreshDowntimeTemplates({interactive:false,silent:true})).catch(()=>{});
+
+
+
+function aeLegacyOpen(){const m=document.getElementById('aeLegacyModal');if(m){m.hidden=false;setTimeout(()=>{typeof aeModalLock==='function'&&aeModalLock();document.getElementById('aeLegacyChooseStudy')?.focus()},0)}}
+function aeLegacyClose(){const m=document.getElementById('aeLegacyModal');if(m)m.hidden=true;setTimeout(()=>typeof aeModalLock==='function'&&aeModalLock(),0)}
+document.getElementById('aeLegacyLoadBtn')?.addEventListener('click',aeLegacyOpen);
+document.getElementById('aeLegacyClose')?.addEventListener('click',aeLegacyClose);
+document.getElementById('aeLegacyModal')?.addEventListener('click',e=>{if(e.target.id==='aeLegacyModal')aeLegacyClose()});
+document.getElementById('aeLegacyChooseStudy')?.addEventListener('click',()=>document.getElementById('studyFileInput')?.click());
+document.getElementById('aeLegacyChooseCsv')?.addEventListener('click',()=>document.getElementById('studyCsvInput')?.click());
+document.getElementById('studyFileInput')?.addEventListener('change',()=>aeLegacyClose());
+document.getElementById('studyCsvInput')?.addEventListener('change',()=>aeLegacyClose());
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('aeLegacyModal')?.hidden)aeLegacyClose()});
+
+
+
+/* ======================================================================
+   Abel Engineering Downtime repository templates + consolidated options
+   ====================================================================== */
+const AE_DOWNTIME_TEMPLATE_TYPE='AbelEngineering.DowntimeTagTemplate';
+function aeModalLock(){document.body.classList.toggle('ae-modal-open',[...document.querySelectorAll('.ae-repo-browser,.ae-legacy-modal,.ae-options-modal,.ae-template-admin-modal')].some(x=>!x.hidden))}
+function aeSetModal(id,open){const el=document.getElementById(id);if(!el)return;el.hidden=!open;aeModalLock()}
+function aeTemplateStatus(message,type=''){const el=document.getElementById('aeTemplateStatus');if(!el)return;el.textContent=message;el.className='ae-template-status'+(type?' '+type:'')}
+function aeRenderTemplateStatus(){
+  if(aeCurrentTemplateRef?.label){aeTemplateStatus(`Current reason-code basis: ${aeCurrentTemplateRef.label}${aeCurrentTemplateRef.revision?` • Rev ${aeCurrentTemplateRef.revision}`:''}.`,'good');return}
+  if(aeTemplateRecords.length)aeTemplateStatus(`${aeTemplateRecords.length} repository template${aeTemplateRecords.length===1?'':'s'} available from 90_TEMPLATES.`,'good');
+}
+function aeTemplateId(value){return String(value||'').trim().toUpperCase().replace(/[^A-Z0-9]+/g,'_').replace(/^_+|_+$/g,'').slice(0,60)}
+function aeTemplateMatchList(value){return String(value||'').split(',').map(x=>x.trim().toUpperCase()).filter(Boolean)}
+function aeAutoSelectDowntimeTemplate(){
+  const select=document.getElementById('tagTemplateSelect');if(!select||!aeTemplateRecords.length)return;
+  const current=select.value;if(current&&TAG_TEMPLATES[current])return;
+  const line=String(document.getElementById('studyLine')?.value||'').trim().toUpperCase();if(!line)return;
+  const ranked=aeTemplateRecords.map(t=>{const keys=(t.match?.lineContains||[]).map(x=>String(x).toUpperCase()).filter(Boolean);const hits=keys.filter(k=>line.includes(k));return{t,score:hits.reduce((a,k)=>a+k.length,0)}}).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.t.label.localeCompare(b.t.label));
+  if(ranked.length){select.value=ranked[0].t.templateId;aeTemplateStatus(`Suggested for “${line}”: ${ranked[0].t.label}. Click LOAD TEMPLATE to apply.`,'good')}
+}
+async function aeRefreshDowntimeTemplates({interactive=false,silent=false}={}){
+  const select=document.getElementById('tagTemplateSelect');if(!select)return[];
+  const prior=select.value;
+  try{
+    const root=await aeRepoGetRoot({interactive});
+    if(!root){if(!silent)aeTemplateStatus('Connect the Study Repository to load templates from 90_TEMPLATES.','warn');return[]}
+    const base=await aeRepoEnsureDir(root,['90_TEMPLATES'],interactive);
+    const entries=await aeRepoScan(base,name=>/\.json$/i.test(name));
+    const rows=[];
+    for(const entry of entries){
+      try{
+        const raw=await aeRepoJson(entry);if(raw?.fileType!==AE_DOWNTIME_TEMPLATE_TYPE||!Array.isArray(raw.codes))continue;
+        const id=aeTemplateId(raw.templateId||entry.name.replace(/\.json$/i,''));if(!id)continue;
+        const label=String(raw.label||id).trim();
+        const row={templateId:id,label,description:String(raw.description||''),revision:String(raw.revision||''),match:raw.match&&typeof raw.match==='object'?raw.match:{},codes:raw.codes.map(code=>({...code})),_source:{fileName:entry.name,relativePath:['90_TEMPLATES',...(entry.pathParts||[])].join(' / ')}};
+        rows.push(row);
+      }catch(err){console.warn('Skipping invalid downtime template',entry.name,err)}
+    }
+    rows.sort((a,b)=>a.label.localeCompare(b.label));aeTemplateRecords=rows;TAG_TEMPLATES=Object.create(null);rows.forEach(r=>TAG_TEMPLATES[r.templateId]=r);
+    select.innerHTML='<option value="">Select Repository Template ▼</option>'+rows.map(r=>`<option value="${escapeHTML(r.templateId)}">${escapeHTML(r.label)}${r.revision?` • Rev ${escapeHTML(r.revision)}`:''}</option>`).join('');
+    if(prior&&TAG_TEMPLATES[prior])select.value=prior;
+    if(!rows.length){select.innerHTML='<option value="">No compatible Downtime templates found</option>';aeTemplateStatus('No compatible Downtime template JSON files were found under 90_TEMPLATES.','warn')}else{aeRenderTemplateStatus();aeAutoSelectDowntimeTemplate()}
+    return rows;
+  }catch(err){if(!silent)aeTemplateStatus(`Template refresh failed: ${err.message||err}`,'warn');return[]}
+}
+async function aeSaveCurrentCodesAsTemplate(){
+  if(!downtimeCodes.length)return alert('Add or import at least one reason code before creating a template.');
+  const label=String(document.getElementById('aeTemplateAdminLabel')?.value||'').trim();const id=aeTemplateId(document.getElementById('aeTemplateAdminId')?.value||label);if(!label||!id)return alert('Enter a Template Name and Template ID.');
+  const root=await aeRepoGetRoot({interactive:true,probe:true}),dir=await aeRepoEnsureDir(root,['90_TEMPLATES','DOWNTIME'],true);
+  const payload={fileType:AE_DOWNTIME_TEMPLATE_TYPE,schemaVersion:1,templateId:id,label,description:String(document.getElementById('aeTemplateAdminDescription')?.value||'').trim(),revision:String(document.getElementById('aeTemplateAdminRevision')?.value||'').trim(),match:{lineContains:aeTemplateMatchList(document.getElementById('aeTemplateAdminMatch')?.value)},codes:downtimeCodes.map(code=>({codeNumber:Number(code.codeNumber)||0,category:normalizeCategory(code.category||'UNCATEGORIZED'),abbreviation:String(code.abbreviation||'').trim().toUpperCase(),description:String(code.description||'').trim(),includeInSummary:code.includeInSummary!==false})),updatedAt:new Date().toISOString(),createdByApplication:'Abel Engineering Downtime Tracker'};
+  const fileName=`DOWNTIME_TEMPLATE__${id}.json`;document.getElementById('aeTemplateAdminStatus').textContent=`Saving and verifying ${fileName}…`;await aeRepoWriteJson(dir,fileName,payload);document.getElementById('aeTemplateAdminStatus').textContent=`Saved & verified: 90_TEMPLATES / DOWNTIME / ${fileName}`;await aeRefreshDowntimeTemplates({interactive:false,silent:false});document.getElementById('tagTemplateSelect').value=id;
+}
+function aeOpenTemplateAdmin(){
+  const selected=TAG_TEMPLATES[document.getElementById('tagTemplateSelect')?.value]||null,line=String(document.getElementById('studyLine')?.value||'').trim();
+  document.getElementById('aeTemplateAdminLabel').value=selected?.label||'';document.getElementById('aeTemplateAdminId').value=selected?.templateId||'';document.getElementById('aeTemplateAdminMatch').value=(selected?.match?.lineContains||([line].filter(Boolean))).join(', ');document.getElementById('aeTemplateAdminRevision').value=selected?.revision||'';document.getElementById('aeTemplateAdminDescription').value=selected?.description||'';document.getElementById('aeTemplateAdminStatus').textContent=selected?`Editing basis for ${selected.label}. Saving with the same ID updates that repository template file.`:'Create a controlled template from the current reason-code table.';aeSetModal('aeTemplateAdminModal',true);setTimeout(()=>document.getElementById('aeTemplateAdminLabel')?.focus(),0)
+}
+function aeAdminApplyPastedCodes(){
+  const text=String(document.getElementById('aeAdminPasteCodes')?.value||'');if(!text.trim())return alert('Paste a reason-code CSV or Excel table first.');
+  try{const imported=parseCodeCSV(text);if(!imported.length)throw new Error('No reason codes found');const replace=downtimeCodes.length?confirm('Replace the existing reason-code list? Click OK to replace, or Cancel to append/update.'):true;mergeImportedDowntimeCodes(imported,replace);renderCodeTable();renderTable();updatePareto();updateSummary();aeCurrentTemplateRef=null;aeRenderTemplateStatus();document.getElementById('aeTemplateAdminStatus').textContent=`Applied ${imported.length} pasted reason code${imported.length===1?'':'s'}. Save as a repository template if this should become a controlled standard.`}catch(err){alert('The pasted code table could not be read. '+(err.message||err))}
+}
+function aeOpenAdditionalOptions(){aeSetModal('aeAdditionalOptionsModal',true)}
+function aeCloseAdditionalOptions(){aeSetModal('aeAdditionalOptionsModal',false)}
+function aeCloseTemplateAdmin(){aeSetModal('aeTemplateAdminModal',false)}
+
+
+document.getElementById('aeAdditionalOptionsBtn')?.addEventListener('click',aeOpenAdditionalOptions);
+document.getElementById('aeAdditionalOptionsClose')?.addEventListener('click',aeCloseAdditionalOptions);
+document.getElementById('aeAdditionalOptionsModal')?.addEventListener('click',e=>{if(e.target.id==='aeAdditionalOptionsModal')aeCloseAdditionalOptions()});
+document.getElementById('aeExportEventCsv')?.addEventListener('click',()=>{aeCloseAdditionalOptions();exportCSV()});
+document.getElementById('aeExportExcel')?.addEventListener('click',()=>{aeCloseAdditionalOptions();exportExcel()});
+document.getElementById('aeExportFullPdf')?.addEventListener('click',()=>{aeCloseAdditionalOptions();printFullPagePDF()});
+document.getElementById('aeExportExecutivePdf')?.addEventListener('click',()=>{aeCloseAdditionalOptions();exportExecutiveReportPDF()});
+document.getElementById('aeOptionsReconnect')?.addEventListener('click',()=>{aeCloseAdditionalOptions();document.getElementById('aeRepoConnect')?.click()});
+document.getElementById('aeOptionsReset')?.addEventListener('click',()=>{aeCloseAdditionalOptions();clearAll()});
+
+document.getElementById('aeTemplateAdminLauncher')?.addEventListener('click',aeOpenTemplateAdmin);
+document.getElementById('aeTemplateAdminClose')?.addEventListener('click',aeCloseTemplateAdmin);
+document.getElementById('aeTemplateAdminModal')?.addEventListener('click',e=>{if(e.target.id==='aeTemplateAdminModal')aeCloseTemplateAdmin()});
+document.getElementById('aeSaveTemplateFromCurrent')?.addEventListener('click',()=>aeSaveCurrentCodesAsTemplate().catch(e=>{document.getElementById('aeTemplateAdminStatus').textContent=`Template save failed: ${e.message||e}`;alert(e.message||e)}));
+document.getElementById('aeRefreshTemplatesAdmin')?.addEventListener('click',()=>aeRefreshDowntimeTemplates({interactive:true,silent:false}).then(rows=>document.getElementById('aeTemplateAdminStatus').textContent=`Repository template refresh complete: ${rows.length} compatible template${rows.length===1?'':'s'}.`));
+document.getElementById('aeAdminImportCodeCsv')?.addEventListener('click',()=>document.getElementById('codeCsvInput')?.click());
+document.getElementById('aeAdminExportCodeCsv')?.addEventListener('click',exportCodeCSV);
+document.getElementById('aeAdminApplyPaste')?.addEventListener('click',aeAdminApplyPastedCodes);
+document.getElementById('aeAdminClearPaste')?.addEventListener('click',()=>{document.getElementById('aeAdminPasteCodes').value=''});
+document.getElementById('studyLine')?.addEventListener('input',()=>setTimeout(aeAutoSelectDowntimeTemplate,0));
+document.getElementById('tagTemplateSelect')?.addEventListener('change',()=>{const t=TAG_TEMPLATES[document.getElementById('tagTemplateSelect').value];if(t)aeTemplateStatus(`${t.label}${t.revision?` • Rev ${t.revision}`:''} selected from 90_TEMPLATES. Click LOAD TEMPLATE to apply.`,'good');else aeRenderTemplateStatus()});
+
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(!document.getElementById('aeAdditionalOptionsModal')?.hidden)aeCloseAdditionalOptions();else if(!document.getElementById('aeTemplateAdminModal')?.hidden)aeCloseTemplateAdmin()});
+
+</script>
 </body>
 </html>
