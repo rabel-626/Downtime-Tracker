@@ -1,0 +1,72 @@
+{
+  "schema": "AbelEngineering.ToolManifest",
+  "schemaVersion": "1.0",
+  "tool": {
+    "id": "downtime-tracker",
+    "name": "Downtime Tracker",
+    "shortName": "DT",
+    "category": "Downtime Analysis",
+    "status": "Active",
+    "version": "Current testbench build",
+    "description": "Capture, categorize, and analyze production downtime events with study metadata, reason codes, quality checks, Pareto analysis, action items, and exports.",
+    "tags": [
+      "Data Collection",
+      "Downtime",
+      "Production"
+    ],
+    "features": [
+      "Study information and traceability",
+      "Timed and manual event entry",
+      "Downtime code setup",
+      "Data-quality checks",
+      "Pareto and executive reporting",
+      "JSON / CSV / Excel-oriented export workflows"
+    ]
+  },
+  "links": {
+    "application": "https://rabel-626.github.io/Downtime-Tracker/",
+    "repository": "https://github.com/rabel-626/Downtime-Tracker"
+  },
+  "documents": [
+    {
+      "id": "quick-start",
+      "type": "quick-start",
+      "title": "Quick Start",
+      "file": "docs/quick-start/QS-AE-DT-001_Quick-Start.md",
+      "description": "Basic workflow for starting, running, reviewing, and saving a downtime study.",
+      "order": 10
+    },
+    {
+      "id": "work-instructions",
+      "type": "work-instruction",
+      "title": "Work Instructions",
+      "file": "docs/work-instructions/WI-AE-DT-001_Work-Instructions.md",
+      "description": "Detailed operating procedure for a standard downtime study.",
+      "order": 20
+    },
+    {
+      "id": "reference",
+      "type": "reference",
+      "title": "Downtime Methodology",
+      "file": "docs/reference/REF-AE-DT-001_Downtime-Methodology.md",
+      "description": "Reference for observed time, included downtime, reason coding, and Pareto interpretation.",
+      "order": 30
+    },
+    {
+      "id": "limitations",
+      "type": "limitations",
+      "title": "Limitations",
+      "file": "docs/limitations/LIM-AE-DT-001_Limitations.md",
+      "description": "Known use boundaries and engineering-review requirements.",
+      "order": 40
+    },
+    {
+      "id": "data",
+      "type": "data",
+      "title": "Data & Privacy",
+      "file": "docs/data/DATA-AE-DT-001_Data-Handling.md",
+      "description": "How browser storage, study files, and exports are handled.",
+      "order": 50
+    }
+  ]
+}
