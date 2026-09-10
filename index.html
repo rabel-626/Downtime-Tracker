@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="abel-engineering-app" content="Downtime Tracker" />
-  <meta name="abel-engineering-app-version" content="1.0.0" />
-  <meta name="abel-engineering-app-build" content="DT-2026-09-09-03" />
+  <meta name="abel-engineering-app-version" content="1.1.3" />
+  <meta name="abel-engineering-app-build" content="DT-2026-09-10-01" />
   <meta name="abel-engineering-study-schema-version" content="2" />
   <title>Downtime Tracker | Abel Engineering</title>
   <style>
@@ -3698,6 +3698,256 @@ button.inline-downtime-button.running{background:linear-gradient(135deg,#be123c,
       .pareto-view-toolbar { display: none !important; }
     }
 
+
+
+    /* ============================================================
+       v1.1.2 final engineering audit
+       - iPhone safe-area containment
+       - stronger manual-entry validation cues
+       - timer-derived duration protection
+       ============================================================ */
+    .input-invalid {
+      border-color: rgba(239,68,68,.82) !important;
+      box-shadow: 0 0 0 3px rgba(239,68,68,.15) !important;
+    }
+
+    #eventTable input[readonly] {
+      background: rgba(255,255,255,.035) !important;
+      color: #d4d4d8 !important;
+      -webkit-text-fill-color: #d4d4d8 !important;
+      cursor: default;
+      opacity: .92;
+    }
+
+    @media (max-width: 700px) {
+      .page-wrap {
+        padding-left: calc(7px + env(safe-area-inset-left)) !important;
+        padding-right: calc(7px + env(safe-area-inset-right)) !important;
+        padding-top: calc(7px + env(safe-area-inset-top)) !important;
+        padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
+      }
+
+      .ae-analysis-head {
+        padding-top: calc(10px + env(safe-area-inset-top)) !important;
+        padding-left: calc(12px + env(safe-area-inset-left)) !important;
+        padding-right: calc(12px + env(safe-area-inset-right)) !important;
+      }
+
+      .ae-analysis-body {
+        padding-left: calc(8px + env(safe-area-inset-left)) !important;
+        padding-right: calc(8px + env(safe-area-inset-right)) !important;
+      }
+
+      /* Five tabs resolve as two columns plus a full-width Data / Export row. */
+      .tracker-tab-nav > .tracker-tab-btn:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+      }
+    }
+
+
+    /* ============================================================
+       v1.1.3 Samsung Edge / Android modal + native-select hardening
+       - visualViewport-sized modal surfaces
+       - persistent bottom browser-toolbar clearance
+       - native mobile <select> appearance
+       - modal bodies own scrolling; action rows remain reachable
+       ============================================================ */
+    :root {
+      --ae-vv-height: 100dvh;
+      --ae-vv-top: 0px;
+      --ae-modal-edge: 12px;
+      --ae-modal-browser-clearance: 8px;
+    }
+
+    .code-setup-field-hint {
+      margin-top: 6px;
+      color: #aaa6b4;
+      font-size: 10px;
+      line-height: 1.35;
+      text-align: center;
+    }
+    .code-setup-new-category-input[hidden] { display: none !important; }
+    .code-setup-new-category-input:not([hidden]) { margin-top: 8px; }
+
+    /* Every full-screen popup is tied to the actual visual viewport rather
+       than the layout viewport. This matters on Edge/Chrome Android when
+       the address/search toolbar or on-screen keyboard changes usable height. */
+    .event-note-modal-backdrop,
+    .category-drilldown-modal-backdrop,
+    .ae-analysis-modal,
+    .ae-repo-browser,
+    .ae-legacy-modal,
+    .ae-options-modal,
+    .ae-template-admin-modal {
+      top: var(--ae-vv-top, 0px) !important;
+      right: 0 !important;
+      bottom: auto !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: var(--ae-vv-height, 100dvh) !important;
+      max-height: var(--ae-vv-height, 100dvh) !important;
+      box-sizing: border-box !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding-top: max(var(--ae-modal-edge), env(safe-area-inset-top)) !important;
+      padding-right: max(var(--ae-modal-edge), env(safe-area-inset-right)) !important;
+      padding-bottom: calc(var(--ae-modal-edge) + var(--ae-modal-browser-clearance) + env(safe-area-inset-bottom)) !important;
+      padding-left: max(var(--ae-modal-edge), env(safe-area-inset-left)) !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .event-note-modal,
+    .category-drilldown-modal,
+    .ae-analysis-card,
+    .ae-repo-browser-card,
+    .ae-legacy-card,
+    .ae-options-card,
+    .ae-template-admin-card {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: 100% !important;
+      margin: 0 !important;
+      align-self: center !important;
+      overflow: hidden !important;
+    }
+
+    .event-note-modal-header,
+    .event-note-modal-footer,
+    .category-drilldown-modal-header,
+    .ae-analysis-head,
+    .ae-repo-browser-head,
+    .ae-repo-browser-tools,
+    .ae-repo-browser-footer,
+    .ae-legacy-head,
+    .ae-options-head,
+    .ae-template-admin-head {
+      flex-shrink: 0 !important;
+    }
+
+    .event-note-modal-body,
+    .category-drilldown-modal-body,
+    .ae-analysis-body,
+    .ae-repo-browser-list,
+    .ae-legacy-body,
+    .ae-options-body,
+    .ae-template-admin-body {
+      min-height: 0 !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain !important;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-gutter: stable;
+    }
+
+    /* A little breathing room after action rows is useful even when a browser
+       toolbar is not currently visible. */
+    .event-note-modal-footer,
+    .ae-repo-browser-footer {
+      padding-bottom: max(14px, env(safe-area-inset-bottom)) !important;
+    }
+
+    @media (hover: none), (pointer: coarse), (max-width: 700px) {
+      :root {
+        --ae-modal-edge: 8px;
+        /* Samsung Edge's bottom browser/search controls are not always exposed
+           through safe-area-inset-bottom, so reserve explicit dead space. */
+        --ae-modal-browser-clearance: 64px;
+      }
+
+      /* Reserve the same toolbar clearance at the bottom of normal tab pages so
+         Data / Export and other last-row controls can always be scrolled fully
+         above Edge's bottom search/navigation bar. */
+      .page-wrap {
+        padding-bottom: calc(92px + env(safe-area-inset-bottom)) !important;
+      }
+
+      .ae-app-update-banner {
+        bottom: calc(72px + env(safe-area-inset-bottom)) !important;
+      }
+
+      /* Use the browser/OS picker on touch devices. The older global
+         appearance:none rule made selects look like custom fields and could
+         produce inconsistent Android picker behavior. */
+      select {
+        appearance: auto !important;
+        -webkit-appearance: menulist !important;
+        -moz-appearance: auto !important;
+        background-image: none !important;
+        background-color: #0c0a0e !important;
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        color-scheme: dark !important;
+        min-height: 50px !important;
+        padding-right: 12px !important;
+        touch-action: manipulation !important;
+      }
+
+      /* Let Android Edge style the actual option sheet using system colors.
+         Forcing white option text while the OS supplies a light popup surface
+         is a common cause of apparently blank mobile choices. */
+      select option,
+      select optgroup {
+        background: Canvas !important;
+        background-color: Canvas !important;
+        color: CanvasText !important;
+        -webkit-text-fill-color: CanvasText !important;
+      }
+
+      .event-note-modal,
+      .event-edit-modal,
+      .code-setup-edit-modal,
+      .category-drilldown-modal,
+      .ae-analysis-card,
+      .ae-repo-browser-card,
+      .ae-legacy-card,
+      .ae-options-card,
+      .ae-template-admin-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: 100% !important;
+        border-radius: 16px !important;
+      }
+
+      .event-note-modal {
+        margin-top: 0 !important;
+      }
+
+      .event-note-modal-footer {
+        padding: 10px 10px max(16px, env(safe-area-inset-bottom)) !important;
+      }
+
+      .ae-analysis-body,
+      .event-note-modal-body,
+      .category-drilldown-modal-body,
+      .ae-legacy-body,
+      .ae-options-body,
+      .ae-template-admin-body {
+        padding-bottom: 16px !important;
+      }
+
+      .info-popover,
+      .copy-menu {
+        top: calc(var(--ae-vv-top, 0px) + 8px) !important;
+        max-height: calc(var(--ae-vv-height, 100dvh) - 80px - env(safe-area-inset-bottom)) !important;
+      }
+    }
+
+    @media (max-height: 560px) and (pointer: coarse) {
+      :root { --ae-modal-browser-clearance: 40px; }
+      .event-note-modal-backdrop,
+      .category-drilldown-modal-backdrop,
+      .ae-analysis-modal,
+      .ae-repo-browser,
+      .ae-legacy-modal,
+      .ae-options-modal,
+      .ae-template-admin-modal {
+        align-items: flex-start !important;
+      }
+    }
+
 </style>
 </head>
 <body>
@@ -3786,7 +4036,7 @@ button.inline-downtime-button.running{background:linear-gradient(135deg,#be123c,
         </div>
         <div>
           <label for="productionSpeed">Production Speed, Units Per Hour</label>
-          <input id="productionSpeed" type="number" min="0" step="1" placeholder="Example: 12000" oninput="updateProductionAnalysis()" />
+          <input id="productionSpeed" type="number" min="0" step="any" inputmode="decimal" placeholder="Example: 12000" oninput="updateProductionAnalysis()" />
         </div>
       </div>
 
@@ -4032,8 +4282,8 @@ button.inline-downtime-button.running{background:linear-gradient(135deg,#be123c,
           The Event Log is the main downtime record. Timer mode captures timestamps automatically. All event views stay compact with only Duration and Details; open Details to review or edit category, cause/reason code, start/stop timestamps, and notes.
           <ul>
             <li class="timer-only"><strong>Study timer:</strong> Press <strong>Start Study</strong> when observation begins and <strong>Stop Study</strong> when observation pauses or ends. You can start and stop the study multiple times; each run is added to the total logged study time.</li>
-            <li class="timer-only"><strong>Study timer calculations:</strong> Hidden or excluded event time is removed from study-scope calculations for included uptime, utilization, projected production, and estimated production loss. Stopping the study also stops any active downtime event.</li>
-            <li><strong>Add Manual Row</strong> lets you enter or correct an event manually.</li>
+            <li class="timer-only"><strong>Study timer calculations:</strong> Hidden or excluded event time is removed from study-scope calculations for included uptime, utilization, projected included-scope capacity, and estimated production loss. Stopping the study also stops any active downtime event.</li>
+            <li><strong>Add Manual Row</strong> lets you enter a missed/supplemental event manually. In Timer Capture studies, supplemental rows remain included but are flagged for review because timestamp overlap cannot be verified automatically.</li>
             <li><strong>Copy Selected Columns</strong> copies only the checked columns below into an Excel-ready paste format.</li>
             <li><strong>Copy Column Selection</strong> controls what gets copied; it does not hide or delete data from the log.</li>
             <li><strong>Downtime Code</strong> options come from the Reason Code Setup section below the event log.</li>
@@ -4327,7 +4577,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       </div>
 
       <div class="instruction-box">
-        Study-scope production impact is calculated from included study time, included downtime, and the entered production speed. Hidden/excluded event time remains logged, but is removed from the included study-time denominator. In Manual Entry mode, projected included-scope units use the manually entered observed duration, less any excluded event time, multiplied by the machine speed.
+        Study-scope production impact is calculated from included study time, included downtime, and the entered production speed. Hidden/excluded event time remains logged, but is removed from the included study-time denominator. Projected included-scope units represent the theoretical units available at the entered speed across all included study time. Estimated production loss represents the equivalent units lost during included downtime. This basis is the same in Timer Capture and Manual Entry modes.
       </div>
 
       <div class="summary-grid">
@@ -4427,7 +4677,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     <div class="footer-note">
       Standalone local HTML file. No macros, no external dependencies, and no VBA required. Use Setup for study/cause definitions, Capture for field logging, Review for validation and interpretation, and Data / Export for repository and report outputs.
-      <div class="ae-app-version-chip" id="aeAppVersionFooter">Downtime Tracker v1.1.1 • Study schema 2 • Build DT-2026-09-09-03</div>
+      <div class="ae-app-version-chip" id="aeAppVersionFooter">Downtime Tracker v1.1.3 • Study schema 2 • Build DT-2026-09-10-01</div>
     </div>
 
   </main>
@@ -4447,12 +4697,17 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         <div id="codeSetupEditMetaGrid" class="event-edit-meta-grid" aria-label="Downtime code setup details"></div>
         <div class="event-edit-grid code-setup-edit-grid">
           <div>
-            <label for="codeSetupCategoryInput">Category</label>
-            <input id="codeSetupCategoryInput" class="event-edit-select" list="downtimeCategoryOptions" placeholder="Select or type category" />
+            <label for="codeSetupCategorySelect">Category</label>
+            <select id="codeSetupCategorySelect" class="event-edit-select" onchange="handleCodeSetupCategorySelectChange(this.value)">
+              <option value="">Select category</option>
+            </select>
+            <input id="codeSetupCategoryInput" class="event-edit-select code-setup-new-category-input" type="text" placeholder="Type new category" autocomplete="off" autocapitalize="characters" spellcheck="false" hidden />
+            <div class="code-setup-field-hint">Uses a native dropdown on phones. Choose <b>Add new category…</b> only when creating a new grouping.</div>
           </div>
           <div>
             <label for="codeSetupCauseInput">Cause Code</label>
-            <input id="codeSetupCauseInput" class="event-edit-select" list="downtimeCauseOptions" placeholder="Select or type cause code" />
+            <input id="codeSetupCauseInput" class="event-edit-select" type="text" placeholder="Enter cause code" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+            <div class="code-setup-field-hint">This field defines the reason code itself. Event Category and Cause assignment use native dropdowns.</div>
           </div>
         </div>
         <label for="codeSetupDescriptionTextarea" class="event-edit-note-label">Cause Description</label>
@@ -4591,7 +4846,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
                   <div class="report-metric-value" id="reportLostUnits">N/A</div>
                 </div>
                 <div class="report-metric">
-                  <div class="report-metric-label">Included Events / Hr</div>
+                  <div class="report-metric-label">Included Events / Scope Hr</div>
                   <div class="report-metric-value" id="reportEventsPerHour">N/A</div>
                 </div>
                 <div class="report-metric">
@@ -4714,10 +4969,47 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
   </div>
 </div>
 <script>
-    const APP_VERSION = '1.1.1';
-    const APP_BUILD = 'DT-2026-09-09-03';
+    const APP_VERSION = '1.1.3';
+    const APP_BUILD = 'DT-2026-09-10-01';
     const SCHEMA_VERSION = 2;
     const STUDY_SCHEMA = 'Abel-Engineering.DowntimeStudy';
+
+
+    /* Android Edge / mobile visual-viewport support. */
+    function aeUpdateVisualViewportMetrics() {
+      const vv = window.visualViewport;
+      const height = Math.max(320, Math.round(vv?.height || window.innerHeight || document.documentElement.clientHeight || 0));
+      const top = Math.max(0, Math.round(vv?.offsetTop || 0));
+      document.documentElement.style.setProperty('--ae-vv-height', height + 'px');
+      document.documentElement.style.setProperty('--ae-vv-top', top + 'px');
+    }
+
+    function aeIsTouchPhoneLayout() {
+      return window.matchMedia?.('(hover: none), (pointer: coarse)')?.matches || window.innerWidth <= 700;
+    }
+
+    function aeSafeModalAutofocus(element) {
+      if (!element || aeIsTouchPhoneLayout()) return;
+      try { element.focus({ preventScroll: true }); } catch (_) { try { element.focus(); } catch (_) {} }
+    }
+
+    function aePrepareVisibleModal(root) {
+      aeUpdateVisualViewportMetrics();
+      if (!root) return;
+      try { root.scrollTop = 0; } catch (_) {}
+      requestAnimationFrame(() => {
+        const body = root.querySelector?.('.event-note-modal-body,.category-drilldown-modal-body,.ae-analysis-body,.ae-repo-browser-list,.ae-legacy-body,.ae-options-body,.ae-template-admin-body');
+        if (body) body.scrollTop = 0;
+      });
+    }
+
+    aeUpdateVisualViewportMetrics();
+    window.addEventListener('resize', aeUpdateVisualViewportMetrics, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(aeUpdateVisualViewportMetrics, 60), { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', aeUpdateVisualViewportMetrics, { passive: true });
+      window.visualViewport.addEventListener('scroll', aeUpdateVisualViewportMetrics, { passive: true });
+    }
 
     let events = [];
     let downtimeCodes = [];
@@ -4742,6 +5034,14 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     let qualityChecksCollapsed = false;
     let includedParetoCollapsed = true;
     let executiveParetoViewMode = 'category';
+
+    function aeSafeStorageGet(key) {
+      try { return localStorage.getItem(key); } catch (error) { return null; }
+    }
+
+    function aeSafeStorageSet(key, value) {
+      try { localStorage.setItem(key, value); return true; } catch (error) { return false; }
+    }
 
     function pad(num) {
       return String(num).padStart(2, '0');
@@ -5037,14 +5337,26 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function getStudyFirstStartTimestamp() {
-      if (studySegments.length > 0) return studySegments[0].startTimestamp;
-      return currentStudyStartTimestamp || '';
+      const candidates = studySegments
+        .map(segment => ({ raw: segment.startTimestamp || '', date: parseTimestamp(segment.startTimestamp) }))
+        .filter(item => item.date);
+      if (currentStudyStartTimestamp) {
+        const runningDate = parseTimestamp(currentStudyStartTimestamp);
+        if (runningDate) candidates.push({ raw: currentStudyStartTimestamp, date: runningDate });
+      }
+      if (!candidates.length) return currentStudyStartTimestamp || studySegments[0]?.startTimestamp || '';
+      candidates.sort((a, b) => a.date - b.date);
+      return candidates[0].raw;
     }
 
     function getStudyLastStopTimestamp() {
       if (studyIsRunning) return '';
-      if (studySegments.length === 0) return '';
-      return studySegments[studySegments.length - 1].stopTimestamp;
+      const candidates = studySegments
+        .map(segment => ({ raw: segment.stopTimestamp || '', date: parseTimestamp(segment.stopTimestamp) }))
+        .filter(item => item.date);
+      if (!candidates.length) return studySegments[studySegments.length - 1]?.stopTimestamp || '';
+      candidates.sort((a, b) => b.date - a.date);
+      return candidates[0].raw;
     }
 
     function updateStudyButton() {
@@ -5066,6 +5378,19 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
       const totalDuration = formatDuration(getStudyDurationSeconds());
       const completedSegments = studySegments.length;
+
+      if (isManualEntryMode()) {
+        const manualSeconds = getManualStudyDurationSeconds();
+        const manualValue = String(document.getElementById('manualStudyDuration')?.value || '').trim();
+        status.textContent = manualSeconds > 0
+          ? `Manual Entry mode. Actual observed study duration: ${formatDuration(manualSeconds)}. Enter completed downtime rows below; timer controls are intentionally disabled.`
+          : (manualValue
+              ? 'Manual Entry mode. The entered study duration is invalid. Use minutes, MM:SS, or H:MM:SS before final review.'
+              : 'Manual Entry mode. Enter the actual observed study duration in Setup, then add completed downtime rows below.');
+        status.className = manualSeconds > 0 ? 'status' : (manualValue ? 'status error' : 'status');
+        updateLoadSaveEventLogPreview();
+        return;
+      }
 
       if (!studyIsRunning && completedSegments === 0) {
         status.textContent = 'Study not started. Press Start Study when the observation period begins.';
@@ -5140,7 +5465,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         durationSeconds: null,
         startTimestamp: formatTimestamp(now),
         stopTimestamp: '',
-        notes: ''
+        notes: '',
+        entryMethod: 'timer'
       };
 
       events.push(event);
@@ -5178,6 +5504,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       setStatus('Event stopped. Duration recorded as ' + formatDuration(durationSeconds) + '.', false);
       renderTable();
       updateSummary();
+      updateProductionAnalysis();
     }
 
     function updateToggleButton() {
@@ -5209,7 +5536,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         durationSeconds: null,
         startTimestamp: '',
         stopTimestamp: '',
-        notes: ''
+        notes: '',
+        entryMethod: 'manual'
       };
       events.push(event);
       renderTable();
@@ -5253,11 +5581,18 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       return String(value || '').trim().toUpperCase();
     }
 
+    function getCodeDefinitionMatches(codeValue) {
+      const codeText = String(codeValue || '').trim().toUpperCase();
+      if (!codeText) return [];
+      return downtimeCodes.filter(code => String(code.abbreviation || '').trim().toUpperCase() === codeText);
+    }
+
     function inferCategoryForCode(codeValue) {
       const codeText = String(codeValue || '').trim().toUpperCase();
       if (!codeText) return '';
-      const match = downtimeCodes.find(code => code.abbreviation === codeText);
-      if (match && match.category) return match.category;
+      const matches = getCodeDefinitionMatches(codeText);
+      if (matches.length === 1 && matches[0].category) return normalizeCategory(matches[0].category);
+      if (matches.length > 1) return '';
       if (['PETTERS ROBOT', 'PETERS ROBOT', 'ROBOTS OR VACUUM', 'ROBOT'].includes(codeText)) return 'ROBOT';
       return 'UNCATEGORIZED';
     }
@@ -5302,6 +5637,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       }
     }
 
+    function getEventEntryMethod(event) {
+      const explicit = String(event?.entryMethod || '').trim().toLowerCase();
+      if (explicit === 'timer' || explicit === 'manual') return explicit;
+      return String(event?.startTimestamp || '').trim() || String(event?.stopTimestamp || '').trim() ? 'timer' : 'manual';
+    }
+
     function normalizeEventsForCategoryCause() {
       events = (events || []).map((event, index) => {
         const cause = String(event.downtimeCause || event.downtimeCode || '').trim().toUpperCase();
@@ -5311,7 +5652,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           eventNumber: Number(event.eventNumber) > 0 ? Number(event.eventNumber) : index + 1,
           downtimeCategory: category,
           downtimeCause: cause,
-          downtimeCode: cause
+          downtimeCode: cause,
+          entryMethod: getEventEntryMethod(event)
         };
       });
     }
@@ -5405,13 +5747,18 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         downtimeCodes = importedCodes;
       } else {
         importedCodes.forEach(importedCode => {
-          const existing = downtimeCodes.find(code => code.abbreviation === importedCode.abbreviation);
+          const importedAbbreviation = String(importedCode.abbreviation || '').trim().toUpperCase();
+          const importedCategory = normalizeCategory(importedCode.category || 'UNCATEGORIZED');
+          const existing = downtimeCodes.find(code =>
+            String(code.abbreviation || '').trim().toUpperCase() === importedAbbreviation &&
+            normalizeCategory(code.category || 'UNCATEGORIZED') === importedCategory
+          );
           if (existing) {
-            existing.category = importedCode.category || existing.category || 'UNCATEGORIZED';
+            existing.category = importedCategory;
             existing.description = importedCode.description;
             existing.includeInSummary = importedCode.includeInSummary;
           } else {
-            downtimeCodes.push(importedCode);
+            downtimeCodes.push({ ...importedCode, category: importedCategory, abbreviation: importedAbbreviation });
           }
         });
       }
@@ -5732,9 +6079,17 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function deleteDowntimeCode(index) {
-      const code = downtimeCodes[index]?.abbreviation || '';
-      if (code && events.some(event => event.downtimeCode === code)) {
-        const proceed = confirm('This code is currently used in the Event Log. Removing it will leave those events with the code text but remove the definition. Continue?');
+      const definition = downtimeCodes[index] || null;
+      const code = String(definition?.abbreviation || '').trim().toUpperCase();
+      const category = normalizeCategory(definition?.category || 'UNCATEGORIZED');
+      const codeMatches = getCodeDefinitionMatches(code);
+      const usedByEvent = code && events.some(event => {
+        const eventCode = String(event.downtimeCode || event.downtimeCause || '').trim().toUpperCase();
+        const eventCategory = normalizeCategory(event.downtimeCategory || '');
+        return eventCode === code && (eventCategory === category || (!eventCategory && codeMatches.length <= 1));
+      });
+      if (usedByEvent) {
+        const proceed = confirm('This category/cause definition is currently used in the Event Log. Removing it will leave those events with their saved text but remove the definition. Continue?');
         if (!proceed) return;
       }
 
@@ -5751,26 +6106,50 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       });
     }
 
+    function propagateCodeDefinitionEdit(oldCategoryValue, oldAbbreviationValue, newCategoryValue, newAbbreviationValue, oldWasUniqueAcrossCategories = false) {
+      const oldCategory = normalizeCategory(oldCategoryValue || 'UNCATEGORIZED');
+      const oldAbbreviation = String(oldAbbreviationValue || '').trim().toUpperCase();
+      const newCategory = normalizeCategory(newCategoryValue || 'UNCATEGORIZED');
+      const newAbbreviation = String(newAbbreviationValue || '').trim().toUpperCase();
+      if (!oldAbbreviation) return;
+
+      events.forEach(event => {
+        const eventCode = String(event.downtimeCode || event.downtimeCause || '').trim().toUpperCase();
+        if (eventCode !== oldAbbreviation) return;
+        const eventCategory = normalizeCategory(event.downtimeCategory || '');
+        const belongsToEditedDefinition = eventCategory === oldCategory || (!eventCategory && oldWasUniqueAcrossCategories);
+        if (!belongsToEditedDefinition) return;
+
+        event.downtimeCode = newAbbreviation;
+        event.downtimeCause = newAbbreviation;
+        if (!isLegacyEventLogView()) event.downtimeCategory = newCategory;
+      });
+    }
+
     function updateDowntimeCode(index, field, value) {
       if (!downtimeCodes[index]) return;
-      const oldAbbreviation = downtimeCodes[index]?.abbreviation || '';
+      const oldCategory = normalizeCategory(downtimeCodes[index]?.category || 'UNCATEGORIZED');
+      const oldAbbreviation = String(downtimeCodes[index]?.abbreviation || '').trim().toUpperCase();
+      const oldWasUniqueAcrossCategories = getCodeDefinitionMatches(oldAbbreviation).length <= 1;
 
       if (field === 'includeInSummary') {
         downtimeCodes[index].includeInSummary = Boolean(value);
+      } else if (field === 'abbreviation') {
+        downtimeCodes[index].abbreviation = String(value ?? '').trim().toUpperCase();
+      } else if (field === 'category') {
+        downtimeCodes[index].category = normalizeCategory(value || 'UNCATEGORIZED');
       } else {
         downtimeCodes[index][field] = String(value ?? '').trim();
       }
 
-      if (field === 'abbreviation') {
-        downtimeCodes[index][field] = String(value ?? '').trim().toUpperCase();
-
-        if (oldAbbreviation) {
-          events.forEach(event => {
-            if (event.downtimeCode === oldAbbreviation) {
-              event.downtimeCode = downtimeCodes[index][field];
-            }
-          });
-        }
+      if (field === 'abbreviation' || field === 'category') {
+        propagateCodeDefinitionEdit(
+          oldCategory,
+          oldAbbreviation,
+          downtimeCodes[index].category,
+          downtimeCodes[index].abbreviation,
+          oldWasUniqueAcrossCategories
+        );
       }
 
       normalizeDowntimeCodes();
@@ -5799,15 +6178,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const categoryText = normalizeCategory(categoryValue || '');
       if (!codeText) return null;
 
+      const matches = getCodeDefinitionMatches(codeText);
       if (categoryText) {
-        const categoryMatch = downtimeCodes.find(code =>
-          String(code.abbreviation || '').trim().toUpperCase() === codeText &&
-          normalizeCategory(code.category || 'UNCATEGORIZED') === categoryText
-        );
-        if (categoryMatch) return categoryMatch;
+        return matches.find(code => normalizeCategory(code.category || 'UNCATEGORIZED') === categoryText) || null;
       }
 
-      return downtimeCodes.find(code => String(code.abbreviation || '').trim().toUpperCase() === codeText) || null;
+      return matches.length === 1 ? matches[0] : null;
     }
 
     function getCodeDescription(codeValue, categoryValue = '') {
@@ -5877,6 +6253,50 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       return [category, cause, descState].join(' / ');
     }
 
+    function populateCodeSetupCategorySelect(currentValue) {
+      const select = document.getElementById('codeSetupCategorySelect');
+      const manual = document.getElementById('codeSetupCategoryInput');
+      if (!select) return;
+
+      const current = normalizeCategory(currentValue || '');
+      const categories = getDowntimeCategories();
+      const hasCurrent = current && categories.includes(current);
+      let htmlText = '<option value="">Select category</option>';
+      categories.forEach(category => {
+        const selected = category === current ? ' selected' : '';
+        htmlText += `<option value="${escapeHTML(category)}"${selected}>${escapeHTML(category)}</option>`;
+      });
+      if (current && !hasCurrent) {
+        htmlText += `<option value="${escapeHTML(current)}" selected>${escapeHTML(current)} (current saved value)</option>`;
+      }
+      htmlText += '<option value="__NEW__">＋ Add new category…</option>';
+      select.innerHTML = htmlText;
+      select.value = current || '';
+      if (manual) {
+        manual.hidden = true;
+        manual.value = '';
+      }
+    }
+
+    function handleCodeSetupCategorySelectChange(value) {
+      const manual = document.getElementById('codeSetupCategoryInput');
+      if (!manual) return;
+      const isNew = value === '__NEW__';
+      manual.hidden = !isNew;
+      if (!isNew) { manual.value = ''; return; }
+      requestAnimationFrame(() => {
+        try { manual.focus({ preventScroll: true }); } catch (_) { manual.focus(); }
+        aeUpdateVisualViewportMetrics();
+      });
+    }
+
+    function getCodeSetupCategoryValue() {
+      const select = document.getElementById('codeSetupCategorySelect');
+      const manual = document.getElementById('codeSetupCategoryInput');
+      if (select?.value === '__NEW__') return normalizeCategory(manual?.value || 'UNCATEGORIZED');
+      return normalizeCategory(select?.value || manual?.value || 'UNCATEGORIZED');
+    }
+
     function openCodeSetupModal(index) {
       if (!downtimeCodes[index]) return;
       activeCodeSetupIndex = index;
@@ -5886,6 +6306,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const backdrop = document.getElementById('codeSetupModalBackdrop');
       const title = document.getElementById('codeSetupModalTitle');
       const meta = document.getElementById('codeSetupEditMetaGrid');
+      const categorySelect = document.getElementById('codeSetupCategorySelect');
       const categoryInput = document.getElementById('codeSetupCategoryInput');
       const causeInput = document.getElementById('codeSetupCauseInput');
       const descTextarea = document.getElementById('codeSetupDescriptionTextarea');
@@ -5899,24 +6320,27 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           <div class="event-edit-meta-card"><div class="event-edit-meta-label">Current Cause</div><div class="event-edit-meta-value">${escapeHTML(String(code.abbreviation || '').trim().toUpperCase() || 'None')}</div></div>
         `;
       }
-      if (categoryInput) categoryInput.value = normalizeCategory(code.category || '');
+      populateCodeSetupCategorySelect(code.category || '');
       if (causeInput) causeInput.value = String(code.abbreviation || '').trim().toUpperCase();
       if (descTextarea) descTextarea.value = code.description || '';
       if (backdrop) {
         backdrop.classList.add('open');
         backdrop.setAttribute('aria-hidden', 'false');
       }
-      setTimeout(() => categoryInput?.focus(), 0);
+      aePrepareVisibleModal(backdrop);
+      setTimeout(() => aeSafeModalAutofocus(categorySelect), 0);
     }
 
     function saveActiveCodeSetupEdit() {
       if (activeCodeSetupIndex === null || !downtimeCodes[activeCodeSetupIndex]) return;
       const code = downtimeCodes[activeCodeSetupIndex];
+      const oldCategory = normalizeCategory(code.category || 'UNCATEGORIZED');
       const oldAbbreviation = String(code.abbreviation || '').trim().toUpperCase();
+      const oldWasUniqueAcrossCategories = getCodeDefinitionMatches(oldAbbreviation).length <= 1;
       const categoryInput = document.getElementById('codeSetupCategoryInput');
       const causeInput = document.getElementById('codeSetupCauseInput');
       const descTextarea = document.getElementById('codeSetupDescriptionTextarea');
-      const newCategory = normalizeCategory(categoryInput?.value || 'UNCATEGORIZED');
+      const newCategory = getCodeSetupCategoryValue();
       const newAbbreviation = String(causeInput?.value || '').trim().toUpperCase();
       const newDescription = String(descTextarea?.value || '').trim();
 
@@ -5924,17 +6348,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       code.abbreviation = newAbbreviation;
       code.description = newDescription;
 
-      if (oldAbbreviation && newAbbreviation && oldAbbreviation !== newAbbreviation) {
-        events.forEach(event => {
-          const eventCode = String(event.downtimeCode || event.downtimeCause || '').trim().toUpperCase();
-          if (eventCode === oldAbbreviation) {
-            event.downtimeCode = newAbbreviation;
-            event.downtimeCause = newAbbreviation;
-            if (!event.downtimeCategory || normalizeCategory(event.downtimeCategory) === normalizeCategory(code.category)) {
-              event.downtimeCategory = newCategory;
-            }
-          }
-        });
+      if (oldCategory !== newCategory || oldAbbreviation !== newAbbreviation) {
+        propagateCodeDefinitionEdit(oldCategory, oldAbbreviation, newCategory, newAbbreviation, oldWasUniqueAcrossCategories);
       }
 
       normalizeDowntimeCodes();
@@ -6130,6 +6545,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const stopTimestamp = event.stopTimestamp || event.stopTime || '';
       const rows = [
         ['Event #', event.eventNumber || '—'],
+        ['Entry Method', getEventEntryMethod(event) === 'timer' ? 'Timer capture' : 'Manual / supplemental'],
         ['Duration', formatDuration(event.durationSeconds)],
         ['Start Time', event.startTime || '—'],
         ['Stop Time', event.stopTime || 'Running / not stopped'],
@@ -6226,7 +6642,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         backdrop.classList.add('open');
         backdrop.setAttribute('aria-hidden', 'false');
       }
-      setTimeout(() => document.getElementById('eventEditCategorySelect')?.focus(), 0);
+      aePrepareVisibleModal(backdrop);
+      setTimeout(() => aeSafeModalAutofocus(document.getElementById('eventEditCategorySelect')), 0);
     }
 
     function updateActiveEventNote(value) {
@@ -6338,7 +6755,25 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function updateCell(index, field, value) {
-      events[index][field] = value;
+      if (!events[index]) return;
+
+      if (field === 'durationManual') {
+        const parsedDuration = parseDurationToSeconds(value);
+        if (parsedDuration === null && String(value ?? '').trim()) {
+          const message = 'Invalid event duration. Use seconds (for example 90) or [MM]:SS with seconds from 00 through 59.';
+          setStatus(message, false);
+          const status = document.getElementById('status');
+          if (status) status.className = 'status error';
+          renderTable();
+          return;
+        }
+        events[index].durationSeconds = parsedDuration;
+        events[index].entryMethod = 'manual';
+        delete events[index].durationManual;
+      } else {
+        events[index][field] = value;
+      }
+
       if (field === 'downtimeCode' || field === 'downtimeCause') {
         const cause = String(value || '').trim().toUpperCase();
         events[index].downtimeCode = cause;
@@ -6366,10 +6801,6 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         }
       }
 
-      if (field === 'durationManual') {
-        events[index].durationSeconds = parseDurationToSeconds(value);
-      }
-
       renderTable();
       updateSummary();
       updateProductionAnalysis();
@@ -6379,31 +6810,45 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function parseDurationToSeconds(value) {
-      if (!value) return null;
-      const parts = value.split(':').map(x => Number(x.trim()));
-      if (parts.length === 2 && !parts.some(isNaN)) {
-        return Math.round(parts[0] * 60 + parts[1]);
-      }
-      const asNumber = Number(value);
-      return isNaN(asNumber) ? null : Math.round(asNumber);
-    }
+      const text = String(value ?? '').trim();
+      if (!text) return null;
 
-    function parseFlexibleDurationToSeconds(value) {
-      if (!value) return 0;
-      const text = String(value).trim();
-      if (!text) return 0;
-      const parts = text.split(':').map(part => Number(part.trim()));
-
-      if (parts.length === 3 && !parts.some(isNaN)) {
-        return Math.round((parts[0] * 3600) + (parts[1] * 60) + parts[2]);
-      }
-
-      if (parts.length === 2 && !parts.some(isNaN)) {
-        return Math.round((parts[0] * 60) + parts[1]);
+      if (text.includes(':')) {
+        const rawParts = text.split(':');
+        if (rawParts.length !== 2) return null;
+        const minutes = Number(rawParts[0].trim());
+        const seconds = Number(rawParts[1].trim());
+        if (!Number.isFinite(minutes) || !Number.isFinite(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) return null;
+        return Math.round(minutes * 60 + seconds);
       }
 
       const asNumber = Number(text);
-      return isNaN(asNumber) ? 0 : Math.round(asNumber * 60);
+      return Number.isFinite(asNumber) && asNumber >= 0 ? Math.round(asNumber) : null;
+    }
+
+    function parseFlexibleDurationToSeconds(value) {
+      const text = String(value ?? '').trim();
+      if (!text) return 0;
+      const rawParts = text.split(':');
+
+      if (rawParts.length === 3) {
+        const hours = Number(rawParts[0].trim());
+        const minutes = Number(rawParts[1].trim());
+        const seconds = Number(rawParts[2].trim());
+        if (!Number.isFinite(hours) || !Number.isFinite(minutes) || !Number.isFinite(seconds) || hours < 0 || minutes < 0 || minutes >= 60 || seconds < 0 || seconds >= 60) return null;
+        return Math.round((hours * 3600) + (minutes * 60) + seconds);
+      }
+
+      if (rawParts.length === 2) {
+        const minutes = Number(rawParts[0].trim());
+        const seconds = Number(rawParts[1].trim());
+        if (!Number.isFinite(minutes) || !Number.isFinite(seconds) || minutes < 0 || seconds < 0 || seconds >= 60) return null;
+        return Math.round((minutes * 60) + seconds);
+      }
+
+      if (rawParts.length !== 1) return null;
+      const asNumber = Number(text);
+      return Number.isFinite(asNumber) && asNumber >= 0 ? Math.round(asNumber * 60) : null;
     }
 
     function isManualEntryMode() {
@@ -6447,7 +6892,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     function getManualStudyDurationSeconds() {
       const value = document.getElementById('manualStudyDuration')?.value || document.getElementById('manualStudyDurationControl')?.value || '';
-      return parseFlexibleDurationToSeconds(value);
+      const parsed = parseFlexibleDurationToSeconds(value);
+      return parsed === null ? 0 : parsed;
     }
 
     function syncManualStudyDurationFields(value) {
@@ -6458,7 +6904,14 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function updateManualStudyDuration() {
-      const value = document.getElementById('manualStudyDuration')?.value || '';
+      const input = document.getElementById('manualStudyDuration');
+      const value = input?.value || '';
+      const parsed = parseFlexibleDurationToSeconds(value);
+      if (input) {
+        const invalid = parsed === null && String(value).trim() !== '';
+        input.classList.toggle('input-invalid', invalid);
+        input.setCustomValidity(invalid ? 'Use minutes, MM:SS, or H:MM:SS. Minute/second components after a colon must be 00–59.' : '');
+      }
       syncManualStudyDurationFields(value);
       updateStudyStatus();
       updateProductionAnalysis();
@@ -6493,11 +6946,16 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const renderEventRow = (event, index) => {
         const row = document.createElement('tr');
         const isActive = index === activeEventIndex;
+        const entryMethod = getEventEntryMethod(event);
+        const durationReadOnly = isActive || entryMethod === 'timer';
+        const durationLabel = isActive
+          ? 'Live downtime duration'
+          : (entryMethod === 'timer' ? 'Timer-captured duration derived from timestamps' : 'Manual downtime duration');
         const displayDuration = isActive ? getLiveDowntimeDurationSeconds(event) : event.durationSeconds;
         row.dataset.eventIndex = String(index);
         if (isActive) row.className = 'active-row';
         row.innerHTML = `
-          <td class="event-duration-col mobile-duration"><input data-event-duration value="${escapeHTML(formatDuration(displayDuration))}" onchange="updateCell(${index}, 'durationManual', this.value)" ${isActive ? 'readonly aria-label="Live downtime duration"' : ''} /></td>
+          <td class="event-duration-col mobile-duration"><input data-event-duration value="${escapeHTML(formatDuration(displayDuration))}" onchange="updateCell(${index}, 'durationManual', this.value)" ${durationReadOnly ? `readonly aria-label="${escapeHTML(durationLabel)}" title="${escapeHTML(durationLabel)}"` : `aria-label="${escapeHTML(durationLabel)}"`} /></td>
           <td class="event-details-col notes-cell mobile-details">${renderNoteCell(index, event.notes)}</td>
         `;
         body.appendChild(row);
@@ -6732,23 +7190,42 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
       const uncodedEvents = completedEvents.filter(event => !String(event.downtimeCode || event.downtimeCause || '').trim());
       const uncategorizedEvents = legacyView ? [] : completedEvents.filter(event => !normalizeCategory(event.downtimeCategory || ''));
+      const ambiguousCodeEvents = completedEvents.filter(event => {
+        const cause = String(event.downtimeCode || event.downtimeCause || '').trim();
+        const category = normalizeCategory(event.downtimeCategory || '');
+        return Boolean(cause) && !category && getCodeDefinitionMatches(cause).length > 1;
+      });
       const undefinedCodes = completedEvents.filter(event => {
         const cause = String(event.downtimeCode || event.downtimeCause || '').trim();
-        return cause && !findDowntimeCodeDefinition(cause, event.downtimeCategory || '');
+        if (!cause) return false;
+        const category = normalizeCategory(event.downtimeCategory || '');
+        const matches = getCodeDefinitionMatches(cause);
+        if (!matches.length) return true;
+        if (!category) return false; // duplicate-category ambiguity is reported separately.
+        return !matches.some(code => normalizeCategory(code.category || 'UNCATEGORIZED') === category);
       });
       const missingNotes = completedEvents.filter(event => !String(event.notes || '').trim());
+      const timerCompletedEvents = completedEvents.filter(event => getEventEntryMethod(event) === 'timer');
+      const manualCompletedEvents = completedEvents.filter(event => getEventEntryMethod(event) === 'manual');
+      const supplementalManualEvents = isManualEntryMode() ? [] : manualCompletedEvents;
 
       const windows = getStudyIntegrityWindows();
       const completedWindows = windows.filter(window => !window.running);
       const invalidStudyWindows = windows.filter(window => !window.start || !window.stop || window.stop <= window.start);
-      let overlappingStudyWindows = 0;
-      const validWindowIntervals = windows
+      const originalValidWindowIntervals = windows
         .filter(window => window.start && window.stop && window.stop > window.start)
-        .map(window => ({ start: window.start.getTime(), stop: window.stop.getTime(), index: window.index }))
-        .sort((a, b) => a.start - b.start);
-      for (let i = 1; i < validWindowIntervals.length; i++) {
-        if (validWindowIntervals[i].start < validWindowIntervals[i - 1].stop) overlappingStudyWindows++;
+        .map(window => ({ start: window.start.getTime(), stop: window.stop.getTime(), index: window.index }));
+      let unorderedStudyWindows = 0;
+      for (let i = 1; i < originalValidWindowIntervals.length; i++) {
+        if (originalValidWindowIntervals[i].start < originalValidWindowIntervals[i - 1].start) unorderedStudyWindows++;
       }
+      const validWindowIntervals = originalValidWindowIntervals.slice().sort((a, b) => a.start - b.start || a.stop - b.stop);
+      let overlappingStudyWindows = 0;
+      let latestWindowStop = -Infinity;
+      validWindowIntervals.forEach(interval => {
+        if (interval.start < latestWindowStop) overlappingStudyWindows++;
+        latestWindowStop = Math.max(latestWindowStop, interval.stop);
+      });
 
       let invalidTimestampEvents = 0;
       let durationMismatchEvents = 0;
@@ -6757,7 +7234,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const timestampIntervals = [];
 
       if (!isManualEntryMode()) {
-        completedEvents.forEach(event => {
+        timerCompletedEvents.forEach(event => {
           const hasAnyTimestamp = Boolean(String(event.startTimestamp || '').trim() || String(event.stopTimestamp || '').trim());
           if (!hasAnyTimestamp) {
             invalidTimestampEvents++;
@@ -6784,9 +7261,11 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         });
 
         timestampIntervals.sort((a, b) => a.start - b.start || a.stop - b.stop);
-        for (let i = 1; i < timestampIntervals.length; i++) {
-          if (timestampIntervals[i].start < timestampIntervals[i - 1].stop) overlappingEvents++;
-        }
+        let latestEventStop = -Infinity;
+        timestampIntervals.forEach(interval => {
+          if (interval.start < latestEventStop) overlappingEvents++;
+          latestEventStop = Math.max(latestEventStop, interval.stop);
+        });
       }
 
       const totalCompletedDowntime = completedEvents
@@ -6801,7 +7280,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const codedCoverage = completedEvents.length ? codedComplete / completedEvents.length : null;
 
       const temporalIssues = invalidDurationEvents.length + zeroDurationEvents.length + invalidTimestampEvents +
-        durationMismatchEvents + outOfWindowEvents + overlappingEvents + invalidStudyWindows.length + overlappingStudyWindows;
+        durationMismatchEvents + outOfWindowEvents + overlappingEvents + invalidStudyWindows.length + overlappingStudyWindows + unorderedStudyWindows;
 
       const checks = [];
       const push = (level, title, text) => checks.push({ level, title, text });
@@ -6869,6 +7348,14 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       );
 
       push(
+        ambiguousCodeEvents.length === 0 ? 'good' : 'bad',
+        'Reason-code ambiguity',
+        ambiguousCodeEvents.length === 0
+          ? 'No completed event relies on an ambiguous cause code without a category.'
+          : `${ambiguousCodeEvents.length} completed event(s) use a cause code that exists in multiple categories but do not identify which category applies.`
+      );
+
+      push(
         duplicateCodes.length === 0 ? 'good' : 'bad',
         'Reason-code uniqueness',
         duplicateCodes.length === 0
@@ -6884,17 +7371,25 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
       if (!isManualEntryMode()) {
         push(
-          invalidStudyWindows.length === 0 && overlappingStudyWindows === 0 ? 'good' : 'bad',
+          supplementalManualEvents.length === 0 ? 'good' : 'warn',
+          'Supplemental manual rows',
+          supplementalManualEvents.length === 0
+            ? 'All completed records in this timer study were captured from timer timestamps.'
+            : `${supplementalManualEvents.length} completed manual/supplemental row(s) are included in this timer study. Their durations are valid, but timestamp overlap and containment cannot be automatically verified; review them for double counting.`
+        );
+
+        push(
+          invalidStudyWindows.length === 0 && overlappingStudyWindows === 0 && unorderedStudyWindows === 0 ? 'good' : 'bad',
           'Study timer windows',
-          invalidStudyWindows.length || overlappingStudyWindows
-            ? `${invalidStudyWindows.length} invalid study segment(s) and ${overlappingStudyWindows} overlapping study segment pair(s) found.`
-            : (completedWindows.length || studyIsRunning ? 'Study timer segments are ordered and internally valid.' : 'No completed timer segment is available yet.')
+          invalidStudyWindows.length || overlappingStudyWindows || unorderedStudyWindows
+            ? `${invalidStudyWindows.length} invalid study segment(s), ${overlappingStudyWindows} overlapping segment interval(s), and ${unorderedStudyWindows} out-of-order segment transition(s) found.`
+            : (completedWindows.length || studyIsRunning ? 'Study timer segments are chronologically ordered and internally valid.' : 'No completed timer segment is available yet.')
         );
 
         push(
           invalidTimestampEvents === 0 ? 'good' : 'bad',
           'Event timestamps',
-          invalidTimestampEvents === 0 ? 'Completed timer events have valid start/stop timestamps.' : `${invalidTimestampEvents} completed timer event(s) have missing or invalid timestamp boundaries.`
+          invalidTimestampEvents === 0 ? 'Timer-captured completed events have valid start/stop timestamps.' : `${invalidTimestampEvents} timer-captured completed event(s) have missing or invalid timestamp boundaries.`
         );
 
         push(
@@ -6914,10 +7409,10 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           'Event containment',
           !validWindowIntervals.length
             ? 'No valid timer study window is available to verify event containment.'
-            : (outOfWindowEvents === 0 ? 'Completed timer events fall inside recorded study windows.' : `${outOfWindowEvents} event(s) fall partly or completely outside the recorded study windows.`)
+            : (outOfWindowEvents === 0 ? 'Timer-captured completed events fall inside recorded study windows.' : `${outOfWindowEvents} timer-captured event(s) fall partly or completely outside the recorded study windows.`)
         );
       } else {
-        push('info', 'Manual-entry temporal checks', 'Timestamp overlap/containment checks are not required in Manual Entry mode; integrity is based on entered durations and total observed study time.');
+        push('info', 'Manual-entry temporal checks', 'Timestamp overlap/containment checks are not available in Manual Entry mode; integrity is based on entered durations and total observed study time, and manual event durations are assumed not to overlap.');
       }
 
       push(
@@ -6986,8 +7481,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const groups = [
         { title: 'Study basis', checks: ['Study traceability', 'Observation duration', 'Completed downtime records'] },
         { title: 'Record quality', checks: ['Incomplete event rows', 'Duration validity', 'Zero-duration events'] },
-        { title: 'Coding integrity', checks: ['Cause-code coverage', 'Category coverage', 'Legacy category compatibility', 'Reason-code definitions', 'Reason-code uniqueness'] },
-        { title: 'Temporal integrity', checks: ['Study timer windows', 'Event timestamps', 'Timestamp / duration reconciliation', 'Event overlap', 'Event containment', 'Manual-entry temporal checks'] },
+        { title: 'Coding integrity', checks: ['Cause-code coverage', 'Category coverage', 'Legacy category compatibility', 'Reason-code definitions', 'Reason-code ambiguity', 'Reason-code uniqueness'] },
+        { title: 'Temporal integrity', checks: ['Supplemental manual rows', 'Study timer windows', 'Event timestamps', 'Timestamp / duration reconciliation', 'Event overlap', 'Event containment', 'Manual-entry temporal checks'] },
         { title: 'Scope time balance', checks: ['Included-scope time balance', 'Raw event-time balance'] },
         { title: 'Analysis context', checks: ['Event note coverage', 'Production-loss basis'] },
         { title: 'Capture state', checks: ['Active downtime state', 'Study timer state'] }
@@ -7090,12 +7585,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       const includedUptimeSeconds = Math.max(0, includedStudySeconds - includedDowntimeSeconds);
       const utilization = includedStudySeconds > 0 ? includedUptimeSeconds / includedStudySeconds : null;
 
-      // Events per hour should use the observed study duration as the denominator.
-      // Excluded event time is removed from study-scope production/utilization math,
-      // but event frequency should answer: "How many included events occurred per
-      // observed hour?"
       const observedStudyHours = totalLoggedStudySeconds > 0 ? totalLoggedStudySeconds / 3600 : 0;
-      const includedEventsPerHour = observedStudyHours > 0 ? includedEvents.length / observedStudyHours : null;
+      const includedStudyHours = includedStudySeconds > 0 ? includedStudySeconds / 3600 : 0;
+      // Event frequency is normalized to the same included study scope used by
+      // utilization and production-loss math, so excluded periods do not dilute
+      // the event rate.
+      const includedEventsPerHour = includedStudyHours > 0 ? includedEvents.length / includedStudyHours : null;
       const averageIncludedDuration = includedEvents.length ? includedDowntimeSeconds / includedEvents.length : 0;
 
       return {
@@ -7105,6 +7600,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         excludedEventSeconds,
         includedStudySeconds,
         observedStudyHours,
+        includedStudyHours,
         includedDowntimeSeconds,
         includedUptimeSeconds,
         utilization,
@@ -7119,14 +7615,13 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
       // ============================================================
       // STUDY-SCOPE PRODUCTION MATH
-      // Timer Capture mode keeps the original behavior: projected
-      // included units are based on included uptime. Manual Entry mode
-      // uses the manually entered observed study duration, minus any
-      // excluded event time, multiplied by the machine speed.
+      // Projected included-scope units are the theoretical units available
+      // at the entered speed across INCLUDED STUDY TIME. Estimated loss is
+      // the equivalent unit loss during INCLUDED DOWNTIME. Therefore:
+      // projected capacity - estimated loss = estimated uptime output.
+      // This basis is identical in Timer Capture and Manual Entry modes.
       // ============================================================
-      const projectedUnitSeconds = isManualEntryMode()
-        ? metrics.includedStudySeconds
-        : metrics.includedUptimeSeconds;
+      const projectedUnitSeconds = metrics.includedStudySeconds;
       const projectedUnitsProduced = speedPerHour > 0 ? projectedUnitSeconds / 3600 * speedPerHour : null;
       const unitsLost = speedPerHour > 0 ? metrics.includedDowntimeSeconds / 3600 * speedPerHour : null;
 
@@ -7198,6 +7693,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           return {
             rank: index + 1,
             code: row.code,
+            category: row.category,
+            displayCode: row.displayCode,
             description: row.description,
             count: row.count,
             totalSeconds: row.totalSeconds,
@@ -7393,7 +7890,53 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       };
     }
 
+    function normalizeIncomingLiveTimingPayload(payload) {
+      if (!payload || typeof payload !== 'object') return payload;
+      const hasLiveStudy = Boolean(payload.studyIsRunning && payload.currentStudyStartTimestamp);
+      const activeIndex = Number.isInteger(payload.activeEventIndex) ? payload.activeEventIndex : null;
+      const hasLiveEvent = activeIndex !== null && Array.isArray(payload.events) && payload.events[activeIndex] && !payload.events[activeIndex].stopTimestamp;
+      if (!hasLiveStudy && !hasLiveEvent) return payload;
+
+      const copy = JSON.parse(JSON.stringify(payload));
+      const snapshotRaw = copy.savedAt || copy.autosavedAt || copy.browserSavedAt || copy.mobileTransfer?.exportedAt || '';
+      const snapshotDate = parseTimestamp(snapshotRaw);
+      const snapshotTimestamp = snapshotDate ? formatTimestamp(snapshotDate) : '';
+
+      const copyActiveIndex = Number.isInteger(copy.activeEventIndex) ? copy.activeEventIndex : null;
+      const activeEvent = copyActiveIndex !== null && Array.isArray(copy.events) ? copy.events[copyActiveIndex] : null;
+      if (activeEvent && !activeEvent.stopTimestamp) {
+        const startDate = parseTimestamp(activeEvent.startTimestamp);
+        if (snapshotDate && startDate && snapshotDate >= startDate) {
+          activeEvent.stopTime = formatTime(snapshotDate);
+          activeEvent.stopTimestamp = snapshotTimestamp;
+          activeEvent.durationSeconds = Math.max(0, Math.round((snapshotDate - startDate) / 1000));
+        }
+      }
+      copy.activeEventIndex = null;
+
+      if (copy.studyIsRunning && copy.currentStudyStartTimestamp) {
+        const startDate = parseTimestamp(copy.currentStudyStartTimestamp);
+        if (snapshotDate && startDate && snapshotDate >= startDate) {
+          copy.studySegments = Array.isArray(copy.studySegments) ? copy.studySegments : [];
+          copy.studySegments.push({ startTimestamp: copy.currentStudyStartTimestamp, stopTimestamp: snapshotTimestamp });
+        }
+      }
+      copy.currentStudyStartTimestamp = '';
+      copy.studyIsRunning = false;
+      copy.recoveryNormalization = {
+        ...(copy.recoveryNormalization && typeof copy.recoveryNormalization === 'object' ? copy.recoveryNormalization : {}),
+        pausedLiveTimingOnLoad: true,
+        timingSnapshotSource: snapshotRaw ? 'saved timestamp' : 'unavailable; live interval left incomplete',
+        normalizedByAppVersion: APP_VERSION
+      };
+      return copy;
+    }
+
     function applyStudyStatePayload(payload) {
+      if (!payload || payload.fileType !== 'MPG_Downtime_Tracker_Study') {
+        throw new Error('Invalid study file.');
+      }
+      payload = normalizeIncomingLiveTimingPayload(payload);
       if (!payload || payload.fileType !== 'MPG_Downtime_Tracker_Study') {
         throw new Error('Invalid study file.');
       }
@@ -7925,7 +8468,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         .map(row => ({
           codeNumber: Number(row[0]) || 0,
           abbreviation: String(row[1] || '').trim().toUpperCase(),
-          description: String(row[2] || '').trim()
+          description: String(row[2] || '').trim(),
+          includeInSummary: !['no', 'n', 'false', '0', 'hide', 'hidden', 'exclude', 'excluded'].includes(String(row[3] || '').trim().toLowerCase()),
+          category: normalizeCategory(row[4] || inferTemplateCategoryForCause(row[1])) || 'UNCATEGORIZED'
         }))
         .filter(code => code.abbreviation);
 
@@ -7943,16 +8488,22 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         'Reason / Notes'
       ]);
 
-      events = eventRows.map(row => ({
-        eventNumber: Number(row[0]) || 0,
-        startTime: row[1] || '',
-        stopTime: row[2] || '',
-        downtimeCode: row[3] || '',
-        durationSeconds: row[6] === '' ? null : Number(row[6]),
-        startTimestamp: row[7] || '',
-        stopTimestamp: row[8] || '',
-        notes: row[9] || ''
-      })).filter(event => event.eventNumber || event.startTimestamp || event.stopTimestamp);
+      events = eventRows.map(row => {
+        const durationSeconds = row[7] === '' ? null : Number(row[7]);
+        return {
+          eventNumber: Number(row[0]) || 0,
+          startTime: row[1] || '',
+          stopTime: row[2] || '',
+          downtimeCode: String(row[3] || '').trim().toUpperCase(),
+          downtimeCause: String(row[3] || '').trim().toUpperCase(),
+          durationSeconds: Number.isFinite(durationSeconds) ? durationSeconds : null,
+          startTimestamp: row[8] || '',
+          stopTimestamp: row[9] || '',
+          notes: row[10] || '',
+          downtimeCategory: normalizeCategory(row[11] || ''),
+          entryMethod: String(row[12] || '').trim().toLowerCase() === 'manual' ? 'manual' : (String(row[12] || '').trim().toLowerCase() === 'timer' ? 'timer' : '')
+        };
+      }).filter(event => event.eventNumber || event.startTimestamp || event.stopTimestamp || event.durationSeconds !== null);
 
       const segmentRows = parseSectionTable(rows, 'Study Observation Segments', [
         'Segment #',
@@ -7986,6 +8537,18 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         notes: row[5] || ''
       })).filter(item => item.actionNumber || item.item || item.owner || item.notes);
 
+      const exportedEntryMode = String(getSingleValue('Entry Mode') || '').toLowerCase();
+      const manualDurationEntry = getSingleValue('Manual Study Duration Entry') || '';
+      const loggedDurationText = getSingleValue('Total Logged Study Time ([MM]:SS)') || '';
+      const inferredManualMode = exportedEntryMode.includes('manual') || (!exportedEntryMode && !studySegments.length && Boolean(loggedDurationText));
+      collectionMode = inferredManualMode ? 'manual' : 'timer';
+      if (collectionMode === 'manual') syncManualStudyDurationFields(manualDurationEntry || loggedDurationText);
+      else syncManualStudyDurationFields('');
+
+      legacyEventLogView = events.length > 0 && events.every(event => !normalizeCategory(event.downtimeCategory || ''));
+      normalizeDowntimeCodes();
+      normalizeEventsForCategoryCause();
+
       renumberEvents();
       renumberDowntimeCodes();
       renumberActionItems();
@@ -8001,6 +8564,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       updateTopLossSummary();
       updateDataQualityChecks();
       updateExecutiveReport();
+      setCollectionMode(collectionMode);
     }
 
     function parseSectionTable(rows, sectionName, headerRow) {
@@ -8084,7 +8648,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       rows.push(['Last Study Stop Timestamp', getStudyLastStopTimestamp()]);
       rows.push(['Completed Study Segments', studySegments.length]);
       rows.push(['Entry Mode', isManualEntryMode() ? 'Manual Entry' : 'Timer Capture']);
+      rows.push(['Manual Study Duration Entry', document.getElementById('manualStudyDuration')?.value || '']);
       rows.push(['Total Logged Study Time ([MM]:SS)', document.getElementById('loggedStudyDuration')?.textContent || formatDuration(getStudyDurationSeconds())]);
+      rows.push(['Total Logged Study Seconds', getStudyScopeMetrics().totalLoggedStudySeconds]);
       rows.push(['Excluded Event Time ([MM]:SS)', document.getElementById('excludedEventTime')?.textContent || '00:00']);
       rows.push(['Included Study Time ([MM]:SS)', document.getElementById('studyDuration')?.textContent || '00:00']);
       rows.push(['Included Downtime ([MM]:SS)', document.getElementById('includedDowntimeProduction')?.textContent || document.getElementById('totalDowntime')?.textContent || '00:00']);
@@ -8094,6 +8660,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       rows.push(['Projected Included-Scope Units', document.getElementById('projectedUnits')?.textContent || 'N/A']);
       rows.push(['Estimated Included-Scope Production Loss', document.getElementById('lostUnits')?.textContent || 'N/A']);
       rows.push(['Included Events / Hr', document.getElementById('reportEventsPerHour')?.textContent || 'N/A']);
+      rows.push(['Event Frequency Basis', 'Included study-scope hours']);
       rows.push(['Avg Included Downtime', document.getElementById('reportAvgEventDuration')?.textContent || '00:00']);
       rows.push([]);
 
@@ -8134,14 +8701,14 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       rows.push([]);
 
       rows.push(['Downtime Code Definitions']);
-      rows.push(['Code #', 'Code Abbreviation', 'Code Description', 'Include in Summary']);
+      rows.push(['Code #', 'Code Abbreviation', 'Code Description', 'Include in Summary', 'Category']);
       downtimeCodes.forEach(code => {
-        rows.push([code.codeNumber, code.abbreviation, code.description, code.includeInSummary === false ? 'No' : 'Yes']);
+        rows.push([code.codeNumber, code.abbreviation, code.description, code.includeInSummary === false ? 'No' : 'Yes', code.category || 'UNCATEGORIZED']);
       });
 
       rows.push([]);
       rows.push(['Downtime Code Pareto']);
-      rows.push(['Rank', 'Downtime Code', 'Description', 'Event Count', 'Total Duration ([MM]:SS)', 'Total Seconds', '% of Included Downtime', 'Cumulative Percent']);
+      rows.push(['Rank', 'Downtime Code', 'Description', 'Event Count', 'Total Duration ([MM]:SS)', 'Total Seconds', '% of Included Downtime', 'Cumulative Percent', 'Category']);
       getParetoRows().forEach(row => {
         rows.push([
           row.rank,
@@ -8151,7 +8718,8 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           formatDuration(row.totalSeconds),
           row.totalSeconds,
           formatPercent(row.percent),
-          formatPercent(row.cumulative)
+          formatPercent(row.cumulative),
+          row.category || 'UNCATEGORIZED'
         ]);
       });
 
@@ -8168,7 +8736,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         'Duration Seconds',
         'Start Timestamp',
         'Stop Timestamp',
-        'Reason / Notes'
+        'Reason / Notes',
+        'Downtime Category',
+        'Entry Method'
       ]);
 
       events.forEach(event => {
@@ -8183,7 +8753,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           event.durationSeconds ?? '',
           event.startTimestamp,
           event.stopTimestamp,
-          event.notes
+          event.notes,
+          event.downtimeCategory || '',
+          getEventEntryMethod(event)
         ]);
       });
 
@@ -8259,6 +8831,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         ['Projected Included-Scope Units', document.getElementById('projectedUnits')?.textContent || 'N/A'],
         ['Estimated Included-Scope Production Loss', document.getElementById('lostUnits')?.textContent || 'N/A'],
         ['Included Events / Hr', document.getElementById('reportEventsPerHour')?.textContent || 'N/A'],
+        ['Event Frequency Basis', 'Included study-scope hours'],
         ['Avg Included Downtime', document.getElementById('reportAvgEventDuration')?.textContent || '00:00']
       ]));
 
@@ -8275,12 +8848,12 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       ));
 
       workbookSections.push(excelTable('Downtime Code Definitions',
-        ['Code #', 'Code Abbreviation', 'Code Description', 'Include in Summary'],
-        downtimeCodes.map(code => [code.codeNumber, code.abbreviation, code.description, code.includeInSummary === false ? 'No' : 'Yes'])
+        ['Code #', 'Code Abbreviation', 'Code Description', 'Include in Summary', 'Category'],
+        downtimeCodes.map(code => [code.codeNumber, code.abbreviation, code.description, code.includeInSummary === false ? 'No' : 'Yes', code.category || 'UNCATEGORIZED'])
       ));
 
       workbookSections.push(excelTable('Downtime Code Pareto Detail',
-        ['Rank', 'Downtime Code', 'Description', 'Event Count', 'Total Duration', 'Total Seconds', '% of Included Downtime', 'Cumulative Percent'],
+        ['Rank', 'Downtime Code', 'Description', 'Event Count', 'Total Duration', 'Total Seconds', '% of Included Downtime', 'Cumulative Percent', 'Category'],
         getParetoRows().map(row => [
           row.rank,
           row.code,
@@ -8289,12 +8862,13 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           formatDuration(row.totalSeconds),
           row.totalSeconds,
           formatPercent(row.percent),
-          formatPercent(row.cumulative)
+          formatPercent(row.cumulative),
+          row.category || 'UNCATEGORIZED'
         ])
       ));
 
       workbookSections.push(excelTable('Event Log',
-        ['Event #', 'Event Start Time', 'Stop Time', 'Downtime Code', 'Downtime Code Description', 'Downtime Duration', 'Duration Seconds', 'Start Timestamp', 'Stop Timestamp', 'Reason / Notes'],
+        ['Event #', 'Event Start Time', 'Stop Time', 'Downtime Code', 'Downtime Code Description', 'Included in Summary', 'Downtime Duration', 'Duration Seconds', 'Start Timestamp', 'Stop Timestamp', 'Reason / Notes', 'Downtime Category', 'Entry Method'],
         events.map(event => [
           event.eventNumber,
           event.startTime,
@@ -8306,7 +8880,9 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
           event.durationSeconds ?? '',
           event.startTimestamp,
           event.stopTimestamp,
-          event.notes
+          event.notes,
+          event.downtimeCategory || '',
+          getEventEntryMethod(event)
         ])
       ));
 
@@ -8741,10 +9317,13 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         { key: 'eventNumber', header: 'Event #', value: event => event.eventNumber },
         { key: 'startTime', header: 'Event Start Time (HH:MM)', value: event => event.startTime },
         { key: 'stopTime', header: 'Stop Time (HH:MM)', value: event => event.stopTime },
+        { key: 'downtimeCategory', header: 'Downtime Category', value: event => event.downtimeCategory || '' },
         { key: 'downtimeCode', header: 'Downtime Code', value: event => event.downtimeCode || '' },
         { key: 'downtimeCodeDescription', header: 'Downtime Code Description', value: event => getCodeDescription(event.downtimeCode || '', event.downtimeCategory || '') },
+        { key: 'includedInSummary', header: 'Included in Summary', value: event => isDowntimeCodeIncluded(event.downtimeCode || '', event.downtimeCategory || '') ? 'Yes' : 'No' },
         { key: 'durationFormatted', header: 'Downtime Duration ([MM]:SS)', value: event => formatDuration(event.durationSeconds) },
         { key: 'durationSeconds', header: 'Duration Seconds', value: event => event.durationSeconds ?? '' },
+        { key: 'entryMethod', header: 'Entry Method', value: event => getEventEntryMethod(event) },
         { key: 'startTimestamp', header: 'Start Timestamp', value: event => event.startTimestamp },
         { key: 'stopTimestamp', header: 'Stop Timestamp', value: event => event.stopTimestamp },
         { key: 'notes', header: 'Reason / Notes', value: event => event.notes }
@@ -10103,7 +10682,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         lastSaved: payload.autosavedAt || new Date().toISOString(),
         eventCount,
         totalDowntimeSeconds,
-        active: Boolean(payload.studyIsRunning || payload.activeEventIndex !== null && payload.activeEventIndex !== undefined),
+        active: Boolean(payload.autosaveSnapshot?.frozenSnapshot || payload.browserSaveSnapshot?.frozenSnapshot || payload.studyIsRunning || payload.activeEventIndex !== null && payload.activeEventIndex !== undefined),
         version: payload.autosaveVersion || 2
       };
     }
@@ -10127,7 +10706,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function getLegacyAutosavePayload() {
-      const raw = localStorage.getItem(AUTOSAVE_LEGACY_KEY) || localStorage.getItem(AUTOSAVE_LEGACY_BACKUP_KEY);
+      const raw = aeSafeStorageGet(AUTOSAVE_LEGACY_KEY) || aeSafeStorageGet(AUTOSAVE_LEGACY_BACKUP_KEY);
       if (!raw) return null;
       try {
         return JSON.parse(raw);
@@ -10245,7 +10824,14 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       if (isApplyingAutosave) return;
       try {
         const sessionId = ensureAutosaveSessionId();
-        const payload = buildStudyStatePayload();
+        const snapshot = aeBuildFrozenStudySnapshot(new Date());
+        const payload = snapshot.payload;
+        payload.autosaveSnapshot = {
+          frozenSnapshot: snapshot.frozeDowntime || snapshot.frozeStudy,
+          activeDowntimeFrozen: snapshot.frozeDowntime,
+          activeStudyFrozen: snapshot.frozeStudy,
+          snapshotAt: snapshot.snapshotTimestamp
+        };
         if (!hasMeaningfulStudyData(payload) && !options.allowEmpty) {
           if (options.updateStatus) setAutosaveStatus('Autosave ready. No study data has been entered yet.');
           return;
@@ -10416,8 +11002,15 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
 
     function saveLocal(options = {}) {
       try {
-        const payload = buildStudyStatePayload();
+        const snapshot = aeBuildFrozenStudySnapshot(new Date());
+        const payload = snapshot.payload;
         payload.browserSavedAt = new Date().toISOString();
+        payload.browserSaveSnapshot = {
+          frozenSnapshot: snapshot.frozeDowntime || snapshot.frozeStudy,
+          activeDowntimeFrozen: snapshot.frozeDowntime,
+          activeStudyFrozen: snapshot.frozeStudy,
+          snapshotAt: snapshot.snapshotTimestamp
+        };
         const serialized = JSON.stringify(payload);
         localStorage.setItem('downtimeTrackerDataMPG', serialized);
         localStorage.setItem('downtimeTrackerDataMPGBackup', serialized);
@@ -10429,7 +11022,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
     }
 
     function loadLocal() {
-      const raw = localStorage.getItem('downtimeTrackerDataMPG') || localStorage.getItem('downtimeTrackerDataMPGBackup');
+      const raw = aeSafeStorageGet('downtimeTrackerDataMPG') || aeSafeStorageGet('downtimeTrackerDataMPGBackup');
       if (!raw) {
         alert('No saved browser copy was found on this computer.');
         return;
@@ -10772,6 +11365,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
       if (!modal) return;
       modal.hidden = false;
       modal.setAttribute('aria-hidden', 'false');
+      aePrepareVisibleModal(modal);
       document.body.classList.add('ae-analysis-open');
       window.requestAnimationFrame?.(() => {
         initializeParetoDragScroll?.();
@@ -10826,7 +11420,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         }
       });
 
-      const savedTab = localStorage.getItem('mpgDowntimeTrackerActiveTab');
+      const savedTab = aeSafeStorageGet('mpgDowntimeTrackerActiveTab');
       const hashTab = window.location.hash ? window.location.hash.replace('#', '') : '';
       const startingTab = resolveTrackerTabKey(hashTab || savedTab || 'overview');
       showTrackerTab(startingTab, { preserveHash: true });
@@ -10847,7 +11441,7 @@ Code #,Category,Code Abbr,Code Desc,Include in Summary
         item.setAttribute('aria-hidden', isActive ? 'false' : 'true');
       });
 
-      localStorage.setItem('mpgDowntimeTrackerActiveTab', tabKey);
+      aeSafeStorageSet('mpgDowntimeTrackerActiveTab', tabKey);
       if (!options.preserveHash && window.history?.replaceState) {
         window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}#${tabKey}`);
       }
@@ -11776,7 +12370,7 @@ async function aeRepoJson(entry){const f=await entry.handle.getFile(),t=(await f
 function aeRepoPath(parts){return parts.join(' / ')}
 function aeRepoCloseBrowser(){document.getElementById('aeRepoBrowser').hidden=true;aeRepoBrowserCallback=null;aeRepoBrowserRecords=[];aeRepoBrowserFiltered=[];setTimeout(()=>typeof aeModalLock==='function'&&aeModalLock(),0)}
 function aeRepoRenderBrowser(){const list=document.getElementById('aeRepoBrowserList'),term=aeRepoClean(document.getElementById('aeRepoBrowserSearch')?.value).toLowerCase();aeRepoBrowserFiltered=aeRepoBrowserRecords.filter(r=>!term||`${r.title} ${r.meta} ${r.search||''}`.toLowerCase().includes(term));document.getElementById('aeRepoBrowserSummary').textContent=`${aeRepoBrowserFiltered.length} of ${aeRepoBrowserRecords.length} repository record${aeRepoBrowserRecords.length===1?'':'s'} shown.`;list.innerHTML='';if(!aeRepoBrowserFiltered.length){list.innerHTML='<div class="ae-repo-browser-empty">No repository records match this search.</div>';return}aeRepoBrowserFiltered.forEach((r,i)=>{const label=document.createElement('label');label.className='ae-repo-record';if(aeRepoBrowserMulti){const cb=document.createElement('input');cb.type='checkbox';cb.checked=r.selected!==false;cb.addEventListener('change',()=>r.selected=cb.checked);label.appendChild(cb)}else{const icon=document.createElement('span');icon.textContent='▸';icon.style.color='#c4b5fd';icon.style.fontWeight='900';label.appendChild(icon);label.tabIndex=0;let opening=false;const open=async()=>{if(opening)return;opening=true;const cb=aeRepoBrowserCallback;aeRepoCloseBrowser();try{if(typeof cb!=='function')throw new Error('Repository selection handler is unavailable. Reopen the repository browser and try again.');await cb([r])}catch(e){aeRepoStatus(`Open failed: ${e.message||e}`,'bad');alert(e.message||e)}};label.addEventListener('click',open);label.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}})}const text=document.createElement('div');text.innerHTML=`<div class="ae-repo-record-title"></div><div class="ae-repo-record-meta"></div>`;text.querySelector('.ae-repo-record-title').textContent=r.title;text.querySelector('.ae-repo-record-meta').textContent=r.meta;label.appendChild(text);list.appendChild(label)})}
-function aeRepoShowBrowser(records,{title='Study Repository',multi=false,buttonLabel='Load Selected',onOpen}={}){aeRepoBrowserRecords=records;aeRepoBrowserMulti=!!multi;aeRepoBrowserCallback=onOpen||null;document.getElementById('aeRepoBrowserTitle').textContent=title;const search=document.getElementById('aeRepoBrowserSearch');search.value='';const footer=document.getElementById('aeRepoBrowserFooter');footer.hidden=!multi;document.getElementById('aeRepoBrowserOpenSelected').textContent=buttonLabel;document.getElementById('aeRepoBrowser').hidden=false;aeRepoRenderBrowser();setTimeout(()=>{typeof aeModalLock==='function'&&aeModalLock();search.focus()},0)}
+function aeRepoShowBrowser(records,{title='Study Repository',multi=false,buttonLabel='Load Selected',onOpen}={}){aeRepoBrowserRecords=records;aeRepoBrowserMulti=!!multi;aeRepoBrowserCallback=onOpen||null;document.getElementById('aeRepoBrowserTitle').textContent=title;const search=document.getElementById('aeRepoBrowserSearch');search.value='';const footer=document.getElementById('aeRepoBrowserFooter');footer.hidden=!multi;document.getElementById('aeRepoBrowserOpenSelected').textContent=buttonLabel;document.getElementById('aeRepoBrowser').hidden=false;aeRepoRenderBrowser();aePrepareVisibleModal(document.getElementById('aeRepoBrowser'));setTimeout(()=>{typeof aeModalLock==='function'&&aeModalLock();aeSafeModalAutofocus(search)},0)}
 document.getElementById('aeRepoBrowserClose')?.addEventListener('click',aeRepoCloseBrowser);document.getElementById('aeRepoBrowserCancel')?.addEventListener('click',aeRepoCloseBrowser);document.getElementById('aeRepoBrowser')?.addEventListener('click',e=>{if(e.target.id==='aeRepoBrowser')aeRepoCloseBrowser()});document.getElementById('aeRepoBrowserSearch')?.addEventListener('input',aeRepoRenderBrowser);document.getElementById('aeRepoBrowserOpenSelected')?.addEventListener('click',async()=>{const selected=aeRepoBrowserRecords.filter(r=>r.selected!==false);if(!selected.length)return alert('Select at least one repository record.');const cb=aeRepoBrowserCallback;aeRepoCloseBrowser();try{if(typeof cb!=='function')throw new Error('Repository selection handler is unavailable. Reopen the repository browser and try again.');await cb(selected)}catch(e){aeRepoStatus(`Open failed: ${e.message||e}`,'bad');alert(e.message||e)}});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('aeRepoBrowser')?.hidden)aeRepoCloseBrowser()});
 
 const AE_REPO_ROUTE='02_DOWNTIME';
@@ -11872,7 +12466,7 @@ function aeMobileSaveStudy(){
 window.aeMobileRefreshFilename=aeMobileRefreshFilename;
 document.getElementById('aeMobileSaveStudy')?.addEventListener('click',aeMobileSaveStudy);
 /* aeLegacy* IDs/functions are retained as internal compatibility hooks; the user-facing workflow is Mobile Save & Load. */
-function aeLegacyOpen(){const m=document.getElementById('aeLegacyModal');if(m){m.hidden=false;aeMobileRefreshFilename();const status=document.getElementById('aeMobileTransferStatus');if(status){status.hidden=true;status.className='ae-mobile-transfer-status';status.textContent=''}setTimeout(()=>{typeof aeModalLock==='function'&&aeModalLock();document.getElementById('aeMobileSaveStudy')?.focus()},0)}}
+function aeLegacyOpen(){const m=document.getElementById('aeLegacyModal');if(m){m.hidden=false;aeMobileRefreshFilename();const status=document.getElementById('aeMobileTransferStatus');if(status){status.hidden=true;status.className='ae-mobile-transfer-status';status.textContent=''}aePrepareVisibleModal(m);setTimeout(()=>{typeof aeModalLock==='function'&&aeModalLock();document.getElementById('aeMobileSaveStudy')?.focus({preventScroll:true})},0)}}
 function aeLegacyClose(){const m=document.getElementById('aeLegacyModal');if(m)m.hidden=true;setTimeout(()=>typeof aeModalLock==='function'&&aeModalLock(),0)}
 document.getElementById('aeLegacyLoadBtn')?.addEventListener('click',aeLegacyOpen);
 document.getElementById('aeLegacyClose')?.addEventListener('click',aeLegacyClose);
@@ -11890,7 +12484,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElemen
    ====================================================================== */
 const AE_DOWNTIME_TEMPLATE_TYPE='AbelEngineering.DowntimeTagTemplate';
 function aeModalLock(){document.body.classList.toggle('ae-modal-open',[...document.querySelectorAll('.ae-repo-browser,.ae-legacy-modal,.ae-options-modal,.ae-template-admin-modal')].some(x=>!x.hidden))}
-function aeSetModal(id,open){const el=document.getElementById(id);if(!el)return;el.hidden=!open;aeModalLock()}
+function aeSetModal(id,open){const el=document.getElementById(id);if(!el)return;el.hidden=!open;if(open)aePrepareVisibleModal(el);aeModalLock()}
 function aeTemplateStatus(message,type=''){const el=document.getElementById('aeTemplateStatus');if(!el)return;el.textContent=message;el.className='ae-template-status'+(type?' '+type:'')}
 function aeRenderTemplateStatus(){
   if(aeCurrentTemplateRef?.label){aeTemplateStatus(`Current reason-code basis: ${aeCurrentTemplateRef.label}${aeCurrentTemplateRef.revision?` • Rev ${aeCurrentTemplateRef.revision}`:''}.`,'good');return}
@@ -11939,7 +12533,7 @@ async function aeSaveCurrentCodesAsTemplate(){
 }
 function aeOpenTemplateAdmin(){
   const selected=TAG_TEMPLATES[document.getElementById('tagTemplateSelect')?.value]||null,line=String(document.getElementById('studyLine')?.value||'').trim();
-  document.getElementById('aeTemplateAdminLabel').value=selected?.label||'';document.getElementById('aeTemplateAdminId').value=selected?.templateId||'';document.getElementById('aeTemplateAdminMatch').value=(selected?.match?.lineContains||([line].filter(Boolean))).join(', ');document.getElementById('aeTemplateAdminRevision').value=selected?.revision||'';document.getElementById('aeTemplateAdminDescription').value=selected?.description||'';document.getElementById('aeTemplateAdminStatus').textContent=selected?`Editing basis for ${selected.label}. Saving with the same ID updates that repository template file.`:'Create a controlled template from the current reason-code table.';aeSetModal('aeTemplateAdminModal',true);setTimeout(()=>document.getElementById('aeTemplateAdminLabel')?.focus(),0)
+  document.getElementById('aeTemplateAdminLabel').value=selected?.label||'';document.getElementById('aeTemplateAdminId').value=selected?.templateId||'';document.getElementById('aeTemplateAdminMatch').value=(selected?.match?.lineContains||([line].filter(Boolean))).join(', ');document.getElementById('aeTemplateAdminRevision').value=selected?.revision||'';document.getElementById('aeTemplateAdminDescription').value=selected?.description||'';document.getElementById('aeTemplateAdminStatus').textContent=selected?`Editing basis for ${selected.label}. Saving with the same ID updates that repository template file.`:'Create a controlled template from the current reason-code table.';aeSetModal('aeTemplateAdminModal',true);setTimeout(()=>aeSafeModalAutofocus(document.getElementById('aeTemplateAdminLabel')),0)
 }
 function aeAdminApplyPastedCodes(){
   const text=String(document.getElementById('aeAdminPasteCodes')?.value||'');if(!text.trim())return alert('Paste a reason-code CSV or Excel table first.');
